@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>叠印 · 语言是所有人的家</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@900&family=Noto+Serif+SC:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #FDEFCE;
+      --coral: #E8472A;
+      --cyan: #1EBBCA;
+      --dark: #1A120A;
+      --text: #1A120A;
+    }
+
+    body {
+      background: var(--cream);
+      color: var(--dark);
+      font-family: 'Noto Serif SC', serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* GRAIN TEXTURE OVERLAY */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ─── NAV ─── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 40px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--cream);
+      border-bottom: 2px solid var(--dark);
+    }
+    .logo {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      position: relative;
+    }
+    .logo-layer1 { color: var(--coral); position: absolute; top: 2px; left: 2px; }
+    .logo-layer2 { color: var(--cyan); position: absolute; top: -2px; left: -2px; opacity: 0.7; }
+    .logo-text { position: relative; color: var(--dark); }
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--dark);
+      position: relative;
+      transition: color 0.2s;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0; right: 100%;
+      height: 2px;
+      background: var(--coral);
+      transition: right 0.3s;
+    }
+    .nav-links a:hover { color: var(--coral); }
+    .nav-links a:hover::after { right: 0; }
+    .nav-btn {
+      background: var(--dark);
+      color: var(--cream);
+      border: none;
+      padding: 9px 22px;
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.2s;
+    }
+    .nav-btn::before {
+      content: '';
+      position: absolute;
+      top: 3px; left: 3px; right: -3px; bottom: -3px;
+      background: var(--coral);
+      z-index: -1;
+    }
+    .nav-btn:hover { transform: translate(-2px, -2px); }
+
+    /* ─── HERO ─── Risograph split layout ─── */
+    .hero {
+      min-height: 88vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 2px solid var(--dark);
+    }
+
+    .hero-left {
+      background: var(--coral);
+      padding: 60px 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Risograph misregistration: cyan circle behind coral */
+    .hero-left::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -80px;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: var(--cyan);
+      mix-blend-mode: multiply;
+      opacity: 0.6;
+    }
+    .hero-left::after {
+      content: '';
+      position: absolute;
+      bottom: -40px;
+      left: -60px;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: var(--dark);
+      mix-blend-mode: multiply;
+      opacity: 0.12;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--cream);
+      border: 2px solid var(--cream);
+      padding: 5px 14px;
+      position: relative;
+      z-index: 1;
+      align-self: flex-start;
+    }
+
+    .hero-main-text {
+      position: relative;
+      z-index: 1;
+    }
+    .hero-title {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 52px;
+      font-weight: 900;
+      line-height: 1.1;
+      color: var(--cream);
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+    .hero-excerpt {
+      font-size: 15px;
+      font-weight: 300;
+      line-height: 1.85;
+      color: rgba(253,239,206,0.85);
+      max-width: 380px;
+    }
+
+    .hero-bottom {
+      position: relative;
+      z-index: 1;
+    }
+    .hero-author-block {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .hero-avatar {
+      width: 40px;
+      height: 40px;
+      border: 2px solid var(--cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--cream);
+    }
+    .hero-author-info { color: var(--cream); }
+    .hero-author-name { font-family: 'Noto Sans SC', sans-serif; font-weight: 900; font-size: 14px; }
+    .hero-author-meta { font-size: 11px; opacity: 0.75; margin-top: 2px; }
+    .hero-read-btn {
+      margin-top: 16px;
+      background: var(--cream);
+      color: var(--dark);
+      border: none;
+      padding: 10px 24px;
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.2s;
+      display: inline-block;
+    }
+    .hero-read-btn::before {
+      content: '';
+      position: absolute;
+      top: 3px; left: 3px; right: -3px; bottom: -3px;
+      background: var(--dark);
+      z-index: -1;
+    }
+    .hero-read-btn:hover { transform: translate(-2px,-2px); }
+
+    .hero-right {
+      background: var(--cyan);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 60px 50px;
+      justify-content: space-between;
+    }
+    /* Cyan right: coral misregistration */
+    .hero-right::before {
+      content: '';
+      position: absolute;
+      bottom: -100px;
+      right: -100px;
+      width: 450px;
+      height: 450px;
+      border-radius: 50%;
+      background: var(--coral);
+      mix-blend-mode: multiply;
+      opacity: 0.4;
+    }
+
+    .hero-right-label {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.4em;
+      color: var(--dark);
+      opacity: 0.5;
+      margin-bottom: 20px;
+    }
+    .hero-cards { display: flex; flex-direction: column; gap: 18px; position: relative; z-index: 1; }
+    .hero-card {
+      background: rgba(253,239,206,0.9);
+      padding: 20px 22px;
+      border: 2px solid var(--dark);
+      cursor: pointer;
+      transition: transform 0.2s;
+      position: relative;
+    }
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      top: 4px; left: 4px; right: -4px; bottom: -4px;
+      background: var(--dark);
+      z-index: -1;
+    }
+    .hero-card:hover { transform: translate(-2px,-2px); }
+    .hc-cat {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 0.3em;
+      color: var(--coral);
+      margin-bottom: 7px;
+      text-transform: uppercase;
+    }
+    .hc-title {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 16px;
+      font-weight: 900;
+      line-height: 1.3;
+      margin-bottom: 6px;
+    }
+    .hc-meta { font-size: 11px; font-weight: 300; color: #666; }
+
+    .hero-big-num {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 120px;
+      font-weight: 900;
+      color: rgba(26,18,10,0.08);
+      line-height: 1;
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+    }
+
+    /* ─── MARQUEE ─── */
+    .marquee-wrap {
+      border-top: 2px solid var(--dark);
+      border-bottom: 2px solid var(--dark);
+      background: var(--dark);
+      color: var(--cream);
+      padding: 10px 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .marquee {
+      display: inline-block;
+      animation: marquee 22s linear infinite;
+      font-family: 'Noto Sans SC', sans-serif;
+      font-weight: 900;
+      font-size: 12px;
+      letter-spacing: 0.15em;
+    }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    .m-sep { color: var(--coral); margin: 0 16px; }
+
+    /* ─── ARTICLES SECTION ─── Collage-style ─── */
+    .articles-section {
+      padding: 48px 40px;
+    }
+    .sec-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 32px;
+    }
+    .sec-title {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+    }
+    .sec-all {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 11px;
+      font-weight: 900;
+      color: var(--coral);
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* Irregular collage grid */
+    .collage {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 16px;
+    }
+    .col-card {
+      border: 2px solid var(--dark);
+      padding: 28px;
+      position: relative;
+      cursor: pointer;
+      background: var(--cream);
+      transition: transform 0.2s;
+    }
+    .col-card::before {
+      content: '';
+      position: absolute;
+      top: 5px; left: 5px; right: -5px; bottom: -5px;
+      z-index: -1;
+    }
+    .col-card.c1::before { background: var(--coral); }
+    .col-card.c2::before { background: var(--cyan); }
+    .col-card.c3::before { background: var(--dark); }
+    .col-card.c4::before { background: var(--coral); }
+    .col-card.c5::before { background: var(--cyan); }
+    .col-card.c6::before { background: var(--dark); }
+    .col-card:hover { transform: translate(-3px,-3px); }
+    .col-card.span2 { grid-row: span 2; display: flex; flex-direction: column; justify-content: space-between; }
+
+    .cc-num {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 48px;
+      font-weight: 900;
+      color: rgba(26,18,10,0.06);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .cc-cat {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .cc-cat.coral { color: var(--coral); }
+    .cc-cat.cyan { color: var(--cyan); }
+    .cc-title {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+    .col-card.span2 .cc-title { font-size: 28px; }
+    .cc-excerpt {
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.75;
+      color: #555;
+      margin-bottom: 14px;
+    }
+    .cc-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 12px;
+      border-top: 1px solid rgba(26,18,10,0.15);
+    }
+    .cc-author {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 11px;
+      font-weight: 900;
+    }
+    .cc-time { font-size: 11px; font-weight: 300; color: #888; }
+
+    /* Color block dividers */
+    .color-block {
+      height: 6px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+    .cb1 { background: var(--coral); }
+    .cb2 { background: var(--cyan); }
+    .cb3 { background: var(--dark); }
+
+    /* ─── SUBSCRIBE ─── Risograph style ─── */
+    .subscribe {
+      background: var(--dark);
+      color: var(--cream);
+      padding: 64px 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .subscribe::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      left: -80px;
+      width: 350px;
+      height: 350px;
+      border-radius: 50%;
+      background: var(--coral);
+      opacity: 0.25;
+    }
+    .subscribe::after {
+      content: '';
+      position: absolute;
+      bottom: -80px;
+      right: -60px;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: var(--cyan);
+      opacity: 0.2;
+    }
+    .sub-title {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 36px;
+      font-weight: 900;
+      line-height: 1.2;
+      position: relative;
+      z-index: 1;
+    }
+    .sub-title em { font-style: normal; color: var(--coral); }
+    .sub-right { position: relative; z-index: 1; }
+    .sub-desc { font-size: 14px; font-weight: 300; line-height: 1.9; color: rgba(253,239,206,0.7); margin-bottom: 24px; }
+    .sub-form { display: flex; gap: 0; }
+    .sub-input {
+      flex: 1;
+      border: 2px solid rgba(253,239,206,0.3);
+      background: rgba(253,239,206,0.07);
+      color: var(--cream);
+      padding: 12px 16px;
+      font-family: 'Noto Serif SC', serif;
+      font-size: 13px;
+      outline: none;
+      border-right: none;
+    }
+    .sub-input::placeholder { color: rgba(253,239,206,0.3); }
+    .sub-btn {
+      background: var(--coral);
+      color: var(--cream);
+      border: 2px solid rgba(253,239,206,0.3);
+      border-left: none;
+      padding: 12px 22px;
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .sub-btn:hover { background: var(--cyan); color: var(--dark); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--cream);
+      border-top: 2px solid var(--dark);
+      padding: 40px;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 48px;
+    }
+    .footer-brand {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -0.01em;
+      margin-bottom: 10px;
+      position: relative;
+      display: inline-block;
+    }
+    .footer-brand::after {
+      content: '叠印';
+      position: absolute;
+      top: 2px; left: 3px;
+      color: var(--cyan);
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    .footer-tagline { font-size: 13px; font-weight: 300; color: #666; line-height: 1.8; }
+    .f-col h4 {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .f-col ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+    .f-col a { font-size: 13px; font-weight: 300; color: #555; transition: color 0.2s; }
+    .f-col a:hover { color: var(--coral); }
+    .footer-bar {
+      border-top: 2px solid var(--dark);
+      padding: 14px 40px;
+      display: flex;
+      justify-content: space-between;
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      opacity: 0.4;
+    }
+  </style>
+
+<style>
+.ptx-section {
+  background: #FDEFCE;
+  border-top: 2px solid #1A120A;
+  padding: 48px 60px;
+  position: relative;
+  z-index: 1;
+}
+.ptx-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #E8472A;
+  color: #FDEFCE;
+  padding: 12px 20px;
+  margin-bottom: 24px;
+  font-family: monospace;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+}
+.ptx-status { font-size: 11px; opacity: 0.8; color: #888; }
+.ptx-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.ptx-left label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: #888;
+  margin-bottom: 8px;
+}
+#ptx-input {
+  width: 100%;
+  background: #FDEFCE;
+  border: 1px solid #1A120A;
+  color: #1A120A;
+  padding: 12px 14px;
+  font-size: 14px;
+  line-height: 1.8;
+  min-height: 80px;
+  resize: vertical;
+  outline: none;
+  font-family: inherit;
+}
+.ptx-metrics {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #888;
+}
+.ptx-metrics strong { color: #1EBBCA; }
+.ptx-right label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: #888;
+  margin-bottom: 8px;
+}
+.ptx-canvas-wrap {
+  border: 1px solid #1A120A;
+  background: #FDEFCE;
+  overflow: hidden;
+  min-height: 80px;
+}
+#ptx-canvas { display: block; max-width: 100%; }
+.ptx-footnote {
+  margin-top: 16px;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: #888;
+  opacity: 0.6;
+  font-family: monospace;
+}
+/* Badge on article excerpts */
+.ptx-badge {
+  display: inline-block;
+  margin-left: 6px;
+  background: #1EBBCA;
+  color: #FDEFCE;
+  font-size: 9px;
+  padding: 1px 5px;
+  letter-spacing: 0.05em;
+  vertical-align: middle;
+  opacity: 0.75;
+  border-radius: 2px;
+  font-family: monospace;
+  pointer-events: none;
+}
+@media (max-width: 700px) {
+  .ptx-section { padding: 32px 20px; }
+  .ptx-body { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    <span class="logo-layer1" aria-hidden="true">叠印</span>
+    <span class="logo-layer2" aria-hidden="true">叠印</span>
+    <span class="logo-text">叠印</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#">文学</a></li>
+    <li><a href="#">思想</a></li>
+    <li><a href="#">社会</a></li>
+    <li><a href="#">历史</a></li>
+    <li><a href="#">作者</a></li>
+  </ul>
+  <button class="nav-btn">订阅</button>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">本周封面</div>
+    <div class="hero-main-text">
+      <h1 class="hero-title">在消失之前</h1>
+      <p class="hero-excerpt">城市在加速更新，那些承载我们童年与青春的街道、建筑、气味，正以难以感知的速度消逝。当我们谈论城市时，我们真正在谈论什么？</p>
+    </div>
+    <div class="hero-bottom">
+      <div class="hero-author-block">
+        <div class="hero-avatar">张</div>
+        <div class="hero-author-info">
+          <div class="hero-author-name">张晓波</div>
+          <div class="hero-author-meta">6200字 · 约20分钟</div>
+        </div>
+      </div>
+      <button class="hero-read-btn">阅读全文 →</button>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-right-label">同期推荐</div>
+    <div class="hero-cards">
+      <div class="hero-card">
+        <div class="hc-cat">深度报道</div>
+        <div class="hc-title">夜班医生的自白：那些我无法带走的离别</div>
+        <div class="hc-meta">李承志 · 7300字</div>
+      </div>
+      <div class="hero-card">
+        <div class="hc-cat">社会观察</div>
+        <div class="hc-title">独居经济学：一个人的繁荣与孤独</div>
+        <div class="hc-meta">陈明远 · 8100字</div>
+      </div>
+      <div class="hero-card">
+        <div class="hc-cat">心理哲思</div>
+        <div class="hc-title">人类为何需要无聊</div>
+        <div class="hc-meta">林诗语 · 4800字</div>
+      </div>
+    </div>
+    <div class="hero-big-num">文</div>
+  </div>
+</div>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <span class="marquee">
+    最新发布<span class="m-sep">◆</span>她们不谈爱情<span class="m-sep">◆</span>在异乡寻找汉字<span class="m-sep">◆</span>流量之后，意义何在<span class="m-sep">◆</span>父亲的沉默<span class="m-sep">◆</span>被遗忘的下午茶<span class="m-sep">◆</span>最后一批手艺人<span class="m-sep">◆</span>最新发布<span class="m-sep">◆</span>她们不谈爱情<span class="m-sep">◆</span>在异乡寻找汉字<span class="m-sep">◆</span>流量之后，意义何在<span class="m-sep">◆</span>父亲的沉默<span class="m-sep">◆</span>被遗忘的下午茶<span class="m-sep">◆</span>最后一批手艺人<span class="m-sep">◆</span>
+  </span>
+</div>
+
+<!-- ARTICLES -->
+<div class="articles-section">
+  <div class="sec-head">
+    <div class="sec-title">精选文章</div>
+    <div class="sec-all">查看全部 →</div>
+  </div>
+  <div class="collage">
+    <div class="col-card c1 span2">
+      <div>
+        <div class="cc-num">01</div>
+        <div class="cc-cat coral">社会 · 观察</div>
+        <div class="cc-title">独居经济学：一个人的繁荣与孤独</div>
+        <div class="cc-excerpt">中国独居人口已超过9000万。这是一种生活方式的选择，还是某种社会结构性失落的表征？当"一个人"成为常态，城市与人的关系如何重塑？</div>
+      </div>
+      <div class="cc-footer">
+        <span class="cc-author">陈明远</span>
+        <span class="cc-time">约34分钟 · 8100字</span>
+      </div>
+    </div>
+    <div class="col-card c2">
+      <div class="cc-num">02</div>
+      <div class="cc-cat cyan">心理</div>
+      <div class="cc-title">人类为何需要无聊</div>
+      <div class="cc-excerpt">在注意力被无限切割的时代，也许无聊才是真正的思考入口。</div>
+      <div class="cc-footer">
+        <span class="cc-author">林诗语</span>
+        <span class="cc-time">约20分钟</span>
+      </div>
+    </div>
+    <div class="col-card c3">
+      <div class="cc-num">03</div>
+      <div class="cc-cat coral">人物</div>
+      <div class="cc-title">最后一批手艺人</div>
+      <div class="cc-excerpt">他们用一辈子磨砺出的技艺，在工业量产面前显得脆弱而珍贵。</div>
+      <div class="cc-footer">
+        <span class="cc-author">王芳宁</span>
+        <span class="cc-time">约24分钟</span>
+      </div>
+    </div>
+    <div class="col-card c4">
+      <div class="cc-num">04</div>
+      <div class="cc-cat coral">散文</div>
+      <div class="cc-title">她们不谈爱情</div>
+      <div class="cc-excerpt">她们学会了在别处寻找完整。</div>
+      <div class="cc-footer">
+        <span class="cc-author">余晓雯</span>
+        <span class="cc-time">约21分钟</span>
+      </div>
+    </div>
+    <div class="col-card c5">
+      <div class="cc-num">05</div>
+      <div class="cc-cat cyan">旅行</div>
+      <div class="cc-title">在异乡寻找汉字</div>
+      <div class="cc-excerpt">在世界各个角落寻找那些漂泊的汉字。</div>
+      <div class="cc-footer">
+        <span class="cc-author">周建民</span>
+        <span class="cc-time">约18分钟</span>
+      </div>
+    </div>
+    <div class="col-card c6">
+      <div class="cc-num">06</div>
+      <div class="cc-cat coral">深度</div>
+      <div class="cc-title">流量之后，意义何在</div>
+      <div class="cc-excerpt">当一切都可以被量化，意义去哪里了？</div>
+      <div class="cc-footer">
+        <span class="cc-author">赵思远</span>
+        <span class="cc-time">约29分钟</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="color-block"><div class="cb1"></div><div class="cb2"></div><div class="cb3"></div></div>
+
+<!-- SUBSCRIBE -->
+<div class="subscribe">
+  <div class="sub-title">语言是<em>所有人</em>的家。</div>
+  <div class="sub-right">
+    <p class="sub-desc">每周精选两篇长文，直达邮箱。不卖广告，不追热点，只做值得被反复阅读的文字。</p>
+    <div class="sub-form">
+      <input class="sub-input" type="email" placeholder="your@email.com">
+      <button class="sub-btn">订阅</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div>
+    <div class="footer-brand">叠印</div>
+    <p class="footer-tagline">用色彩叠印的方式，让每一层文字都发出自己的声音。<br>中文长阅读平台，自2024年。</p>
+  </div>
+  <div class="f-col">
+    <h4>栏目</h4>
+    <ul>
+      <li><a href="#">文学</a></li>
+      <li><a href="#">思想</a></li>
+      <li><a href="#">社会</a></li>
+      <li><a href="#">历史</a></li>
+      <li><a href="#">散文</a></li>
+    </ul>
+  </div>
+  <div class="f-col">
+    <h4>关于</h4>
+    <ul>
+      <li><a href="#">我们</a></li>
+      <li><a href="#">投稿</a></li>
+      <li><a href="#">订阅</a></li>
+      <li><a href="#">联系</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bar">
+  <span>© 2024 叠印</span>
+  <span>语言是所有人的家</span>
+</div>
+
+<script>
+  // Staggered entrance animation
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translate(0,0)';
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.06 });
+
+  document.querySelectorAll('.col-card, .hero-card').forEach((el, i) => {
+    const dir = i % 3 === 0 ? '-20px' : i % 3 === 1 ? '20px' : '0';
+    el.style.cssText += `opacity:0;transform:translateY(${dir});transition:opacity 0.65s ease ${i*0.08}s,transform 0.65s ease ${i*0.08}s`;
+    io.observe(el);
+  });
+</script>
+
+<!-- ═══════════════════════════════════════════════
+     PRETEXT ENGINE DEMO
+     github.com/chenglou/pretext
+═══════════════════════════════════════════════ -->
+<section class="ptx-section">
+  <div class="ptx-header">
+    <span>PRETEXT · 叠印排版引擎</span>
+    <span id="ptx-status" class="ptx-status">加载中…</span>
+  </div>
+  <div class="ptx-body">
+    <div class="ptx-left">
+      <label>输入文字 — 实时排版测量（不触发 DOM reflow）</label>
+      <textarea id="ptx-input"></textarea>
+      <div id="ptx-metrics" class="ptx-metrics"></div>
+    </div>
+    <div class="ptx-right">
+      <label>Canvas 渲染 — pretext 精确控制每一行</label>
+      <div class="ptx-canvas-wrap">
+        <canvas id="ptx-canvas"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="ptx-footnote">
+    pretext@0.0.4 · github.com/chenglou/pretext ·
+    使用 Canvas measureText 精确测量中文排版，零布局偏移，支持汉字 / emoji / 双向文本
+  </div>
+</section>
+
+<script type="module">
+import { prepareWithSegments, layoutWithLines, prepare, layout } from 'https://esm.sh/@chenglou/pretext';
+
+const FONT = '16px "Noto Sans SC", serif';
+const LINE_HEIGHT = 26;
+const MAX_WIDTH = 480;
+
+const canvas = document.getElementById('ptx-canvas');
+const ctx = canvas ? canvas.getContext('2d') : null;
+const input = document.getElementById('ptx-input');
+const metricsEl = document.getElementById('ptx-metrics');
+const statusEl = document.getElementById('ptx-status');
+const canvasTextColor = '#1A120A';
+
+function updateStatus(ok) {
+  if (statusEl) statusEl.textContent = ok ? '运行中 ✓' : '加载中…';
+  if (statusEl) statusEl.style.color = ok ? '#00CC44' : '#888';
+}
+
+function renderCanvas(text) {
+  if (!ctx || !canvas) return;
+  try {
+    const prepared = prepareWithSegments(text, FONT);
+    const { lines, height } = layoutWithLines(prepared, MAX_WIDTH, LINE_HEIGHT);
+    const canvasH = Math.max(height + 48, 80);
+    canvas.width = MAX_WIDTH + 48;
+    canvas.height = canvasH;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = FONT;
+    ctx.fillStyle = canvasTextColor;
+    ctx.textBaseline = 'top';
+    lines.forEach((line, i) => {
+      ctx.fillText(line.text, 24, 24 + i * LINE_HEIGHT);
+    });
+    // Draw line guides (subtle)
+    ctx.strokeStyle = 'rgba(128,128,128,0.1)';
+    ctx.lineWidth = 1;
+    lines.forEach((_, i) => {
+      ctx.beginPath();
+      ctx.moveTo(0, 24 + i * LINE_HEIGHT + LINE_HEIGHT);
+      ctx.lineTo(canvas.width, 24 + i * LINE_HEIGHT + LINE_HEIGHT);
+      ctx.stroke();
+    });
+    updateStatus(true);
+    return { lines: lines.length, height, chars: text.replace(/\s/g,'').length };
+  } catch(e) {
+    updateStatus(false);
+    return null;
+  }
+}
+
+function updateMetrics(text) {
+  if (!metricsEl) return;
+  const result = renderCanvas(text);
+  if (!result) return;
+  metricsEl.innerHTML =
+    '<span>字数: <strong>' + result.chars + '</strong></span>' +
+    '<span>行数: <strong>' + result.lines + '</strong></span>' +
+    '<span>高度: <strong>' + result.height + 'px</strong></span>' +
+    '<span style="opacity:0.7;font-size:0.85em">无 DOM reflow</span>';
+}
+
+const sampleText = '在消失之前：致我们正在失去的城市记忆。城市在加速更新，那些承载我们童年与青春的街道、建筑、气味，正以难以感知的速度消逝。';
+
+if (input) {
+  input.value = sampleText;
+  input.addEventListener('input', () => updateMetrics(input.value));
+}
+
+// Initial render (wait for fonts)
+document.fonts.ready.then(() => {
+  updateMetrics(input ? input.value : sampleText);
+});
+
+// Measure article excerpts and annotate with pretext measurements
+const excerptSelectors = [
+  '.card-excerpt', '.article-excerpt', '.hero-excerpt',
+  '.featured-excerpt', '.body-text', '.col-body',
+  '.preview-body', '.cc-excerpt', '.hc-title .cc-title'
+];
+document.querySelectorAll(excerptSelectors.join(',')).forEach(el => {
+  const text = el.textContent.trim();
+  if (!text || text.length < 10) return;
+  try {
+    const w = Math.max(el.offsetWidth || 240, 120);
+    const p = prepareWithSegments(text, FONT);
+    const { lines } = layoutWithLines(p, w, LINE_HEIGHT);
+    const badge = document.createElement('span');
+    badge.className = 'ptx-badge';
+    badge.title = 'pretext 精确测量，无 DOM reflow';
+    badge.textContent = lines.length + '行';
+    el.style.position = 'relative';
+    el.appendChild(badge);
+  } catch(e) {}
+});
+</script>
+</body>
+</html>

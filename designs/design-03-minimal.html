@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>墨白 · 长阅读</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #FAFAF6;
+      --ink: #1A1A18;
+      --muted: #8A8A84;
+      --rule: #E2E2DC;
+      --accent: #1A1A18;
+    }
+    html { font-size: 17px; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Noto Serif SC', serif;
+      font-weight: 300;
+      line-height: 1.9;
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    /* NAV — ultra-minimal */
+    nav {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 40px 0 32px;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--rule);
+    }
+    .logo {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 18px;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      color: var(--ink);
+    }
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 12px;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--ink); }
+
+    /* MAIN CONTAINER — single column, book-like */
+    main {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 0 80px;
+    }
+
+    /* HERO — typographic only */
+    .hero {
+      padding: 80px 0 64px;
+      border-bottom: 1px solid var(--rule);
+    }
+    .hero-kicker {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.35em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .hero-title {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 36px;
+      font-weight: 400;
+      line-height: 1.5;
+      letter-spacing: 0.02em;
+      color: var(--ink);
+      margin-bottom: 24px;
+    }
+    .hero-excerpt {
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 2;
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 36px;
+    }
+    .hero-byline {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--muted);
+    }
+    .hero-byline .sep {
+      width: 20px;
+      height: 1px;
+      background: var(--rule);
+    }
+    .hero-read {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--ink);
+      border-bottom: 1px solid var(--ink);
+      padding-bottom: 1px;
+      cursor: pointer;
+      transition: opacity 0.3s;
+    }
+    .hero-read:hover { opacity: 0.5; }
+
+    /* SECTION HEADER */
+    .sec-head {
+      padding: 56px 0 20px;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--rule);
+      margin-bottom: 0;
+    }
+    .sec-title {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.35em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .sec-more {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+    .sec-more:hover { color: var(--ink); }
+
+    /* ARTICLE LIST — pure typographic, extreme spacing */
+    .article-item {
+      padding: 40px 0;
+      border-bottom: 1px solid var(--rule);
+      cursor: pointer;
+      transition: opacity 0.3s;
+    }
+    .article-item:hover { opacity: 0.65; }
+    .article-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .article-cat {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--rule); }
+    .article-date {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 10px;
+      font-weight: 300;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+    }
+    .article-title {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 1.55;
+      letter-spacing: 0.02em;
+      margin-bottom: 14px;
+      color: var(--ink);
+    }
+    .article-excerpt {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.9;
+      color: var(--muted);
+      margin-bottom: 20px;
+      max-width: 560px;
+    }
+    .article-byline {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    /* FEATURED ESSAY */
+    .featured {
+      padding: 60px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .featured-label {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.4em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+    .featured-title {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 28px;
+      font-weight: 400;
+      line-height: 1.55;
+      margin-bottom: 22px;
+    }
+    .featured-body {
+      font-size: 15px;
+      font-weight: 300;
+      line-height: 2.1;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+    .featured-quote {
+      border-left: 1px solid var(--ink);
+      padding-left: 22px;
+      margin: 28px 0;
+      font-family: 'Noto Serif SC', serif;
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 1.9;
+      color: var(--ink);
+    }
+
+    /* MORE ARTICLES — condensed list */
+    .compact-list { padding-bottom: 40px; }
+    .compact-item {
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--rule);
+      cursor: pointer;
+      transition: opacity 0.3s;
+    }
+    .compact-item:hover { opacity: 0.55; }
+    .compact-num {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--rule);
+      min-width: 24px;
+    }
+    .compact-title {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.6;
+      flex: 1;
+    }
+    .compact-author {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    /* SUBSCRIBE BLOCK */
+    .subscribe-block {
+      padding: 60px 0 40px;
+      border-bottom: 1px solid var(--rule);
+      text-align: center;
+    }
+    .subscribe-title {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 22px;
+      font-weight: 400;
+      margin-bottom: 14px;
+    }
+    .subscribe-sub {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+    .subscribe-form {
+      display: flex;
+      max-width: 380px;
+      margin: 0 auto;
+      border: 1px solid var(--rule);
+    }
+    .subscribe-form input {
+      flex: 1;
+      border: none;
+      padding: 12px 16px;
+      background: var(--bg);
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 13px;
+      font-weight: 300;
+      outline: none;
+      color: var(--ink);
+    }
+    .subscribe-form button {
+      background: var(--ink);
+      color: var(--bg);
+      border: none;
+      padding: 12px 20px;
+      font-family: 'Noto Serif SC', serif;
+      font-size: 13px;
+      cursor: pointer;
+      transition: opacity 0.3s;
+    }
+    .subscribe-form button:hover { opacity: 0.7; }
+
+    /* FOOTER */
+    footer {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 40px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .footer-brand {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 15px;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+    }
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+    .footer-links a {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      transition: color 0.3s;
+    }
+    .footer-links a:hover { color: var(--ink); }
+    .footer-copy {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--rule);
+    }
+  </style>
+
+<style>
+.ptx-section {
+  background: #F5F5F0;
+  border-top: 2px solid #E2E2DC;
+  padding: 48px 60px;
+  position: relative;
+  z-index: 1;
+}
+.ptx-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #FAFAF6;
+  color: #1A1A18;
+  padding: 12px 20px;
+  margin-bottom: 24px;
+  font-family: monospace;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+}
+.ptx-status { font-size: 11px; opacity: 0.8; color: #888; }
+.ptx-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.ptx-left label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: #8A8A84;
+  margin-bottom: 8px;
+}
+#ptx-input {
+  width: 100%;
+  background: #FAFAF6;
+  border: 1px solid #E2E2DC;
+  color: #1A1A18;
+  padding: 12px 14px;
+  font-size: 14px;
+  line-height: 1.8;
+  min-height: 80px;
+  resize: vertical;
+  outline: none;
+  font-family: inherit;
+}
+.ptx-metrics {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #8A8A84;
+}
+.ptx-metrics strong { color: #1A1A18; }
+.ptx-right label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: #8A8A84;
+  margin-bottom: 8px;
+}
+.ptx-canvas-wrap {
+  border: 1px solid #E2E2DC;
+  background: #FAFAF6;
+  overflow: hidden;
+  min-height: 80px;
+}
+#ptx-canvas { display: block; max-width: 100%; }
+.ptx-footnote {
+  margin-top: 16px;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: #8A8A84;
+  opacity: 0.6;
+  font-family: monospace;
+}
+/* Badge on article excerpts */
+.ptx-badge {
+  display: inline-block;
+  margin-left: 6px;
+  background: #1A1A18;
+  color: #1A1A18;
+  font-size: 9px;
+  padding: 1px 5px;
+  letter-spacing: 0.05em;
+  vertical-align: middle;
+  opacity: 0.75;
+  border-radius: 2px;
+  font-family: monospace;
+  pointer-events: none;
+}
+@media (max-width: 700px) {
+  .ptx-section { padding: 32px 20px; }
+  .ptx-body { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div style="max-width: 680px; margin: 0 auto; padding: 0 24px;">
+
+<nav>
+  <div class="logo">墨白</div>
+  <ul class="nav-links">
+    <li><a href="#">文学</a></li>
+    <li><a href="#">思想</a></li>
+    <li><a href="#">社会</a></li>
+    <li><a href="#">历史</a></li>
+    <li><a href="#">订阅</a></li>
+  </ul>
+</nav>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-kicker">本周推荐</div>
+    <h1 class="hero-title">在消失之前：致我们正在失去的城市记忆</h1>
+    <p class="hero-excerpt">城市在加速更新，那些承载我们童年与青春的街道、建筑、气味，正以难以感知的速度消逝。当我们谈论城市时，我们真正在谈论什么？</p>
+    <div class="hero-byline">
+      <span>张晓波</span>
+      <div class="sep"></div>
+      <span>6200字</span>
+      <div class="sep"></div>
+      <span class="hero-read">阅读全文</span>
+    </div>
+  </section>
+
+  <!-- ARTICLE LIST -->
+  <div class="sec-head">
+    <div class="sec-title">近期文章</div>
+    <div class="sec-more">全部 →</div>
+  </div>
+
+  <div class="article-item">
+    <div class="article-meta-row">
+      <span class="article-cat">心理</span>
+      <div class="dot"></div>
+      <span class="article-date">2024年11月</span>
+    </div>
+    <h2 class="article-title">人类为何需要无聊</h2>
+    <p class="article-excerpt">在注意力被无限切割的时代，我们越来越难以忍受无聊。但也许正是这种不适，指向了某种被遗忘的人类能力——真正的思考。</p>
+    <div class="article-byline">林诗语 · 约20分钟阅读</div>
+  </div>
+
+  <div class="article-item">
+    <div class="article-meta-row">
+      <span class="article-cat">社会</span>
+      <div class="dot"></div>
+      <span class="article-date">2024年11月</span>
+    </div>
+    <h2 class="article-title">独居经济学：一个人的繁荣与孤独</h2>
+    <p class="article-excerpt">中国独居人口已超过9000万。这是一种生活方式的选择，还是某种社会结构性失落的表征？当"一个人"成为常态，城市与人的关系如何重塑？</p>
+    <div class="article-byline">陈明远 · 约34分钟阅读</div>
+  </div>
+
+  <div class="article-item">
+    <div class="article-meta-row">
+      <span class="article-cat">人物</span>
+      <div class="dot"></div>
+      <span class="article-date">2024年10月</span>
+    </div>
+    <h2 class="article-title">最后一批手艺人</h2>
+    <p class="article-excerpt">他们用一辈子磨砺出的技艺，在工业量产面前显得脆弱而珍贵。走访中国各地的传统工匠，记录那些正在消逝的手的智慧。</p>
+    <div class="article-byline">王芳宁 · 约24分钟阅读</div>
+  </div>
+
+  <!-- FEATURED ESSAY -->
+  <section class="featured">
+    <div class="featured-label">长篇报道</div>
+    <h2 class="featured-title">夜班医生的自白：那些我无法带走的离别</h2>
+    <p class="featured-body">从业十七年，李承志见证了无数生死。他说，医学教人谦卑，因为它不断提醒你：有些东西无法被治愈，有些离别无法被推迟。</p>
+    <blockquote class="featured-quote">
+      "每次下班走出医院，我都需要花几分钟，重新成为一个普通人。"
+    </blockquote>
+    <p class="featured-body">在一个深夜的采访中，这位急诊科医生讲述了工作中最难以言说的那些时刻，以及他如何在日复一日的消耗中保持对生命的敬畏……</p>
+    <div class="hero-byline" style="margin-top: 24px;">
+      <span>李承志</span>
+      <div class="sep"></div>
+      <span>7300字</span>
+      <div class="sep"></div>
+      <span class="hero-read">阅读完整故事</span>
+    </div>
+  </section>
+
+  <!-- MORE ARTICLES -->
+  <div class="sec-head" style="margin-top: 0;">
+    <div class="sec-title">更多阅读</div>
+  </div>
+
+  <div class="compact-list">
+    <div class="compact-item">
+      <div class="compact-num">—</div>
+      <div class="compact-title">她们不谈爱情</div>
+      <div class="compact-author">余晓雯</div>
+    </div>
+    <div class="compact-item">
+      <div class="compact-num">—</div>
+      <div class="compact-title">在异乡寻找汉字</div>
+      <div class="compact-author">周建民</div>
+    </div>
+    <div class="compact-item">
+      <div class="compact-num">—</div>
+      <div class="compact-title">流量之后，意义何在</div>
+      <div class="compact-author">赵思远</div>
+    </div>
+    <div class="compact-item">
+      <div class="compact-num">—</div>
+      <div class="compact-title">父亲的沉默</div>
+      <div class="compact-author">刘晓婷</div>
+    </div>
+    <div class="compact-item">
+      <div class="compact-num">—</div>
+      <div class="compact-title">被遗忘的下午茶</div>
+      <div class="compact-author">方梦琪</div>
+    </div>
+  </div>
+
+  <!-- SUBSCRIBE -->
+  <div class="subscribe-block">
+    <div class="subscribe-title">慢下来，读好文章</div>
+    <p class="subscribe-sub">每周两篇，不多不少。送至你的邮箱。</p>
+    <div class="subscribe-form">
+      <input type="email" placeholder="your@email.com">
+      <button>订阅</button>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-brand">墨白</div>
+  <ul class="footer-links">
+    <li><a href="#">关于</a></li>
+    <li><a href="#">投稿</a></li>
+    <li><a href="#">作者</a></li>
+    <li><a href="#">联系</a></li>
+  </ul>
+  <div class="footer-copy">© 2024</div>
+</footer>
+
+</div>
+
+<script>
+  // Subtle fade-in on scroll
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'none';
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.05 });
+
+  document.querySelectorAll('.article-item, .featured, .compact-item').forEach((el, i) => {
+    el.style.cssText += `opacity:0;transform:translateY(14px);transition:opacity 0.7s ease ${i*0.05}s,transform 0.7s ease ${i*0.05}s`;
+    io.observe(el);
+  });
+</script>
+
+<!-- ═══════════════════════════════════════════════
+     PRETEXT ENGINE DEMO
+     github.com/chenglou/pretext
+═══════════════════════════════════════════════ -->
+<section class="ptx-section">
+  <div class="ptx-header">
+    <span>pretext · 文字测量引擎</span>
+    <span id="ptx-status" class="ptx-status">加载中…</span>
+  </div>
+  <div class="ptx-body">
+    <div class="ptx-left">
+      <label>输入文字 — 实时排版测量（不触发 DOM reflow）</label>
+      <textarea id="ptx-input"></textarea>
+      <div id="ptx-metrics" class="ptx-metrics"></div>
+    </div>
+    <div class="ptx-right">
+      <label>Canvas 渲染 — pretext 精确控制每一行</label>
+      <div class="ptx-canvas-wrap">
+        <canvas id="ptx-canvas"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="ptx-footnote">
+    pretext@0.0.4 · github.com/chenglou/pretext ·
+    使用 Canvas measureText 精确测量中文排版，零布局偏移，支持汉字 / emoji / 双向文本
+  </div>
+</section>
+
+<script type="module">
+import { prepareWithSegments, layoutWithLines, prepare, layout } from 'https://esm.sh/@chenglou/pretext';
+
+const FONT = '16px "Noto Serif SC", serif';
+const LINE_HEIGHT = 26;
+const MAX_WIDTH = 480;
+
+const canvas = document.getElementById('ptx-canvas');
+const ctx = canvas ? canvas.getContext('2d') : null;
+const input = document.getElementById('ptx-input');
+const metricsEl = document.getElementById('ptx-metrics');
+const statusEl = document.getElementById('ptx-status');
+const canvasTextColor = '#1A1A18';
+
+function updateStatus(ok) {
+  if (statusEl) statusEl.textContent = ok ? '运行中 ✓' : '加载中…';
+  if (statusEl) statusEl.style.color = ok ? '#00CC44' : '#888';
+}
+
+function renderCanvas(text) {
+  if (!ctx || !canvas) return;
+  try {
+    const prepared = prepareWithSegments(text, FONT);
+    const { lines, height } = layoutWithLines(prepared, MAX_WIDTH, LINE_HEIGHT);
+    const canvasH = Math.max(height + 48, 80);
+    canvas.width = MAX_WIDTH + 48;
+    canvas.height = canvasH;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = FONT;
+    ctx.fillStyle = canvasTextColor;
+    ctx.textBaseline = 'top';
+    lines.forEach((line, i) => {
+      ctx.fillText(line.text, 24, 24 + i * LINE_HEIGHT);
+    });
+    // Draw line guides (subtle)
+    ctx.strokeStyle = 'rgba(128,128,128,0.1)';
+    ctx.lineWidth = 1;
+    lines.forEach((_, i) => {
+      ctx.beginPath();
+      ctx.moveTo(0, 24 + i * LINE_HEIGHT + LINE_HEIGHT);
+      ctx.lineTo(canvas.width, 24 + i * LINE_HEIGHT + LINE_HEIGHT);
+      ctx.stroke();
+    });
+    updateStatus(true);
+    return { lines: lines.length, height, chars: text.replace(/\s/g,'').length };
+  } catch(e) {
+    updateStatus(false);
+    return null;
+  }
+}
+
+function updateMetrics(text) {
+  if (!metricsEl) return;
+  const result = renderCanvas(text);
+  if (!result) return;
+  metricsEl.innerHTML =
+    '<span>字数: <strong>' + result.chars + '</strong></span>' +
+    '<span>行数: <strong>' + result.lines + '</strong></span>' +
+    '<span>高度: <strong>' + result.height + 'px</strong></span>' +
+    '<span style="opacity:0.7;font-size:0.85em">无 DOM reflow</span>';
+}
+
+const sampleText = '在消失之前：致我们正在失去的城市记忆。城市在加速更新，那些承载我们童年与青春的街道、建筑、气味，正以难以感知的速度消逝。';
+
+if (input) {
+  input.value = sampleText;
+  input.addEventListener('input', () => updateMetrics(input.value));
+}
+
+// Initial render (wait for fonts)
+document.fonts.ready.then(() => {
+  updateMetrics(input ? input.value : sampleText);
+});
+
+// Measure article excerpts and annotate with pretext measurements
+const excerptSelectors = [
+  '.card-excerpt', '.article-excerpt', '.hero-excerpt',
+  '.featured-excerpt', '.body-text', '.col-body',
+  '.preview-body', '.cc-excerpt', '.hc-title .cc-title'
+];
+document.querySelectorAll(excerptSelectors.join(',')).forEach(el => {
+  const text = el.textContent.trim();
+  if (!text || text.length < 10) return;
+  try {
+    const w = Math.max(el.offsetWidth || 240, 120);
+    const p = prepareWithSegments(text, FONT);
+    const { lines } = layoutWithLines(p, w, LINE_HEIGHT);
+    const badge = document.createElement('span');
+    badge.className = 'ptx-badge';
+    badge.title = 'pretext 精确测量，无 DOM reflow';
+    badge.textContent = lines.length + '行';
+    el.style.position = 'relative';
+    el.appendChild(badge);
+  } catch(e) {}
+});
+</script>
+</body>
+</html>

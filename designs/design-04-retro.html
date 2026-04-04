@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>电子布告栏系统 v2.4 :: 文章频道</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0C0C0A;
+      --green: #00CC44;
+      --green-dim: #006622;
+      --amber: #FFAA00;
+      --white: #E8E8D8;
+      --dim: #448844;
+    }
+    html { font-size: 14px; }
+    body {
+      background: var(--bg);
+      color: var(--green);
+      font-family: 'Share Tech Mono', 'Courier New', monospace;
+      line-height: 1.5;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* CRT OVERLAY */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.08) 2px,
+        rgba(0,0,0,0.08) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.5) 100%);
+      pointer-events: none;
+      z-index: 9998;
+    }
+
+    a { text-decoration: none; color: var(--green); }
+
+    /* HEADER */
+    .bbs-header {
+      border: 1px solid var(--green);
+      margin: 12px 16px 0;
+      padding: 12px 16px;
+      text-align: center;
+      position: relative;
+    }
+    .bbs-header::before {
+      content: '╔════════════════════════════════════════════════════════════════════════════════╗';
+      position: absolute;
+      top: -1px;
+      left: 0;
+      right: 0;
+      color: var(--green);
+      overflow: hidden;
+      font-size: 10px;
+    }
+    .bbs-title {
+      color: var(--amber);
+      font-size: 22px;
+      letter-spacing: 0.3em;
+      margin-bottom: 4px;
+    }
+    .bbs-subtitle { font-size: 12px; color: var(--dim); letter-spacing: 0.2em; }
+    .bbs-sys-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--dim);
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid var(--green-dim);
+    }
+
+    /* NAV BAR */
+    .nav-bar {
+      margin: 0 16px;
+      padding: 6px 16px;
+      background: var(--green);
+      color: var(--bg);
+      display: flex;
+      gap: 0;
+      font-size: 13px;
+    }
+    .nav-item {
+      padding: 2px 14px;
+      cursor: pointer;
+      border-right: 1px solid var(--bg);
+      transition: background 0.1s;
+    }
+    .nav-item:hover, .nav-item.active { background: var(--amber); color: var(--bg); }
+    .nav-item .key { text-decoration: underline; }
+
+    /* MAIN LAYOUT */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 220px 1fr 200px;
+      gap: 0;
+      margin: 0 16px;
+      border: 1px solid var(--green-dim);
+      border-top: none;
+    }
+
+    /* LEFT SIDEBAR — MENU */
+    .sidebar-left {
+      border-right: 1px solid var(--green-dim);
+      padding: 16px 0;
+    }
+    .menu-section {
+      margin-bottom: 16px;
+    }
+    .menu-section-title {
+      color: var(--amber);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      padding: 4px 14px;
+      border-bottom: 1px solid var(--green-dim);
+      margin-bottom: 6px;
+    }
+    .menu-item {
+      padding: 3px 14px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.1s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .menu-item:hover, .menu-item.active {
+      background: var(--green);
+      color: var(--bg);
+    }
+    .menu-item .badge {
+      background: var(--amber);
+      color: var(--bg);
+      font-size: 10px;
+      padding: 0 4px;
+      margin-left: auto;
+    }
+    .menu-tree {
+      font-size: 12px;
+      padding: 4px 14px;
+      color: var(--dim);
+    }
+
+    /* CENTER — ARTICLE LIST */
+    .content {
+      padding: 0;
+    }
+    .content-header {
+      background: var(--green-dim);
+      padding: 6px 16px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--green);
+      border-bottom: 1px solid var(--green-dim);
+    }
+    .article-table-header {
+      display: grid;
+      grid-template-columns: 4ch 3ch 1fr 14ch 8ch;
+      padding: 4px 16px;
+      font-size: 11px;
+      color: var(--amber);
+      border-bottom: 1px solid var(--green-dim);
+      gap: 8px;
+    }
+    .article-row {
+      display: grid;
+      grid-template-columns: 4ch 3ch 1fr 14ch 8ch;
+      padding: 5px 16px;
+      font-size: 13px;
+      border-bottom: 1px solid rgba(0,102,34,0.3);
+      cursor: pointer;
+      gap: 8px;
+      align-items: center;
+      transition: background 0.08s;
+    }
+    .article-row:hover { background: rgba(0,204,68,0.08); }
+    .article-row.new .a-title { color: var(--amber); }
+    .article-row.hot { background: rgba(255,170,0,0.04); }
+    .a-num { color: var(--dim); font-size: 12px; }
+    .a-flag { color: var(--amber); font-size: 11px; }
+    .a-title { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+    .a-title:hover { color: var(--amber); text-decoration: underline; }
+    .a-author { font-size: 12px; color: var(--dim); }
+    .a-time { font-size: 11px; color: var(--green-dim); text-align: right; }
+
+    /* SELECTED ARTICLE PREVIEW */
+    .preview-panel {
+      padding: 16px;
+      border-top: 1px solid var(--green-dim);
+    }
+    .preview-header {
+      color: var(--amber);
+      font-size: 12px;
+      border-bottom: 1px solid var(--green-dim);
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+    .preview-title {
+      font-size: 14px;
+      color: var(--white);
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+    .preview-meta {
+      font-size: 11px;
+      color: var(--dim);
+      margin-bottom: 12px;
+    }
+    .preview-body {
+      font-size: 12px;
+      color: var(--green);
+      line-height: 1.7;
+      max-height: 120px;
+      overflow: hidden;
+      mask-image: linear-gradient(to bottom, black 70%, transparent);
+    }
+    .preview-actions {
+      margin-top: 12px;
+      display: flex;
+      gap: 12px;
+    }
+    .action-btn {
+      font-family: 'Share Tech Mono', monospace;
+      background: transparent;
+      border: 1px solid var(--green);
+      color: var(--green);
+      padding: 3px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.1s;
+    }
+    .action-btn:hover { background: var(--green); color: var(--bg); }
+    .action-btn.primary { border-color: var(--amber); color: var(--amber); }
+    .action-btn.primary:hover { background: var(--amber); color: var(--bg); }
+
+    /* RIGHT SIDEBAR */
+    .sidebar-right {
+      border-left: 1px solid var(--green-dim);
+      padding: 0;
+    }
+    .widget {
+      border-bottom: 1px solid var(--green-dim);
+      padding: 12px 14px;
+    }
+    .widget-title {
+      color: var(--amber);
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      margin-bottom: 8px;
+    }
+    .widget-item {
+      font-size: 12px;
+      padding: 3px 0;
+      color: var(--dim);
+      cursor: pointer;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      transition: color 0.1s;
+    }
+    .widget-item:hover { color: var(--green); }
+    .online-list { font-size: 12px; }
+    .online-user { color: var(--green); padding: 2px 0; display: flex; align-items: center; gap: 6px; }
+    .online-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: blink 2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .stat-row { display: flex; justify-content: space-between; font-size: 12px; padding: 2px 0; color: var(--dim); }
+    .stat-val { color: var(--amber); }
+
+    /* STATUS BAR */
+    .status-bar {
+      background: var(--green);
+      color: var(--bg);
+      padding: 4px 16px;
+      margin: 0 16px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+    }
+    .cursor-blink {
+      animation: blink 1s step-end infinite;
+    }
+
+    /* FOOTER */
+    .bbs-footer {
+      margin: 4px 16px 16px;
+      padding: 8px 16px;
+      border: 1px solid var(--green-dim);
+      border-top: none;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--dim);
+    }
+    .hotkeys span { color: var(--green); }
+  </style>
+
+<style>
+.ptx-section {
+  background: #0C0C0A;
+  border-top: 2px solid #006622;
+  padding: 48px 60px;
+  position: relative;
+  z-index: 1;
+}
+.ptx-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #001A08;
+  color: #FFAA00;
+  padding: 12px 20px;
+  margin-bottom: 24px;
+  font-family: monospace;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+}
+.ptx-status { font-size: 11px; opacity: 0.8; color: #888; }
+.ptx-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.ptx-left label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: #448844;
+  margin-bottom: 8px;
+}
+#ptx-input {
+  width: 100%;
+  background: #050A05;
+  border: 1px solid #006622;
+  color: #00CC44;
+  padding: 12px 14px;
+  font-size: 14px;
+  line-height: 1.8;
+  min-height: 80px;
+  resize: vertical;
+  outline: none;
+  font-family: inherit;
+}
+.ptx-metrics {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #448844;
+}
+.ptx-metrics strong { color: #00CC44; }
+.ptx-right label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: #448844;
+  margin-bottom: 8px;
+}
+.ptx-canvas-wrap {
+  border: 1px solid #006622;
+  background: #050A05;
+  overflow: hidden;
+  min-height: 80px;
+}
+#ptx-canvas { display: block; max-width: 100%; }
+.ptx-footnote {
+  margin-top: 16px;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: #448844;
+  opacity: 0.6;
+  font-family: monospace;
+}
+/* Badge on article excerpts */
+.ptx-badge {
+  display: inline-block;
+  margin-left: 6px;
+  background: #00CC44;
+  color: #FFAA00;
+  font-size: 9px;
+  padding: 1px 5px;
+  letter-spacing: 0.05em;
+  vertical-align: middle;
+  opacity: 0.75;
+  border-radius: 2px;
+  font-family: monospace;
+  pointer-events: none;
+}
+@media (max-width: 700px) {
+  .ptx-section { padding: 32px 20px; }
+  .ptx-body { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="bbs-header">
+  <div class="bbs-title">★ 文 字 殿 堂 BBS ★</div>
+  <div class="bbs-subtitle">中文深度阅读电子布告栏 · 文章分享频道 · 自1996年</div>
+  <div class="bbs-sys-info">
+    <span>系统: WenZi-BBS v2.4.1</span>
+    <span>在线用户: <span style="color:var(--amber)">2,847</span></span>
+    <span>今日发帖: <span style="color:var(--amber)">142</span></span>
+    <span>时间: <span id="clock" style="color:var(--amber)"></span></span>
+  </div>
+</div>
+
+<div class="nav-bar">
+  <div class="nav-item active">[<span class="key">M</span>]主菜单</div>
+  <div class="nav-item">[<span class="key">A</span>]文章</div>
+  <div class="nav-item">[<span class="key">S</span>]搜索</div>
+  <div class="nav-item">[<span class="key">F</span>]收藏</div>
+  <div class="nav-item">[<span class="key">U</span>]用户</div>
+  <div class="nav-item">[<span class="key">N</span>]新帖</div>
+  <div class="nav-item">[<span class="key">H</span>]帮助</div>
+  <div class="nav-item" style="margin-left:auto;">[<span class="key">Q</span>]退出</div>
+</div>
+
+<div class="main-grid">
+  <!-- LEFT SIDEBAR -->
+  <div class="sidebar-left">
+    <div class="menu-section">
+      <div class="menu-section-title">[ 文章分类 ]</div>
+      <div class="menu-item active">├ 全部文章 <span class="badge">NEW</span></div>
+      <div class="menu-item">├ 文学虚构</div>
+      <div class="menu-item">├ 思想哲学</div>
+      <div class="menu-item">├ 社会观察 <span class="badge">8</span></div>
+      <div class="menu-item">├ 历史记忆</div>
+      <div class="menu-item">├ 人物特写</div>
+      <div class="menu-item">└ 散文随笔</div>
+    </div>
+    <div class="menu-section">
+      <div class="menu-section-title">[ 快速导航 ]</div>
+      <div class="menu-item">├ 今日热帖</div>
+      <div class="menu-item">├ 本周精选</div>
+      <div class="menu-item">├ 新手推荐</div>
+      <div class="menu-item">└ 经典回顾</div>
+    </div>
+    <div class="menu-section">
+      <div class="menu-section-title">[ 我的面板 ]</div>
+      <div class="menu-item">├ 个人收藏</div>
+      <div class="menu-item">├ 阅读记录</div>
+      <div class="menu-item">└ 个人主页</div>
+    </div>
+    <div class="menu-tree">
+      ┌─────────────────┐
+      │ 投稿/反馈：      │
+      │ mail@wzd.bbs    │
+      └─────────────────┘
+    </div>
+  </div>
+
+  <!-- CENTER CONTENT -->
+  <div class="content">
+    <div class="content-header">
+      <span>▶ 全部文章 (共 2,341 篇)</span>
+      <span>排序: [时间] [热度] [评分]</span>
+    </div>
+    <div class="article-table-header">
+      <span>编号</span>
+      <span>标</span>
+      <span>标题</span>
+      <span>作者</span>
+      <span>时间</span>
+    </div>
+
+    <div class="article-row new">
+      <span class="a-num">2341</span>
+      <span class="a-flag">★</span>
+      <span class="a-title">在消失之前：致我们正在失去的城市记忆</span>
+      <span class="a-author">张晓波</span>
+      <span class="a-time">11-28 14:32</span>
+    </div>
+    <div class="article-row new">
+      <span class="a-num">2340</span>
+      <span class="a-flag">N</span>
+      <span class="a-title">人类为何需要无聊</span>
+      <span class="a-author">林诗语</span>
+      <span class="a-time">11-27 09:15</span>
+    </div>
+    <div class="article-row hot">
+      <span class="a-num">2338</span>
+      <span class="a-flag">🔥</span>
+      <span class="a-title">独居经济学：一个人的繁荣与孤独</span>
+      <span class="a-author">陈明远</span>
+      <span class="a-time">11-26 22:08</span>
+    </div>
+    <div class="article-row">
+      <span class="a-num">2335</span>
+      <span class="a-flag"> </span>
+      <span class="a-title">最后一批手艺人</span>
+      <span class="a-author">王芳宁</span>
+      <span class="a-time">11-25 18:44</span>
+    </div>
+    <div class="article-row hot">
+      <span class="a-num">2334</span>
+      <span class="a-flag">★</span>
+      <span class="a-title">夜班医生的自白：那些我无法带走的离别</span>
+      <span class="a-author">李承志</span>
+      <span class="a-time">11-24 03:22</span>
+    </div>
+    <div class="article-row">
+      <span class="a-num">2331</span>
+      <span class="a-flag"> </span>
+      <span class="a-title">她们不谈爱情</span>
+      <span class="a-author">余晓雯</span>
+      <span class="a-time">11-23 16:50</span>
+    </div>
+    <div class="article-row">
+      <span class="a-num">2329</span>
+      <span class="a-flag"> </span>
+      <span class="a-title">在异乡寻找汉字</span>
+      <span class="a-author">周建民</span>
+      <span class="a-time">11-22 11:05</span>
+    </div>
+    <div class="article-row hot">
+      <span class="a-num">2327</span>
+      <span class="a-flag">🔥</span>
+      <span class="a-title">流量之后，意义何在</span>
+      <span class="a-author">赵思远</span>
+      <span class="a-time">11-21 20:30</span>
+    </div>
+    <div class="article-row">
+      <span class="a-num">2325</span>
+      <span class="a-flag"> </span>
+      <span class="a-title">父亲的沉默</span>
+      <span class="a-author">刘晓婷</span>
+      <span class="a-time">11-20 08:17</span>
+    </div>
+    <div class="article-row">
+      <span class="a-num">2323</span>
+      <span class="a-flag"> </span>
+      <span class="a-title">被遗忘的下午茶</span>
+      <span class="a-author">方梦琪</span>
+      <span class="a-time">11-19 15:44</span>
+    </div>
+
+    <!-- PREVIEW PANEL -->
+    <div class="preview-panel">
+      <div class="preview-header">── 文章预览 ── [按 Enter 阅读全文] ──</div>
+      <div class="preview-title">在消失之前：致我们正在失去的城市记忆</div>
+      <div class="preview-meta">作者: 张晓波 | 字数: 6200字 | 阅读时间: 约20分钟 | 分类: 社会观察 | 发布: 2024-11-28</div>
+      <div class="preview-body">
+        城市在加速更新，那些承载我们童年与青春的街道、建筑、气味，正以难以感知的速度消逝。当我们谈论城市时，我们真正在谈论什么？<br><br>
+        2016年，我回到出生的城市，发现那条我记忆中最重要的街道已经不见了。不是改名，不是改造——是真的消失了，在地图上被一个商业综合体取代。我站在它曾经存在过的地方，感到一种奇特的失重感：如果一个地方消失了，那些与它相关的记忆会去哪里？
+      </div>
+      <div class="preview-actions">
+        <button class="action-btn primary">[ Enter ] 阅读全文</button>
+        <button class="action-btn">[ F ] 收藏</button>
+        <button class="action-btn">[ R ] 回复</button>
+        <button class="action-btn">[ S ] 分享</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT SIDEBAR -->
+  <div class="sidebar-right">
+    <div class="widget">
+      <div class="widget-title">[ 当前在线 ]</div>
+      <div class="online-list">
+        <div class="online-user"><div class="online-dot"></div>深夜读者_小林</div>
+        <div class="online-user"><div class="online-dot"></div>文字爱好者007</div>
+        <div class="online-user"><div class="online-dot"></div>北京@独居人</div>
+        <div class="online-user"><div class="online-dot"></div>老乔</div>
+        <div class="online-user"><div class="online-dot"></div>晚安上海</div>
+        <div style="color:var(--dim);font-size:11px;margin-top:4px;">...及2842位匿名访客</div>
+      </div>
+    </div>
+    <div class="widget">
+      <div class="widget-title">[ 站点统计 ]</div>
+      <div class="stat-row"><span>总文章</span><span class="stat-val">2,341</span></div>
+      <div class="stat-row"><span>注册用户</span><span class="stat-val">48,203</span></div>
+      <div class="stat-row"><span>今日阅读</span><span class="stat-val">12,847</span></div>
+      <div class="stat-row"><span>总字数</span><span class="stat-val">8.2M</span></div>
+    </div>
+    <div class="widget">
+      <div class="widget-title">[ 本周推荐 ]</div>
+      <div class="widget-item">→ 独居经济学</div>
+      <div class="widget-item">→ 流量之后的意义</div>
+      <div class="widget-item">→ 夜班医生自白</div>
+      <div class="widget-item">→ 最后的手艺人</div>
+    </div>
+    <div class="widget">
+      <div class="widget-title">[ 友情站点 ]</div>
+      <div class="widget-item">→ 读书人的BBS</div>
+      <div class="widget-item">→ 深夜文学站</div>
+      <div class="widget-item">→ 中文写作者联盟</div>
+    </div>
+  </div>
+</div>
+
+<div class="status-bar">
+  <span>▶ 已选中: #2341 《在消失之前》</span>
+  <span>操作: [Enter]阅读 [F]收藏 [N]下一篇 [P]上一篇 [Q]退出<span class="cursor-blink">█</span></span>
+</div>
+
+<div class="bbs-footer">
+  <div class="hotkeys">快捷键: <span>[J/K]</span>上下移动 <span>[/]</span>搜索 <span>[G]</span>跳转 <span>[?]</span>帮助</div>
+  <div>文字殿堂BBS © 1996-2024 · 保护原创，尊重版权</div>
+</div>
+
+<script>
+  function updateClock() {
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2,'0');
+    const m = String(now.getMinutes()).padStart(2,'0');
+    const s = String(now.getSeconds()).padStart(2,'0');
+    const el = document.getElementById('clock');
+    if (el) el.textContent = `${h}:${m}:${s}`;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  // Click to select article rows
+  document.querySelectorAll('.article-row').forEach(row => {
+    row.addEventListener('click', () => {
+      document.querySelectorAll('.article-row').forEach(r => r.style.background = '');
+      row.style.background = 'rgba(0,204,68,0.15)';
+      const title = row.querySelector('.a-title').textContent;
+      const author = row.querySelector('.a-author').textContent;
+      document.querySelector('.preview-title').textContent = title;
+      document.querySelector('.status-bar span:first-child').textContent = `▶ 已选中: 《${title}》`;
+    });
+  });
+
+  // Menu item hover
+  document.querySelectorAll('.menu-item').forEach(item => {
+    item.addEventListener('click', () => {
+      document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+    });
+  });
+</script>
+
+<!-- ═══════════════════════════════════════════════
+     PRETEXT ENGINE DEMO
+     github.com/chenglou/pretext
+═══════════════════════════════════════════════ -->
+<section class="ptx-section">
+  <div class="ptx-header">
+    <span>[ PRETEXT ENGINE v0.0.4 ]</span>
+    <span id="ptx-status" class="ptx-status">加载中…</span>
+  </div>
+  <div class="ptx-body">
+    <div class="ptx-left">
+      <label>输入文字 — 实时排版测量（不触发 DOM reflow）</label>
+      <textarea id="ptx-input"></textarea>
+      <div id="ptx-metrics" class="ptx-metrics"></div>
+    </div>
+    <div class="ptx-right">
+      <label>Canvas 渲染 — pretext 精确控制每一行</label>
+      <div class="ptx-canvas-wrap">
+        <canvas id="ptx-canvas"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="ptx-footnote">
+    pretext@0.0.4 · github.com/chenglou/pretext ·
+    使用 Canvas measureText 精确测量中文排版，零布局偏移，支持汉字 / emoji / 双向文本
+  </div>
+</section>
+
+<script type="module">
+import { prepareWithSegments, layoutWithLines, prepare, layout } from 'https://esm.sh/@chenglou/pretext';
+
+const FONT = '16px "Share Tech Mono", serif';
+const LINE_HEIGHT = 26;
+const MAX_WIDTH = 480;
+
+const canvas = document.getElementById('ptx-canvas');
+const ctx = canvas ? canvas.getContext('2d') : null;
+const input = document.getElementById('ptx-input');
+const metricsEl = document.getElementById('ptx-metrics');
+const statusEl = document.getElementById('ptx-status');
+const canvasTextColor = '#00CC44';
+
+function updateStatus(ok) {
+  if (statusEl) statusEl.textContent = ok ? '运行中 ✓' : '加载中…';
+  if (statusEl) statusEl.style.color = ok ? '#00CC44' : '#888';
+}
+
+function renderCanvas(text) {
+  if (!ctx || !canvas) return;
+  try {
+    const prepared = prepareWithSegments(text, FONT);
+    const { lines, height } = layoutWithLines(prepared, MAX_WIDTH, LINE_HEIGHT);
+    const canvasH = Math.max(height + 48, 80);
+    canvas.width = MAX_WIDTH + 48;
+    canvas.height = canvasH;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = FONT;
+    ctx.fillStyle = canvasTextColor;
+    ctx.textBaseline = 'top';
+    lines.forEach((line, i) => {
+      ctx.fillText(line.text, 24, 24 + i * LINE_HEIGHT);
+    });
+    // Draw line guides (subtle)
+    ctx.strokeStyle = 'rgba(128,128,128,0.1)';
+    ctx.lineWidth = 1;
+    lines.forEach((_, i) => {
+      ctx.beginPath();
+      ctx.moveTo(0, 24 + i * LINE_HEIGHT + LINE_HEIGHT);
+      ctx.lineTo(canvas.width, 24 + i * LINE_HEIGHT + LINE_HEIGHT);
+      ctx.stroke();
+    });
+    updateStatus(true);
+    return { lines: lines.length, height, chars: text.replace(/\s/g,'').length };
+  } catch(e) {
+    updateStatus(false);
+    return null;
+  }
+}
+
+function updateMetrics(text) {
+  if (!metricsEl) return;
+  const result = renderCanvas(text);
+  if (!result) return;
+  metricsEl.innerHTML =
+    '<span>字数: <strong>' + result.chars + '</strong></span>' +
+    '<span>行数: <strong>' + result.lines + '</strong></span>' +
+    '<span>高度: <strong>' + result.height + 'px</strong></span>' +
+    '<span style="opacity:0.7;font-size:0.85em">无 DOM reflow</span>';
+}
+
+const sampleText = '在消失之前：致我们正在失去的城市记忆。城市在加速更新，那些承载我们童年与青春的街道、建筑、气味，正以难以感知的速度消逝。';
+
+if (input) {
+  input.value = sampleText;
+  input.addEventListener('input', () => updateMetrics(input.value));
+}
+
+// Initial render (wait for fonts)
+document.fonts.ready.then(() => {
+  updateMetrics(input ? input.value : sampleText);
+});
+
+// Measure article excerpts and annotate with pretext measurements
+const excerptSelectors = [
+  '.card-excerpt', '.article-excerpt', '.hero-excerpt',
+  '.featured-excerpt', '.body-text', '.col-body',
+  '.preview-body', '.cc-excerpt', '.hc-title .cc-title'
+];
+document.querySelectorAll(excerptSelectors.join(',')).forEach(el => {
+  const text = el.textContent.trim();
+  if (!text || text.length < 10) return;
+  try {
+    const w = Math.max(el.offsetWidth || 240, 120);
+    const p = prepareWithSegments(text, FONT);
+    const { lines } = layoutWithLines(p, w, LINE_HEIGHT);
+    const badge = document.createElement('span');
+    badge.className = 'ptx-badge';
+    badge.title = 'pretext 精确测量，无 DOM reflow';
+    badge.textContent = lines.length + '行';
+    el.style.position = 'relative';
+    el.appendChild(badge);
+  } catch(e) {}
+});
+</script>
+</body>
+</html>

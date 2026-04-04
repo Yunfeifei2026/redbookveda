@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文摘报 · 第1240期</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700;900&family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --newsprint: #F2EDD7;
+      --newsprint-dark: #EAE4C8;
+      --ink: #1A1714;
+      --red: #8B0000;
+      --muted: #5A5040;
+      --rule: #1A1714;
+      --rule-thin: rgba(26,23,20,0.2);
+    }
+    html { font-size: 14px; }
+    body {
+      background: var(--newsprint);
+      color: var(--ink);
+      font-family: 'Noto Serif SC', serif;
+      font-size: 14px;
+      line-height: 1.65;
+      overflow-x: hidden;
+      /* subtle paper texture */
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%23F2EDD7'/%3E%3Ccircle cx='1' cy='1' r='0.5' fill='rgba(0,0,0,0.015)'/%3E%3Ccircle cx='3' cy='3' r='0.5' fill='rgba(0,0,0,0.015)'/%3E%3C/svg%3E");
+    }
+    a { text-decoration: none; color: inherit; }
+
+    /* MASTHEAD */
+    .masthead {
+      border-bottom: 3px double var(--rule);
+      padding: 12px 24px 10px;
+    }
+    .masthead-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--rule-thin);
+      margin-bottom: 10px;
+    }
+    .masthead-info { font-size: 10px; color: var(--muted); letter-spacing: 0.1em; }
+    .masthead-motto {
+      font-size: 10px;
+      font-style: italic;
+      color: var(--muted);
+      text-align: center;
+    }
+    .masthead-center { text-align: center; }
+    .paper-name {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 52px;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      line-height: 1;
+      color: var(--ink);
+    }
+    .paper-sub {
+      font-size: 12px;
+      letter-spacing: 0.6em;
+      color: var(--muted);
+      margin-top: 4px;
+      font-weight: 400;
+    }
+    .masthead-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 8px;
+      border-top: 1px solid var(--rule-thin);
+    }
+    .edition-info { font-size: 10px; color: var(--muted); }
+    .price { font-size: 10px; color: var(--muted); }
+
+    /* NAV BAR */
+    nav {
+      display: flex;
+      border-bottom: 3px solid var(--rule);
+      border-top: 1px solid var(--rule);
+    }
+    .nav-section {
+      padding: 6px 16px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      border-right: 1px solid var(--rule);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .nav-section:hover, .nav-section.active { background: var(--ink); color: var(--newsprint); }
+    .nav-weather {
+      margin-left: auto;
+      padding: 6px 16px;
+      font-size: 10px;
+      color: var(--muted);
+      border-left: 1px solid var(--rule);
+    }
+
+    /* MAIN GRID — 5 column newspaper */
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* BANNER HEADLINE */
+    .banner {
+      border-bottom: 2px solid var(--rule);
+      padding: 20px 0 18px;
+      text-align: center;
+      position: relative;
+    }
+    .banner-kicker {
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      color: var(--red);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    .banner-title {
+      font-size: 44px;
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: 0.02em;
+      max-width: 780px;
+      margin: 0 auto 14px;
+    }
+    .banner-deck {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--muted);
+      line-height: 1.55;
+      max-width: 600px;
+      margin: 0 auto 14px;
+    }
+    .banner-byline {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      font-weight: 400;
+    }
+    .banner-byline strong { color: var(--ink); font-weight: 700; }
+
+    /* FIVE COLUMN GRID */
+    .col-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border-bottom: 2px solid var(--rule);
+    }
+    .col {
+      padding: 16px 14px;
+      border-right: 1px solid var(--rule-thin);
+    }
+    .col:last-child { border-right: none; }
+    .col-header {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--red);
+      padding-bottom: 6px;
+      margin-bottom: 10px;
+      border-bottom: 2px solid var(--rule);
+    }
+    .col-title {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.35;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+    .col-title:hover { text-decoration: underline; }
+    .col-body {
+      font-size: 12px;
+      line-height: 1.7;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .col-byline {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    /* MIDDLE SECTION — 3 col + sidebar */
+    .middle {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 180px;
+      border-bottom: 2px solid var(--rule);
+    }
+    .middle-col {
+      padding: 16px 14px;
+      border-right: 1px solid var(--rule-thin);
+    }
+    .middle-col:last-child { border-right: none; }
+    .feature-title {
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.35;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+    .feature-title:hover { text-decoration: underline; }
+    .feature-img {
+      width: 100%;
+      height: 120px;
+      background: linear-gradient(135deg, #3A2818 0%, #7A5030 60%, #C09060 100%);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: flex-end;
+      padding: 8px;
+    }
+    .feature-img-cap {
+      font-size: 9px;
+      color: rgba(242,237,215,0.7);
+      letter-spacing: 0.1em;
+    }
+    .body-text {
+      font-size: 12px;
+      line-height: 1.75;
+      color: var(--ink);
+      text-align: justify;
+    }
+    .body-text + .body-text { margin-top: 6px; }
+    .drop-cap::first-letter {
+      font-size: 48px;
+      font-weight: 900;
+      float: left;
+      line-height: 0.8;
+      margin: 4px 4px 0 0;
+      color: var(--red);
+    }
+    .col-rule {
+      border-top: 1px solid var(--rule-thin);
+      margin: 12px 0;
+    }
+    /* SIDEBAR */
+    .sidebar {
+      background: var(--newsprint-dark);
+      padding: 14px;
+    }
+    .sidebar-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      border-bottom: 2px solid var(--rule);
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+    }
+    .sidebar-item {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--rule-thin);
+      cursor: pointer;
+    }
+    .sidebar-item:last-child { border-bottom: none; }
+    .sidebar-num {
+      font-size: 20px;
+      font-weight: 900;
+      color: rgba(26,23,20,0.15);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .sidebar-item-title {
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 3px;
+    }
+    .sidebar-item-meta { font-size: 10px; color: var(--muted); }
+
+    /* BOTTOM SECTION — 4 columns equal */
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-bottom: 2px solid var(--rule);
+    }
+    .bottom-col {
+      padding: 16px 14px;
+      border-right: 1px solid var(--rule-thin);
+    }
+    .bottom-col:last-child { border-right: none; }
+    .small-title {
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+    .small-title:hover { text-decoration: underline; }
+    .pullquote {
+      border-left: 3px solid var(--red);
+      padding-left: 10px;
+      margin: 10px 0;
+      font-style: italic;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    /* OBITUARY / NOTICE STYLE */
+    .notice-box {
+      border: 1px solid var(--rule);
+      padding: 10px 12px;
+      margin-top: 10px;
+      font-size: 11px;
+    }
+    .notice-box-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      border-bottom: 1px solid var(--rule-thin);
+      padding-bottom: 5px;
+      margin-bottom: 8px;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 3px double var(--rule);
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-left { font-size: 10px; color: var(--muted); }
+    .footer-center {
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 0.2em;
+    }
+    .footer-right { font-size: 10px; color: var(--muted); text-align: right; }
+  </style>
+
+<style>
+.ptx-section {
+  background: #EAE4C8;
+  border-top: 2px solid #1A1714;
+  padding: 48px 60px;
+  position: relative;
+  z-index: 1;
+}
+.ptx-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #1A1714;
+  color: #F2EDD7;
+  padding: 12px 20px;
+  margin-bottom: 24px;
+  font-family: monospace;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+}
+.ptx-status { font-size: 11px; opacity: 0.8; color: #888; }
+.ptx-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.ptx-left label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: #5A5040;
+  margin-bottom: 8px;
+}
+#ptx-input {
+  width: 100%;
+  background: #F2EDD7;
+  border: 1px solid #1A1714;
+  color: #1A1714;
+  padding: 12px 14px;
+  font-size: 14px;
+  line-height: 1.8;
+  min-height: 80px;
+  resize: vertical;
+  outline: none;
+  font-family: inherit;
+}
+.ptx-metrics {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #5A5040;
+}
+.ptx-metrics strong { color: #8B0000; }
+.ptx-right label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: #5A5040;
+  margin-bottom: 8px;
+}
+.ptx-canvas-wrap {
+  border: 1px solid #1A1714;
+  background: #F2EDD7;
+  overflow: hidden;
+  min-height: 80px;
+}
+#ptx-canvas { display: block; max-width: 100%; }
+.ptx-footnote {
+  margin-top: 16px;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: #5A5040;
+  opacity: 0.6;
+  font-family: monospace;
+}
+/* Badge on article excerpts */
+.ptx-badge {
+  display: inline-block;
+  margin-left: 6px;
+  background: #8B0000;
+  color: #F2EDD7;
+  font-size: 9px;
+  padding: 1px 5px;
+  letter-spacing: 0.05em;
+  vertical-align: middle;
+  opacity: 0.75;
+  border-radius: 2px;
+  font-family: monospace;
+  pointer-events: none;
+}
+@media (max-width: 700px) {
+  .ptx-section { padding: 32px 20px; }
+  .ptx-body { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="masthead-top">
+    <div class="masthead-info">甲辰年冬月十六 · 2024年11月28日</div>
+    <div class="masthead-motto">"真文章，深思考，长阅读"</div>
+    <div class="masthead-info">今日天气：北京 晴转多云 4°C</div>
+  </div>
+  <div class="masthead-center">
+    <div class="paper-name">文　摘　报</div>
+    <div class="paper-sub">中文深度阅读 · 精品文摘</div>
+  </div>
+  <div class="masthead-bottom">
+    <div class="edition-info">第一千二百四十期 · 全国发行</div>
+    <div style="font-size:10px;color:var(--red);font-weight:700;letter-spacing:0.15em;">本期共八版</div>
+    <div class="price">定价：五角</div>
+  </div>
+</div>
+
+<nav>
+  <div class="nav-section active">要闻</div>
+  <div class="nav-section">文学</div>
+  <div class="nav-section">社会</div>
+  <div class="nav-section">思想</div>
+  <div class="nav-section">历史</div>
+  <div class="nav-section">人物</div>
+  <div class="nav-section">散文</div>
+  <div class="nav-weather">☀ 北京 4° · 上海 12° · 广州 20°</div>
+</nav>
+
+<div class="page">
+
+  <!-- BANNER HEADLINE -->
+  <div class="banner">
+    <div class="banner-kicker">■ 本期头版头条 ■</div>
+    <h1 class="banner-title">在消失之前：致我们正在失去的城市记忆</h1>
+    <p class="banner-deck">城市在加速更新，那些承载我们童年与青春的街道、建筑、气味，正以难以感知的速度消逝。当我们谈论城市时，我们真正在谈论什么？</p>
+    <div class="banner-byline">本报特约撰稿人 <strong>张晓波</strong> · 六千二百字 · 详见二版</div>
+  </div>
+
+  <!-- FIVE COLUMNS -->
+  <div class="col-grid">
+    <div class="col">
+      <div class="col-header">■ 心理</div>
+      <div class="col-title">人类为何需要无聊</div>
+      <p class="col-body">在注意力被无限切割的时代，我们越来越难以忍受无聊。但也许正是这种不适，指向了某种被遗忘的人类能力——真正的思考。</p>
+      <div class="col-byline">林诗语 撰</div>
+    </div>
+    <div class="col">
+      <div class="col-header">■ 社会</div>
+      <div class="col-title">独居经济学：一个人的繁荣与孤独</div>
+      <p class="col-body">中国独居人口已超过九千万。这是一种生活方式的选择，还是某种社会结构性失落的表征？</p>
+      <div class="col-byline">陈明远 撰</div>
+    </div>
+    <div class="col">
+      <div class="col-header">■ 深度</div>
+      <div class="col-title">夜班医生的自白</div>
+      <p class="col-body">从业十七年，李承志见证了无数生死。他说，医学教人谦卑，因为它不断提醒你：有些东西无法被治愈。</p>
+      <div class="col-byline">本报记者 李承志 口述</div>
+    </div>
+    <div class="col">
+      <div class="col-header">■ 人物</div>
+      <div class="col-title">最后一批手艺人</div>
+      <p class="col-body">他们用一辈子磨砺出的技艺，在工业量产面前显得脆弱而珍贵。走访中国各地的传统工匠。</p>
+      <div class="col-byline">王芳宁 撰</div>
+    </div>
+    <div class="col">
+      <div class="col-header">■ 文化</div>
+      <div class="col-title">流量之后，意义何在</div>
+      <p class="col-body">流量是测量工具，不是目的地。当一切都可以被量化，我们如何保留那些无法被计数的价值？</p>
+      <div class="col-byline">赵思远 撰</div>
+    </div>
+  </div>
+
+  <!-- MIDDLE SECTION -->
+  <div class="middle">
+    <div class="middle-col" style="grid-column: span 1;">
+      <div class="col-header">■ 本期特稿</div>
+      <div class="feature-img"><div class="feature-img-cap">城市旧照（资料图）</div></div>
+      <div class="feature-title">在消失之前：那条街的最后一天</div>
+      <p class="body-text drop-cap">2016年，我回到出生的城市，发现那条我记忆中最重要的街道已经不见了。不是改名，不是改造——是真的消失了，在地图上被一个商业综合体取代。</p>
+      <p class="body-text">我站在它曾经存在过的地方，感到一种奇特的失重感：如果一个地方消失了，那些与它相关的记忆会去哪里？</p>
+      <div class="pullquote">"城市是由无数个人的记忆叠加而成的。当建筑消失，那些记忆便失去了锚点。"</div>
+      <div class="col-byline">——张晓波</div>
+    </div>
+
+    <div class="middle-col">
+      <div class="col-header">■ 散文</div>
+      <div class="feature-title">她们不谈爱情</div>
+      <p class="body-text">她们不谈爱情，不是因为不在乎，而是因为她们学会了在别处寻找完整。这是一种成熟，也是一种无奈——或者说，是一种由无奈演化而来的智慧。</p>
+      <div class="col-rule"></div>
+      <div class="feature-title" style="font-size:16px;">父亲的沉默</div>
+      <p class="body-text">父亲不是不爱我们，他只是不会说。那种沉默里藏着整整一代男人不知道如何开口的东西，是深重的爱与深重的无奈。</p>
+      <div class="col-byline" style="margin-top:8px;">余晓雯 · 刘晓婷 分别撰</div>
+    </div>
+
+    <div class="middle-col">
+      <div class="col-header">■ 文化漫游</div>
+      <div class="feature-title">在异乡寻找汉字</div>
+      <p class="body-text">在日本街头，在东南亚的唐人街，在世界各个角落寻找那些漂泊的汉字。文字如何在离散中保存记忆，又如何在异文化中变形、生存、繁衍？</p>
+      <div class="pullquote">"汉字不只是文字，它是华人共同的面孔，无论走到哪里。"</div>
+      <div class="col-rule"></div>
+      <div class="notice-box">
+        <div class="notice-box-title">▶ 编辑推荐</div>
+        <div style="font-size:11px;line-height:1.6;">本期文章均为原创长篇，最短亦逾三千字。请备好时间，沏一壶茶，慢慢读来。</div>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="sidebar-title">本周排行</div>
+      <div class="sidebar-item">
+        <div class="sidebar-num">1</div>
+        <div class="sidebar-item-title">独居经济学</div>
+        <div class="sidebar-item-meta">陈明远 · 8100字</div>
+      </div>
+      <div class="sidebar-item">
+        <div class="sidebar-num">2</div>
+        <div class="sidebar-item-title">流量之后</div>
+        <div class="sidebar-item-meta">赵思远 · 6900字</div>
+      </div>
+      <div class="sidebar-item">
+        <div class="sidebar-num">3</div>
+        <div class="sidebar-item-title">城市记忆</div>
+        <div class="sidebar-item-meta">张晓波 · 6200字</div>
+      </div>
+      <div class="sidebar-item">
+        <div class="sidebar-num">4</div>
+        <div class="sidebar-item-title">夜班医生</div>
+        <div class="sidebar-item-meta">李承志 · 7300字</div>
+      </div>
+      <div class="sidebar-item">
+        <div class="sidebar-num">5</div>
+        <div class="sidebar-item-title">她们不谈爱情</div>
+        <div class="sidebar-item-meta">余晓雯 · 5100字</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM GRID -->
+  <div class="bottom-grid">
+    <div class="bottom-col">
+      <div class="col-header">■ 旅行</div>
+      <div class="small-title">在异乡寻找汉字：海外华人的文字情结</div>
+      <p class="body-text" style="font-size:12px;">在日本街头，在东南亚的唐人街，在世界各个角落寻找那些漂泊的汉字……</p>
+      <div class="col-byline" style="margin-top:6px;">周建民 撰 · 4400字</div>
+    </div>
+    <div class="bottom-col">
+      <div class="col-header">■ 生活</div>
+      <div class="small-title">被遗忘的下午茶：一种仪式感的消逝</div>
+      <p class="body-text" style="font-size:12px;">曾几何时，下午茶是一天中最重要的停顿。如今它去哪儿了？我们又失去了什么？</p>
+      <div class="col-byline" style="margin-top:6px;">方梦琪 撰 · 4200字</div>
+    </div>
+    <div class="bottom-col">
+      <div class="col-header">■ 声音</div>
+      <div class="small-title">读者来信精选：那些被一篇文章改变的瞬间</div>
+      <p class="body-text" style="font-size:12px;">本期我们收到读者来信三百余封，摘录其中最令编辑动容的数篇，与诸君共享。</p>
+      <div class="col-byline" style="margin-top:6px;">编辑部 整理</div>
+    </div>
+    <div class="bottom-col">
+      <div class="col-header">■ 征稿</div>
+      <div class="small-title">本报现向社会各界征集稿件</div>
+      <p class="body-text" style="font-size:12px;">字数不低于三千字，观点独立，文字精炼，有实地调查或亲身经历者优先。请投：</p>
+      <div style="font-size:11px;color:var(--red);margin-top:6px;font-weight:700;">edit@wenzhaibao.cn</div>
+      <div class="col-byline" style="margin-top:4px;">编辑部</div>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<footer>
+  <div class="footer-left">
+    © 2024 文摘报 · 版权所有<br>
+    国际标准连续出版物号 ISSN 1234-5678
+  </div>
+  <div class="footer-center">文摘报</div>
+  <div class="footer-right">
+    每周一、四出版<br>
+    订阅热线：400-XXX-XXXX
+  </div>
+</footer>
+
+
+<!-- ═══════════════════════════════════════════════
+     PRETEXT ENGINE DEMO
+     github.com/chenglou/pretext
+═══════════════════════════════════════════════ -->
+<section class="ptx-section">
+  <div class="ptx-header">
+    <span>排版技术 · pretext 引擎</span>
+    <span id="ptx-status" class="ptx-status">加载中…</span>
+  </div>
+  <div class="ptx-body">
+    <div class="ptx-left">
+      <label>输入文字 — 实时排版测量（不触发 DOM reflow）</label>
+      <textarea id="ptx-input"></textarea>
+      <div id="ptx-metrics" class="ptx-metrics"></div>
+    </div>
+    <div class="ptx-right">
+      <label>Canvas 渲染 — pretext 精确控制每一行</label>
+      <div class="ptx-canvas-wrap">
+        <canvas id="ptx-canvas"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="ptx-footnote">
+    pretext@0.0.4 · github.com/chenglou/pretext ·
+    使用 Canvas measureText 精确测量中文排版，零布局偏移，支持汉字 / emoji / 双向文本
+  </div>
+</section>
+
+<script type="module">
+import { prepareWithSegments, layoutWithLines, prepare, layout } from 'https://esm.sh/@chenglou/pretext';
+
+const FONT = '16px "Noto Serif SC", serif';
+const LINE_HEIGHT = 26;
+const MAX_WIDTH = 480;
+
+const canvas = document.getElementById('ptx-canvas');
+const ctx = canvas ? canvas.getContext('2d') : null;
+const input = document.getElementById('ptx-input');
+const metricsEl = document.getElementById('ptx-metrics');
+const statusEl = document.getElementById('ptx-status');
+const canvasTextColor = '#1A1714';
+
+function updateStatus(ok) {
+  if (statusEl) statusEl.textContent = ok ? '运行中 ✓' : '加载中…';
+  if (statusEl) statusEl.style.color = ok ? '#00CC44' : '#888';
+}
+
+function renderCanvas(text) {
+  if (!ctx || !canvas) return;
+  try {
+    const prepared = prepareWithSegments(text, FONT);
+    const { lines, height } = layoutWithLines(prepared, MAX_WIDTH, LINE_HEIGHT);
+    const canvasH = Math.max(height + 48, 80);
+    canvas.width = MAX_WIDTH + 48;
+    canvas.height = canvasH;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = FONT;
+    ctx.fillStyle = canvasTextColor;
+    ctx.textBaseline = 'top';
+    lines.forEach((line, i) => {
+      ctx.fillText(line.text, 24, 24 + i * LINE_HEIGHT);
+    });
+    // Draw line guides (subtle)
+    ctx.strokeStyle = 'rgba(128,128,128,0.1)';
+    ctx.lineWidth = 1;
+    lines.forEach((_, i) => {
+      ctx.beginPath();
+      ctx.moveTo(0, 24 + i * LINE_HEIGHT + LINE_HEIGHT);
+      ctx.lineTo(canvas.width, 24 + i * LINE_HEIGHT + LINE_HEIGHT);
+      ctx.stroke();
+    });
+    updateStatus(true);
+    return { lines: lines.length, height, chars: text.replace(/\s/g,'').length };
+  } catch(e) {
+    updateStatus(false);
+    return null;
+  }
+}
+
+function updateMetrics(text) {
+  if (!metricsEl) return;
+  const result = renderCanvas(text);
+  if (!result) return;
+  metricsEl.innerHTML =
+    '<span>字数: <strong>' + result.chars + '</strong></span>' +
+    '<span>行数: <strong>' + result.lines + '</strong></span>' +
+    '<span>高度: <strong>' + result.height + 'px</strong></span>' +
+    '<span style="opacity:0.7;font-size:0.85em">无 DOM reflow</span>';
+}
+
+const sampleText = '在消失之前：致我们正在失去的城市记忆。城市在加速更新，那些承载我们童年与青春的街道、建筑、气味，正以难以感知的速度消逝。';
+
+if (input) {
+  input.value = sampleText;
+  input.addEventListener('input', () => updateMetrics(input.value));
+}
+
+// Initial render (wait for fonts)
+document.fonts.ready.then(() => {
+  updateMetrics(input ? input.value : sampleText);
+});
+
+// Measure article excerpts and annotate with pretext measurements
+const excerptSelectors = [
+  '.card-excerpt', '.article-excerpt', '.hero-excerpt',
+  '.featured-excerpt', '.body-text', '.col-body',
+  '.preview-body', '.cc-excerpt', '.hc-title .cc-title'
+];
+document.querySelectorAll(excerptSelectors.join(',')).forEach(el => {
+  const text = el.textContent.trim();
+  if (!text || text.length < 10) return;
+  try {
+    const w = Math.max(el.offsetWidth || 240, 120);
+    const p = prepareWithSegments(text, FONT);
+    const { lines } = layoutWithLines(p, w, LINE_HEIGHT);
+    const badge = document.createElement('span');
+    badge.className = 'ptx-badge';
+    badge.title = 'pretext 精确测量，无 DOM reflow';
+    badge.textContent = lines.length + '行';
+    el.style.position = 'relative';
+    el.appendChild(badge);
+  } catch(e) {}
+});
+</script>
+</body>
+</html>

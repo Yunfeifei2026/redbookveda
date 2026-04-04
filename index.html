@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>设计方案预览</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, sans-serif; background: #111; color: #eee; padding: 40px; }
+    h1 { font-size: 20px; font-weight: 600; margin-bottom: 8px; color: #fff; }
+    p { font-size: 13px; color: #888; margin-bottom: 36px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+    .card {
+      border: 1px solid #333;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .card:hover { transform: translateY(-3px); border-color: #666; }
+    .thumb {
+      width: 100%;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+    }
+    .info { padding: 12px; background: #1a1a1a; }
+    .num { font-size: 10px; color: #555; letter-spacing: 0.15em; margin-bottom: 4px; }
+    .name { font-size: 14px; font-weight: 600; color: #eee; margin-bottom: 3px; }
+    .desc { font-size: 11px; color: #666; }
+  </style>
+</head>
+<body>
+  <h1>红书阅读 · 设计方案预览</h1>
+  <p>点击任意方案在新标签页中查看</p>
+  <div class="grid">
+    <a class="card" href="designs/design-01-editorial.html" target="_blank">
+      <div class="thumb" style="background:linear-gradient(135deg,#F5EFE0,#E8D0A8);">📰</div>
+      <div class="info"><div class="num">01</div><div class="name">文渊</div><div class="desc">杂志奢华 · 奶油酒红</div></div>
+    </a>
+    <a class="card" href="designs/design-02-brutalist.html" target="_blank">
+      <div class="thumb" style="background:#F5F5F0;">💥</div>
+      <div class="info"><div class="num">02</div><div class="name">字暴</div><div class="desc">暴力排版 · 黑白黄</div></div>
+    </a>
+    <a class="card" href="designs/design-03-minimal.html" target="_blank">
+      <div class="thumb" style="background:#FAFAF6;">📄</div>
+      <div class="info"><div class="num">03</div><div class="name">墨白</div><div class="desc">极简禅意 · 书本留白</div></div>
+    </a>
+    <a class="card" href="designs/design-04-retro.html" target="_blank">
+      <div class="thumb" style="background:#0C0C0A; color:#00CC44;">🖥️</div>
+      <div class="info"><div class="num">04</div><div class="name">电子布告栏</div><div class="desc">复古BBS · 磷光终端</div></div>
+    </a>
+    <a class="card" href="designs/design-05-noir.html" target="_blank">
+      <div class="thumb" style="background:#080810;">🌙</div>
+      <div class="info"><div class="num">05</div><div class="name">夜读</div><div class="desc">文学暗黑 · 琥珀深夜</div></div>
+    </a>
+    <a class="card" href="designs/design-06-genz.html" target="_blank">
+      <div class="thumb" style="background:linear-gradient(135deg,#FF1493,#3A86FF);">⚡</div>
+      <div class="info"><div class="num">06</div><div class="name">破圈</div><div class="desc">Gen-Z社交 · 荧光撞色</div></div>
+    </a>
+    <a class="card" href="designs/design-07-traditional.html" target="_blank">
+      <div class="thumb" style="background:#F4ECD8;">🖌️</div>
+      <div class="info"><div class="num">07</div><div class="name">竹素</div><div class="desc">水墨古典 · 宣纸朱砂</div></div>
+    </a>
+    <a class="card" href="designs/design-08-futuristic.html" target="_blank">
+      <div class="thumb" style="background:#050510; color:#00E5FF;">🛸</div>
+      <div class="info"><div class="num">08</div><div class="name">字节流</div><div class="desc">赛博未来 · 霓虹网格</div></div>
+    </a>
+    <a class="card" href="designs/design-09-newspaper.html" target="_blank">
+      <div class="thumb" style="background:#F2EDD7;">🗞️</div>
+      <div class="info"><div class="num">09</div><div class="name">文摘报</div><div class="desc">报纸大版 · 五栏排版</div></div>
+    </a>
+    <a class="card" href="designs/design-10-wildcard.html" target="_blank">
+      <div class="thumb" style="background:linear-gradient(135deg,#E8472A,#1EBBCA);">🎨</div>
+      <div class="info"><div class="num">10</div><div class="name">叠印</div><div class="desc">印刷叠色 · Risograph</div></div>
+    </a>
+  </div>
+</body>
+</html>

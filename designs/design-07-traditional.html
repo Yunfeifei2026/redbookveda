@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>竹素 · 以文会友</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --paper: #F4ECD8;
+      --paper-dark: #EDE0C4;
+      --ink: #1C1208;
+      --ink-light: #3D2810;
+      --vermilion: #C0392B;
+      --gold: #8B6914;
+      --muted: #7A6040;
+      --rule: rgba(139,105,20,0.2);
+    }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Noto Serif SC', serif;
+      font-weight: 300;
+      line-height: 1.9;
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    /* PAPER TEXTURE */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(ellipse at 20% 80%, rgba(139,105,20,0.04) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(139,105,20,0.03) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* INK SPLASH DECORATION — CSS art */
+    .ink-splash {
+      position: absolute;
+      border-radius: 50% 20% 50% 30% / 40% 50% 40% 60%;
+      background: rgba(28,18,8,0.06);
+      pointer-events: none;
+    }
+
+    /* HEADER */
+    header {
+      position: relative;
+      border-bottom: 1px solid var(--rule);
+      overflow: hidden;
+    }
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 60px;
+    }
+    .chop {
+      width: 60px;
+      height: 60px;
+      border: 2px solid var(--vermilion);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 22px;
+      color: var(--vermilion);
+      letter-spacing: 0.05em;
+      position: relative;
+    }
+    .chop::before {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      border: 1px solid var(--vermilion);
+      opacity: 0.4;
+    }
+    .logo-center { text-align: center; }
+    .logo-zh {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 42px;
+      color: var(--ink);
+      letter-spacing: 0.2em;
+      line-height: 1;
+    }
+    .logo-sub {
+      font-size: 11px;
+      letter-spacing: 0.5em;
+      color: var(--gold);
+      margin-top: 6px;
+    }
+    .header-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+    .header-date {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+    }
+    .header-edition {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--vermilion);
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      border-top: 1px solid var(--rule);
+      border-bottom: 2px solid var(--ink);
+      position: relative;
+    }
+    .nav-item {
+      padding: 10px 30px;
+      font-size: 14px;
+      letter-spacing: 0.25em;
+      cursor: pointer;
+      border-right: 1px solid var(--rule);
+      transition: background 0.3s;
+      position: relative;
+    }
+    .nav-item:first-child { border-left: 1px solid var(--rule); }
+    .nav-item:hover { background: var(--paper-dark); }
+    .nav-item.active {
+      background: var(--ink);
+      color: var(--paper);
+    }
+    .nav-subscribe {
+      position: absolute;
+      right: 60px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      color: var(--vermilion);
+      cursor: pointer;
+      border-bottom: 1px solid var(--vermilion);
+      padding-bottom: 1px;
+    }
+
+    /* HERO — Classical horizontal layout */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 2px 1.2fr;
+      min-height: 480px;
+      border-bottom: 1px solid var(--rule);
+      position: relative;
+    }
+    .hero-left {
+      padding: 60px 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+    .vertical-rule {
+      background: repeating-linear-gradient(to bottom, var(--rule) 0, var(--rule) 4px, transparent 4px, transparent 8px);
+      width: 2px;
+    }
+    .hero-right {
+      padding: 60px 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .section-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .mark-line { width: 20px; height: 1px; background: var(--gold); }
+    .mark-text {
+      font-size: 11px;
+      letter-spacing: 0.4em;
+      color: var(--gold);
+    }
+    .hero-title {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 40px;
+      line-height: 1.45;
+      color: var(--ink);
+      margin-bottom: 20px;
+    }
+    .hero-excerpt {
+      font-size: 15px;
+      font-weight: 300;
+      line-height: 2;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+    .hero-author-block {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .author-name {
+      font-size: 14px;
+      color: var(--ink-light);
+      letter-spacing: 0.15em;
+    }
+    .read-link {
+      font-size: 13px;
+      color: var(--vermilion);
+      letter-spacing: 0.15em;
+      border-bottom: 1px solid var(--vermilion);
+      padding-bottom: 1px;
+      cursor: pointer;
+      transition: opacity 0.3s;
+    }
+    .read-link:hover { opacity: 0.6; }
+
+    /* Classical Chinese decorative border */
+    .deco-border {
+      border: 1px solid var(--rule);
+      padding: 16px;
+      position: relative;
+    }
+    .deco-border::before, .deco-border::after {
+      content: '◈';
+      position: absolute;
+      color: var(--gold);
+      font-size: 10px;
+      background: var(--paper);
+      padding: 0 4px;
+    }
+    .deco-border::before { top: -8px; left: 20px; }
+    .deco-border::after { bottom: -8px; right: 20px; }
+
+    /* ARTICLE GRID — Three column classical */
+    .articles-section { padding: 0 40px; border-bottom: 1px solid var(--rule); }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border-bottom: 1px solid var(--rule);
+      padding: 40px 20px 0;
+      position: relative;
+    }
+    .section-header-title {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 22px;
+      color: var(--ink);
+      letter-spacing: 0.3em;
+      padding: 10px 30px 10px 20px;
+      border-right: 1px solid var(--rule);
+      position: relative;
+      top: 1px;
+      background: var(--paper);
+    }
+    .section-en {
+      padding: 10px 20px;
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+    }
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .article-col {
+      border-right: 1px solid var(--rule);
+      padding: 30px 30px;
+    }
+    .article-col:last-child { border-right: none; }
+    .article-num {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 11px;
+      color: var(--gold);
+      letter-spacing: 0.3em;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .article-num::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+    .art-cat {
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      color: var(--vermilion);
+      margin-bottom: 10px;
+    }
+    .art-title {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 20px;
+      line-height: 1.55;
+      color: var(--ink);
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+    .art-title:hover { color: var(--vermilion); }
+    .art-excerpt {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.9;
+      margin-bottom: 16px;
+    }
+    .art-footer {
+      font-size: 11px;
+      color: var(--gold);
+      letter-spacing: 0.15em;
+      padding-top: 14px;
+      border-top: 1px solid var(--rule);
+    }
+
+    /* VERTICAL TEXT SECTION */
+    .vertical-section {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      border-bottom: 1px solid var(--rule);
+    }
+    .vertical-label {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      padding: 40px 20px;
+      border-right: 1px solid var(--rule);
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 18px;
+      letter-spacing: 0.3em;
+      color: var(--ink);
+      background: var(--paper-dark);
+    }
+    .vertical-content { padding: 40px 60px; }
+    .v-list { display: flex; flex-direction: column; gap: 24px; }
+    .v-item {
+      display: grid;
+      grid-template-columns: 60px 1fr auto;
+      gap: 20px;
+      align-items: baseline;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--rule);
+      cursor: pointer;
+    }
+    .v-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .v-num {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 24px;
+      color: var(--rule);
+      text-align: center;
+      transform: translateY(4px);
+    }
+    .v-title {
+      font-size: 17px;
+      line-height: 1.6;
+      color: var(--ink);
+      transition: color 0.3s;
+    }
+    .v-item:hover .v-title { color: var(--vermilion); }
+    .v-meta { font-size: 12px; color: var(--muted); white-space: nowrap; letter-spacing: 0.1em; }
+
+    /* PULLQUOTE */
+    .pullquote-section {
+      padding: 60px 120px;
+      text-align: center;
+      border-bottom: 1px solid var(--rule);
+      background: var(--paper-dark);
+      position: relative;
+    }
+    .pq-text {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 28px;
+      line-height: 1.7;
+      color: var(--ink);
+      position: relative;
+    }
+    .pq-text::before {
+      content: '「';
+      color: var(--gold);
+      font-size: 48px;
+      position: absolute;
+      left: -40px;
+      top: -10px;
+      line-height: 1;
+    }
+    .pq-text::after {
+      content: '」';
+      color: var(--gold);
+      font-size: 48px;
+      position: absolute;
+      right: -40px;
+      bottom: -10px;
+      line-height: 1;
+    }
+    .pq-source {
+      font-size: 12px;
+      color: var(--gold);
+      letter-spacing: 0.3em;
+      margin-top: 20px;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 60px;
+      border-top: 2px solid var(--ink);
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 60px;
+    }
+    .footer-brand {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 36px;
+      color: var(--ink);
+      letter-spacing: 0.2em;
+      margin-bottom: 10px;
+    }
+    .footer-desc { font-size: 13px; font-weight: 300; color: var(--muted); line-height: 1.9; }
+    .footer-col h4 {
+      font-size: 12px;
+      letter-spacing: 0.4em;
+      color: var(--gold);
+      margin-bottom: 16px;
+      font-weight: 300;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col a { font-size: 14px; color: var(--muted); letter-spacing: 0.1em; transition: color 0.3s; }
+    .footer-col a:hover { color: var(--vermilion); }
+    .footer-bar {
+      border-top: 1px solid var(--rule);
+      padding: 20px 60px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+    }
+  </style>
+
+<style>
+.ptx-section {
+  background: #EDE0C4;
+  border-top: 2px solid rgba(139,105,20,0.3);
+  padding: 48px 60px;
+  position: relative;
+  z-index: 1;
+}
+.ptx-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #1C1208;
+  color: #F4ECD8;
+  padding: 12px 20px;
+  margin-bottom: 24px;
+  font-family: monospace;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+}
+.ptx-status { font-size: 11px; opacity: 0.8; color: #888; }
+.ptx-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.ptx-left label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: #7A6040;
+  margin-bottom: 8px;
+}
+#ptx-input {
+  width: 100%;
+  background: #F4ECD8;
+  border: 1px solid rgba(139,105,20,0.3);
+  color: #1C1208;
+  padding: 12px 14px;
+  font-size: 14px;
+  line-height: 1.8;
+  min-height: 80px;
+  resize: vertical;
+  outline: none;
+  font-family: inherit;
+}
+.ptx-metrics {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #7A6040;
+}
+.ptx-metrics strong { color: #C0392B; }
+.ptx-right label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: #7A6040;
+  margin-bottom: 8px;
+}
+.ptx-canvas-wrap {
+  border: 1px solid rgba(139,105,20,0.3);
+  background: #F4ECD8;
+  overflow: hidden;
+  min-height: 80px;
+}
+#ptx-canvas { display: block; max-width: 100%; }
+.ptx-footnote {
+  margin-top: 16px;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: #7A6040;
+  opacity: 0.6;
+  font-family: monospace;
+}
+/* Badge on article excerpts */
+.ptx-badge {
+  display: inline-block;
+  margin-left: 6px;
+  background: #C0392B;
+  color: #F4ECD8;
+  font-size: 9px;
+  padding: 1px 5px;
+  letter-spacing: 0.05em;
+  vertical-align: middle;
+  opacity: 0.75;
+  border-radius: 2px;
+  font-family: monospace;
+  pointer-events: none;
+}
+@media (max-width: 700px) {
+  .ptx-section { padding: 32px 20px; }
+  .ptx-body { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="chop">竹素</div>
+    <div class="logo-center">
+      <div class="logo-zh">竹　素</div>
+      <div class="logo-sub">以　文　会　友　·　深　度　阅　读</div>
+    </div>
+    <div class="header-right">
+      <div class="header-date">甲辰年 · 冬月</div>
+      <div class="header-edition">第 一 百 二 十 四 期</div>
+    </div>
+  </div>
+  <nav>
+    <div class="nav-item active">文学</div>
+    <div class="nav-item">思想</div>
+    <div class="nav-item">社会</div>
+    <div class="nav-item">历史</div>
+    <div class="nav-item">人物</div>
+    <div class="nav-item">散文</div>
+    <div class="nav-subscribe">投稿 · 订阅</div>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="section-mark">
+      <div class="mark-line"></div>
+      <div class="mark-text">本期首推</div>
+    </div>
+    <h1 class="hero-title">在消失之前：致我们正在失去的城市记忆</h1>
+    <p class="hero-excerpt">城市在加速更新，那些承载我们童年与青春的街道、建筑、气味，正以难以感知的速度消逝。当我们谈论城市时，我们真正在谈论什么？</p>
+    <div class="hero-author-block">
+      <div class="author-name">张晓波 著</div>
+      <div style="width:1px;height:16px;background:var(--rule);"></div>
+      <div class="author-name" style="color:var(--muted);">六千二百字</div>
+      <div class="read-link">展卷阅读</div>
+    </div>
+  </div>
+  <div class="vertical-rule"></div>
+  <div class="hero-right">
+    <div class="section-mark">
+      <div class="mark-line"></div>
+      <div class="mark-text">今日精选</div>
+    </div>
+    <div class="deco-border">
+      <div class="art-cat">社会 · 观察</div>
+      <div class="art-title">独居经济学：一个人的繁荣与孤独</div>
+      <div class="art-excerpt">中国独居人口已超过九千万。这是一种生活方式的选择，还是某种社会结构性失落的表征？</div>
+      <div class="art-footer">陈明远 · 八千一百字</div>
+    </div>
+    <div style="margin-top:24px;" class="deco-border">
+      <div class="art-cat">人物 · 记录</div>
+      <div class="art-title">夜班医生的自白：那些我无法带走的离别</div>
+      <div class="art-excerpt">从业十七年，他见证了无数生死，医学教人谦卑。</div>
+      <div class="art-footer">李承志 · 七千三百字</div>
+    </div>
+  </div>
+</div>
+
+<!-- ARTICLES GRID -->
+<div class="articles-section">
+  <div class="section-header">
+    <div class="section-header-title">近期精选</div>
+    <div class="section-en">SELECTED · ESSAYS</div>
+  </div>
+  <div class="articles-grid">
+    <div class="article-col">
+      <div class="article-num">其一</div>
+      <div class="art-cat">心理 · 哲思</div>
+      <div class="art-title">人类为何需要无聊</div>
+      <div class="art-excerpt">在注意力被无限切割的时代，我们越来越难以忍受无聊。但也许正是这种不适，指向了某种被遗忘的人类能力——真正的思考。</div>
+      <div class="art-footer">林诗语 · 四千八百字</div>
+    </div>
+    <div class="article-col">
+      <div class="article-num">其二</div>
+      <div class="art-cat">人物 · 记录</div>
+      <div class="art-title">最后一批手艺人</div>
+      <div class="art-excerpt">他们用一辈子磨砺出的技艺，在工业量产面前显得脆弱而珍贵。走访中国各地的传统工匠，记录那些正在消逝的手的智慧。</div>
+      <div class="art-footer">王芳宁 · 五千六百字</div>
+    </div>
+    <div class="article-col">
+      <div class="article-num">其三</div>
+      <div class="art-cat">散文 · 随笔</div>
+      <div class="art-title">父亲的沉默</div>
+      <div class="art-excerpt">父亲不是不爱我们，他只是不会说。那种沉默里藏着整整一代男人不知道如何开口的东西，藏着深重的爱与无奈。</div>
+      <div class="art-footer">刘晓婷 · 三千八百字</div>
+    </div>
+  </div>
+</div>
+
+<!-- VERTICAL TEXT SECTION -->
+<div class="vertical-section">
+  <div class="vertical-label">本周热读</div>
+  <div class="vertical-content">
+    <div class="v-list">
+      <div class="v-item">
+        <div class="v-num">壹</div>
+        <div class="v-title">她们不谈爱情</div>
+        <div class="v-meta">余晓雯 · 五千一百字</div>
+      </div>
+      <div class="v-item">
+        <div class="v-num">贰</div>
+        <div class="v-title">在异乡寻找汉字</div>
+        <div class="v-meta">周建民 · 四千四百字</div>
+      </div>
+      <div class="v-item">
+        <div class="v-num">叁</div>
+        <div class="v-title">流量之后，意义何在</div>
+        <div class="v-meta">赵思远 · 六千九百字</div>
+      </div>
+      <div class="v-item">
+        <div class="v-num">肆</div>
+        <div class="v-title">被遗忘的下午茶</div>
+        <div class="v-meta">方梦琪 · 四千二百字</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PULLQUOTE -->
+<div class="pullquote-section">
+  <div class="pq-text">阅读是一种修行，让我们在别人的思想里，<br>学会如何在自己的生命里安住。</div>
+  <div class="pq-source">—— 竹素 · 发刊词</div>
+</div>
+
+<footer>
+  <div>
+    <div class="footer-brand">竹素</div>
+    <p class="footer-desc">以文会友，以书传情。为中文长阅读守望的独立平台，自二〇二四年。</p>
+  </div>
+  <div class="footer-col">
+    <h4>栏　目</h4>
+    <ul>
+      <li><a href="#">文学与虚构</a></li>
+      <li><a href="#">思想与哲学</a></li>
+      <li><a href="#">社会观察</a></li>
+      <li><a href="#">历史记忆</a></li>
+      <li><a href="#">散文随笔</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>关　于</h4>
+    <ul>
+      <li><a href="#">我们的理念</a></li>
+      <li><a href="#">投稿指南</a></li>
+      <li><a href="#">订阅服务</a></li>
+      <li><a href="#">联系编辑</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bar">
+  <span>© 二〇二四年 竹素读书</span>
+  <span>以文载道 · 以书养心</span>
+</div>
+
+<script>
+  // Fade in on scroll
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'none';
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.article-col, .v-item, .deco-border').forEach((el, i) => {
+    el.style.cssText += `opacity:0;transform:translateY(20px);transition:opacity 0.7s ease ${i*0.1}s,transform 0.7s ease ${i*0.1}s`;
+    io.observe(el);
+  });
+
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', () => {
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+    });
+  });
+</script>
+
+<!-- ═══════════════════════════════════════════════
+     PRETEXT ENGINE DEMO
+     github.com/chenglou/pretext
+═══════════════════════════════════════════════ -->
+<section class="ptx-section">
+  <div class="ptx-header">
+    <span>字迹丈量 · 由 pretext 驱动</span>
+    <span id="ptx-status" class="ptx-status">加载中…</span>
+  </div>
+  <div class="ptx-body">
+    <div class="ptx-left">
+      <label>输入文字 — 实时排版测量（不触发 DOM reflow）</label>
+      <textarea id="ptx-input"></textarea>
+      <div id="ptx-metrics" class="ptx-metrics"></div>
+    </div>
+    <div class="ptx-right">
+      <label>Canvas 渲染 — pretext 精确控制每一行</label>
+      <div class="ptx-canvas-wrap">
+        <canvas id="ptx-canvas"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="ptx-footnote">
+    pretext@0.0.4 · github.com/chenglou/pretext ·
+    使用 Canvas measureText 精确测量中文排版，零布局偏移，支持汉字 / emoji / 双向文本
+  </div>
+</section>
+
+<script type="module">
+import { prepareWithSegments, layoutWithLines, prepare, layout } from 'https://esm.sh/@chenglou/pretext';
+
+const FONT = '16px "Noto Serif SC", serif';
+const LINE_HEIGHT = 26;
+const MAX_WIDTH = 480;
+
+const canvas = document.getElementById('ptx-canvas');
+const ctx = canvas ? canvas.getContext('2d') : null;
+const input = document.getElementById('ptx-input');
+const metricsEl = document.getElementById('ptx-metrics');
+const statusEl = document.getElementById('ptx-status');
+const canvasTextColor = '#1C1208';
+
+function updateStatus(ok) {
+  if (statusEl) statusEl.textContent = ok ? '运行中 ✓' : '加载中…';
+  if (statusEl) statusEl.style.color = ok ? '#00CC44' : '#888';
+}
+
+function renderCanvas(text) {
+  if (!ctx || !canvas) return;
+  try {
+    const prepared = prepareWithSegments(text, FONT);
+    const { lines, height } = layoutWithLines(prepared, MAX_WIDTH, LINE_HEIGHT);
+    const canvasH = Math.max(height + 48, 80);
+    canvas.width = MAX_WIDTH + 48;
+    canvas.height = canvasH;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = FONT;
+    ctx.fillStyle = canvasTextColor;
+    ctx.textBaseline = 'top';
+    lines.forEach((line, i) => {
+      ctx.fillText(line.text, 24, 24 + i * LINE_HEIGHT);
+    });
+    // Draw line guides (subtle)
+    ctx.strokeStyle = 'rgba(128,128,128,0.1)';
+    ctx.lineWidth = 1;
+    lines.forEach((_, i) => {
+      ctx.beginPath();
+      ctx.moveTo(0, 24 + i * LINE_HEIGHT + LINE_HEIGHT);
+      ctx.lineTo(canvas.width, 24 + i * LINE_HEIGHT + LINE_HEIGHT);
+      ctx.stroke();
+    });
+    updateStatus(true);
+    return { lines: lines.length, height, chars: text.replace(/\s/g,'').length };
+  } catch(e) {
+    updateStatus(false);
+    return null;
+  }
+}
+
+function updateMetrics(text) {
+  if (!metricsEl) return;
+  const result = renderCanvas(text);
+  if (!result) return;
+  metricsEl.innerHTML =
+    '<span>字数: <strong>' + result.chars + '</strong></span>' +
+    '<span>行数: <strong>' + result.lines + '</strong></span>' +
+    '<span>高度: <strong>' + result.height + 'px</strong></span>' +
+    '<span style="opacity:0.7;font-size:0.85em">无 DOM reflow</span>';
+}
+
+const sampleText = '在消失之前：致我们正在失去的城市记忆。城市在加速更新，那些承载我们童年与青春的街道、建筑、气味，正以难以感知的速度消逝。';
+
+if (input) {
+  input.value = sampleText;
+  input.addEventListener('input', () => updateMetrics(input.value));
+}
+
+// Initial render (wait for fonts)
+document.fonts.ready.then(() => {
+  updateMetrics(input ? input.value : sampleText);
+});
+
+// Measure article excerpts and annotate with pretext measurements
+const excerptSelectors = [
+  '.card-excerpt', '.article-excerpt', '.hero-excerpt',
+  '.featured-excerpt', '.body-text', '.col-body',
+  '.preview-body', '.cc-excerpt', '.hc-title .cc-title'
+];
+document.querySelectorAll(excerptSelectors.join(',')).forEach(el => {
+  const text = el.textContent.trim();
+  if (!text || text.length < 10) return;
+  try {
+    const w = Math.max(el.offsetWidth || 240, 120);
+    const p = prepareWithSegments(text, FONT);
+    const { lines } = layoutWithLines(p, w, LINE_HEIGHT);
+    const badge = document.createElement('span');
+    badge.className = 'ptx-badge';
+    badge.title = 'pretext 精确测量，无 DOM reflow';
+    badge.textContent = lines.length + '行';
+    el.style.position = 'relative';
+    el.appendChild(badge);
+  } catch(e) {}
+});
+</script>
+</body>
+</html>

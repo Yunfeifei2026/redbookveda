@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>字暴 — 不妥协的阅读</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100;400;700;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #0A0A0A;
+      --white: #F5F5F0;
+      --yellow: #FFD600;
+      --red: #FF2222;
+    }
+    body {
+      background: var(--white);
+      color: var(--black);
+      font-family: 'Noto Sans SC', sans-serif;
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    /* NAV */
+    nav {
+      display: flex;
+      align-items: stretch;
+      border-bottom: 3px solid var(--black);
+      position: sticky;
+      top: 0;
+      background: var(--white);
+      z-index: 100;
+    }
+    .nav-logo {
+      padding: 16px 30px;
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      border-right: 3px solid var(--black);
+      background: var(--black);
+      color: var(--yellow);
+    }
+    .nav-links {
+      display: flex;
+      list-style: none;
+      flex: 1;
+    }
+    .nav-links li {
+      border-right: 2px solid var(--black);
+    }
+    .nav-links a {
+      display: block;
+      padding: 16px 22px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: background 0.15s;
+    }
+    .nav-links a:hover { background: var(--yellow); }
+    .nav-action {
+      display: flex;
+      align-items: center;
+      padding: 0 28px;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      border-left: 2px solid var(--black);
+      cursor: pointer;
+      background: var(--yellow);
+      transition: background 0.15s;
+    }
+    .nav-action:hover { background: var(--black); color: var(--yellow); }
+
+    /* HERO */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 80vh;
+      border-bottom: 3px solid var(--black);
+    }
+    .hero-left {
+      padding: 60px;
+      border-right: 3px solid var(--black);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg-char {
+      position: absolute;
+      top: -20px;
+      left: -20px;
+      font-size: 280px;
+      font-weight: 900;
+      color: rgba(0,0,0,0.04);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+    .hero-tag {
+      display: inline-block;
+      background: var(--red);
+      color: var(--white);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.3em;
+      padding: 5px 12px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .hero-title {
+      font-size: 56px;
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-title em {
+      font-style: normal;
+      background: var(--yellow);
+      padding: 0 4px;
+    }
+    .hero-bottom {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+    .hero-meta-block {
+      border-left: 4px solid var(--black);
+      padding-left: 16px;
+    }
+    .hero-author { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .hero-wordcount { font-size: 11px; opacity: 0.5; letter-spacing: 0.1em; }
+    .hero-read-btn {
+      background: var(--black);
+      color: var(--white);
+      border: none;
+      padding: 14px 32px;
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .hero-read-btn:hover { background: var(--yellow); color: var(--black); }
+
+    .hero-right {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+    }
+    .hero-right-top {
+      border-bottom: 3px solid var(--black);
+      padding: 40px;
+      background: var(--black);
+      color: var(--white);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    .hero-right-top .label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      color: var(--yellow);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .hero-right-top h2 {
+      font-size: 26px;
+      font-weight: 900;
+      line-height: 1.3;
+    }
+    .hero-right-bottom {
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      background: var(--yellow);
+    }
+    .hero-right-bottom .label { font-size: 10px; font-weight: 700; letter-spacing: 0.3em; margin-bottom: 12px; text-transform: uppercase; }
+    .hero-right-bottom h2 { font-size: 24px; font-weight: 900; line-height: 1.3; }
+
+    /* TICKER */
+    .ticker {
+      background: var(--black);
+      color: var(--yellow);
+      padding: 10px 0;
+      overflow: hidden;
+      white-space: nowrap;
+      border-bottom: 3px solid var(--black);
+    }
+    .ticker-inner {
+      display: inline-block;
+      animation: ticker 20s linear infinite;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+    }
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* SECTION LABEL */
+    .sec-label {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border-bottom: 3px solid var(--black);
+    }
+    .sec-label-text {
+      padding: 12px 30px;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      background: var(--black);
+      color: var(--white);
+    }
+    .sec-label-line { flex: 1; }
+
+    /* ARTICLES — BOLD LIST STYLE */
+    .articles-list { border-bottom: 3px solid var(--black); }
+    .article-row {
+      display: grid;
+      grid-template-columns: 80px 1fr auto;
+      align-items: stretch;
+      border-bottom: 2px solid var(--black);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .article-row:last-child { border-bottom: none; }
+    .article-row:hover { background: var(--yellow); }
+    .article-num {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      font-weight: 900;
+      opacity: 0.15;
+      border-right: 2px solid var(--black);
+    }
+    .article-body { padding: 30px 40px; }
+    .article-cat {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      opacity: 0.5;
+    }
+    .article-title {
+      font-size: 24px;
+      font-weight: 900;
+      line-height: 1.3;
+      margin-bottom: 10px;
+    }
+    .article-excerpt {
+      font-size: 13px;
+      line-height: 1.7;
+      opacity: 0.65;
+      max-width: 600px;
+    }
+    .article-side {
+      padding: 30px 40px;
+      border-left: 2px solid var(--black);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: space-between;
+      min-width: 160px;
+    }
+    .article-author { font-size: 13px; font-weight: 700; }
+    .article-time { font-size: 11px; opacity: 0.5; }
+    .article-arrow {
+      font-size: 24px;
+      font-weight: 900;
+      transition: transform 0.2s;
+    }
+    .article-row:hover .article-arrow { transform: translateX(6px); }
+
+    /* QUOTE BANNER */
+    .quote-banner {
+      background: var(--black);
+      color: var(--white);
+      padding: 60px;
+      border-bottom: 3px solid var(--black);
+      position: relative;
+      overflow: hidden;
+    }
+    .quote-bg-text {
+      position: absolute;
+      right: 60px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 200px;
+      font-weight: 900;
+      opacity: 0.05;
+      line-height: 1;
+    }
+    .quote-text {
+      font-size: 36px;
+      font-weight: 900;
+      line-height: 1.4;
+      max-width: 700px;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-text em { font-style: normal; color: var(--yellow); }
+    .quote-source {
+      font-size: 12px;
+      font-weight: 700;
+      opacity: 0.5;
+      letter-spacing: 0.2em;
+      margin-top: 24px;
+    }
+
+    /* FOOTER */
+    footer {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 3px solid var(--black);
+    }
+    .footer-col {
+      padding: 40px 30px;
+      border-right: 2px solid var(--black);
+    }
+    .footer-col:last-child { border-right: none; }
+    .footer-col h4 {
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      border-bottom: 2px solid var(--black);
+      padding-bottom: 10px;
+      margin-bottom: 16px;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+    .footer-col a { font-size: 13px; font-weight: 400; transition: font-weight 0.15s; }
+    .footer-col a:hover { font-weight: 700; }
+    .footer-logo-col {
+      padding: 40px 30px;
+      border-right: 2px solid var(--black);
+      background: var(--black);
+      color: var(--white);
+    }
+    .footer-brand {
+      font-size: 48px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+    }
+    .footer-brand em { font-style: normal; color: var(--yellow); }
+    .footer-sub { font-size: 12px; opacity: 0.5; line-height: 1.7; }
+    .footer-bar {
+      border-top: 3px solid var(--black);
+      padding: 14px 30px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      opacity: 0.5;
+    }
+  </style>
+
+<style>
+.ptx-section {
+  background: #F5F5F0;
+  border-top: 2px solid #0A0A0A;
+  padding: 48px 60px;
+  position: relative;
+  z-index: 1;
+}
+.ptx-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #0A0A0A;
+  color: #FFD600;
+  padding: 12px 20px;
+  margin-bottom: 24px;
+  font-family: monospace;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+}
+.ptx-status { font-size: 11px; opacity: 0.8; color: #888; }
+.ptx-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.ptx-left label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: #555;
+  margin-bottom: 8px;
+}
+#ptx-input {
+  width: 100%;
+  background: #FFFFFF;
+  border: 1px solid #0A0A0A;
+  color: #0A0A0A;
+  padding: 12px 14px;
+  font-size: 14px;
+  line-height: 1.8;
+  min-height: 80px;
+  resize: vertical;
+  outline: none;
+  font-family: inherit;
+}
+.ptx-metrics {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #555;
+}
+.ptx-metrics strong { color: #FF2222; }
+.ptx-right label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: #555;
+  margin-bottom: 8px;
+}
+.ptx-canvas-wrap {
+  border: 1px solid #0A0A0A;
+  background: #FFFFFF;
+  overflow: hidden;
+  min-height: 80px;
+}
+#ptx-canvas { display: block; max-width: 100%; }
+.ptx-footnote {
+  margin-top: 16px;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: #555;
+  opacity: 0.6;
+  font-family: monospace;
+}
+/* Badge on article excerpts */
+.ptx-badge {
+  display: inline-block;
+  margin-left: 6px;
+  background: #FF2222;
+  color: #FFD600;
+  font-size: 9px;
+  padding: 1px 5px;
+  letter-spacing: 0.05em;
+  vertical-align: middle;
+  opacity: 0.75;
+  border-radius: 2px;
+  font-family: monospace;
+  pointer-events: none;
+}
+@media (max-width: 700px) {
+  .ptx-section { padding: 32px 20px; }
+  .ptx-body { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">字暴</div>
+  <ul class="nav-links">
+    <li><a href="#">文学</a></li>
+    <li><a href="#">思想</a></li>
+    <li><a href="#">社会</a></li>
+    <li><a href="#">历史</a></li>
+    <li><a href="#">艺术</a></li>
+  </ul>
+  <div class="nav-action">订阅 →</div>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-bg-char">文</div>
+    <div>
+      <div class="hero-tag">本周封面</div>
+      <h1 class="hero-title">在消失<em>之前</em>：致我们正在失去的城市记忆</h1>
+    </div>
+    <div class="hero-bottom">
+      <div class="hero-meta-block">
+        <div class="hero-author">张晓波</div>
+        <div class="hero-wordcount">6200 字 · 约20分钟</div>
+      </div>
+      <button class="hero-read-btn">阅读全文 →</button>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-right-top">
+      <div class="label">深度报道</div>
+      <h2>独居经济学：一个人的繁荣与孤独</h2>
+    </div>
+    <div class="hero-right-bottom">
+      <div class="label">人物特写</div>
+      <h2>夜班医生的自白：那些我无法带走的离别</h2>
+    </div>
+  </div>
+</section>
+
+<div class="ticker">
+  <span class="ticker-inner">
+    最新发布：《她们不谈爱情》&nbsp;&nbsp;//&nbsp;&nbsp;《在异乡寻找汉字》&nbsp;&nbsp;//&nbsp;&nbsp;《流量之后，意义何在》&nbsp;&nbsp;//&nbsp;&nbsp;《父亲的沉默》&nbsp;&nbsp;//&nbsp;&nbsp;《被遗忘的下午茶》&nbsp;&nbsp;//&nbsp;&nbsp;《最后一批手艺人》&nbsp;&nbsp;//&nbsp;&nbsp;最新发布：《她们不谈爱情》&nbsp;&nbsp;//&nbsp;&nbsp;《在异乡寻找汉字》&nbsp;&nbsp;//&nbsp;&nbsp;《流量之后，意义何在》&nbsp;&nbsp;//&nbsp;&nbsp;《父亲的沉默》&nbsp;&nbsp;//&nbsp;&nbsp;《被遗忘的下午茶》&nbsp;&nbsp;//&nbsp;&nbsp;《最后一批手艺人》&nbsp;&nbsp;//&nbsp;&nbsp;
+  </span>
+</div>
+
+<div class="sec-label">
+  <div class="sec-label-text">精选文章</div>
+  <div class="sec-label-line"></div>
+</div>
+
+<div class="articles-list">
+  <div class="article-row">
+    <div class="article-num">01</div>
+    <div class="article-body">
+      <div class="article-cat">心理 · 哲思</div>
+      <h2 class="article-title">人类为何需要无聊</h2>
+      <p class="article-excerpt">在注意力被无限切割的时代，我们越来越难以忍受无聊。但也许正是这种不适，指向了某种被遗忘的人类能力——真正的思考。</p>
+    </div>
+    <div class="article-side">
+      <div><div class="article-author">林诗语</div><div class="article-time">约20分钟</div></div>
+      <div class="article-arrow">→</div>
+    </div>
+  </div>
+
+  <div class="article-row">
+    <div class="article-num">02</div>
+    <div class="article-body">
+      <div class="article-cat">人物 · 记录</div>
+      <h2 class="article-title">最后一批手艺人</h2>
+      <p class="article-excerpt">他们用一辈子磨砺出的技艺，在工业量产面前显得脆弱而珍贵。走访中国各地的传统工匠，记录那些正在消逝的手的智慧。</p>
+    </div>
+    <div class="article-side">
+      <div><div class="article-author">王芳宁</div><div class="article-time">约24分钟</div></div>
+      <div class="article-arrow">→</div>
+    </div>
+  </div>
+
+  <div class="article-row">
+    <div class="article-num">03</div>
+    <div class="article-body">
+      <div class="article-cat">社会 · 观察</div>
+      <h2 class="article-title">流量之后，意义何在</h2>
+      <p class="article-excerpt">流量是测量工具，不是目的地。当一切都可以被量化，我们如何保留那些无法被计数的价值？</p>
+    </div>
+    <div class="article-side">
+      <div><div class="article-author">赵思远</div><div class="article-time">约29分钟</div></div>
+      <div class="article-arrow">→</div>
+    </div>
+  </div>
+
+  <div class="article-row">
+    <div class="article-num">04</div>
+    <div class="article-body">
+      <div class="article-cat">散文 · 随笔</div>
+      <h2 class="article-title">父亲的沉默</h2>
+      <p class="article-excerpt">父亲不是不爱我们，他只是不会说。那种沉默里藏着整整一代男人不知道如何开口的东西。</p>
+    </div>
+    <div class="article-side">
+      <div><div class="article-author">刘晓婷</div><div class="article-time">约16分钟</div></div>
+      <div class="article-arrow">→</div>
+    </div>
+  </div>
+
+  <div class="article-row">
+    <div class="article-num">05</div>
+    <div class="article-body">
+      <div class="article-cat">文化 · 追忆</div>
+      <h2 class="article-title">她们不谈爱情</h2>
+      <p class="article-excerpt">她们不谈爱情，不是因为不在乎，而是因为她们学会了在别处寻找完整。</p>
+    </div>
+    <div class="article-side">
+      <div><div class="article-author">余晓雯</div><div class="article-time">约21分钟</div></div>
+      <div class="article-arrow">→</div>
+    </div>
+  </div>
+
+  <div class="article-row">
+    <div class="article-num">06</div>
+    <div class="article-body">
+      <div class="article-cat">旅行 · 文化</div>
+      <h2 class="article-title">在异乡寻找汉字</h2>
+      <p class="article-excerpt">在日本街头，在东南亚的唐人街，在世界各个角落寻找那些漂泊的汉字。文字如何在离散中保存记忆。</p>
+    </div>
+    <div class="article-side">
+      <div><div class="article-author">周建民</div><div class="article-time">约18分钟</div></div>
+      <div class="article-arrow">→</div>
+    </div>
+  </div>
+</div>
+
+<div class="quote-banner">
+  <div class="quote-bg-text">"</div>
+  <div class="quote-text">写作不是记录生活——<em>写作就是生活本身</em>，那种最清醒的活法。</div>
+  <div class="quote-source">— 文渊读者语录</div>
+</div>
+
+<footer>
+  <div class="footer-logo-col">
+    <div class="footer-brand"><em>字</em>暴</div>
+    <p class="footer-sub">不妥协的阅读体验。<br>长文章，深思考。</p>
+  </div>
+  <div class="footer-col">
+    <h4>栏目</h4>
+    <ul>
+      <li><a href="#">文学</a></li>
+      <li><a href="#">思想</a></li>
+      <li><a href="#">社会</a></li>
+      <li><a href="#">历史</a></li>
+      <li><a href="#">艺术</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>作者</h4>
+    <ul>
+      <li><a href="#">投稿</a></li>
+      <li><a href="#">社区</a></li>
+      <li><a href="#">版权</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>关于</h4>
+    <ul>
+      <li><a href="#">理念</a></li>
+      <li><a href="#">团队</a></li>
+      <li><a href="#">订阅</a></li>
+      <li><a href="#">联系</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bar">
+  <span>© 2024 字暴</span>
+  <span>为不妥协的读者</span>
+</div>
+
+<script>
+  // Hover color wave on article rows
+  document.querySelectorAll('.article-row').forEach(row => {
+    row.addEventListener('mouseenter', () => {
+      row.style.transform = 'translateX(4px)';
+      row.style.transition = 'transform 0.15s, background 0.15s';
+    });
+    row.addEventListener('mouseleave', () => {
+      row.style.transform = 'translateX(0)';
+    });
+  });
+</script>
+
+<!-- ═══════════════════════════════════════════════
+     PRETEXT ENGINE DEMO
+     github.com/chenglou/pretext
+═══════════════════════════════════════════════ -->
+<section class="ptx-section">
+  <div class="ptx-header">
+    <span>⚡ PRETEXT ENGINE</span>
+    <span id="ptx-status" class="ptx-status">加载中…</span>
+  </div>
+  <div class="ptx-body">
+    <div class="ptx-left">
+      <label>输入文字 — 实时排版测量（不触发 DOM reflow）</label>
+      <textarea id="ptx-input"></textarea>
+      <div id="ptx-metrics" class="ptx-metrics"></div>
+    </div>
+    <div class="ptx-right">
+      <label>Canvas 渲染 — pretext 精确控制每一行</label>
+      <div class="ptx-canvas-wrap">
+        <canvas id="ptx-canvas"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="ptx-footnote">
+    pretext@0.0.4 · github.com/chenglou/pretext ·
+    使用 Canvas measureText 精确测量中文排版，零布局偏移，支持汉字 / emoji / 双向文本
+  </div>
+</section>
+
+<script type="module">
+import { prepareWithSegments, layoutWithLines, prepare, layout } from 'https://esm.sh/@chenglou/pretext';
+
+const FONT = '16px "Noto Sans SC", serif';
+const LINE_HEIGHT = 26;
+const MAX_WIDTH = 480;
+
+const canvas = document.getElementById('ptx-canvas');
+const ctx = canvas ? canvas.getContext('2d') : null;
+const input = document.getElementById('ptx-input');
+const metricsEl = document.getElementById('ptx-metrics');
+const statusEl = document.getElementById('ptx-status');
+const canvasTextColor = '#0A0A0A';
+
+function updateStatus(ok) {
+  if (statusEl) statusEl.textContent = ok ? '运行中 ✓' : '加载中…';
+  if (statusEl) statusEl.style.color = ok ? '#00CC44' : '#888';
+}
+
+function renderCanvas(text) {
+  if (!ctx || !canvas) return;
+  try {
+    const prepared = prepareWithSegments(text, FONT);
+    const { lines, height } = layoutWithLines(prepared, MAX_WIDTH, LINE_HEIGHT);
+    const canvasH = Math.max(height + 48, 80);
+    canvas.width = MAX_WIDTH + 48;
+    canvas.height = canvasH;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = FONT;
+    ctx.fillStyle = canvasTextColor;
+    ctx.textBaseline = 'top';
+    lines.forEach((line, i) => {
+      ctx.fillText(line.text, 24, 24 + i * LINE_HEIGHT);
+    });
+    // Draw line guides (subtle)
+    ctx.strokeStyle = 'rgba(128,128,128,0.1)';
+    ctx.lineWidth = 1;
+    lines.forEach((_, i) => {
+      ctx.beginPath();
+      ctx.moveTo(0, 24 + i * LINE_HEIGHT + LINE_HEIGHT);
+      ctx.lineTo(canvas.width, 24 + i * LINE_HEIGHT + LINE_HEIGHT);
+      ctx.stroke();
+    });
+    updateStatus(true);
+    return { lines: lines.length, height, chars: text.replace(/\s/g,'').length };
+  } catch(e) {
+    updateStatus(false);
+    return null;
+  }
+}
+
+function updateMetrics(text) {
+  if (!metricsEl) return;
+  const result = renderCanvas(text);
+  if (!result) return;
+  metricsEl.innerHTML =
+    '<span>字数: <strong>' + result.chars + '</strong></span>' +
+    '<span>行数: <strong>' + result.lines + '</strong></span>' +
+    '<span>高度: <strong>' + result.height + 'px</strong></span>' +
+    '<span style="opacity:0.7;font-size:0.85em">无 DOM reflow</span>';
+}
+
+const sampleText = '在消失之前：致我们正在失去的城市记忆。城市在加速更新，那些承载我们童年与青春的街道、建筑、气味，正以难以感知的速度消逝。';
+
+if (input) {
+  input.value = sampleText;
+  input.addEventListener('input', () => updateMetrics(input.value));
+}
+
+// Initial render (wait for fonts)
+document.fonts.ready.then(() => {
+  updateMetrics(input ? input.value : sampleText);
+});
+
+// Measure article excerpts and annotate with pretext measurements
+const excerptSelectors = [
+  '.card-excerpt', '.article-excerpt', '.hero-excerpt',
+  '.featured-excerpt', '.body-text', '.col-body',
+  '.preview-body', '.cc-excerpt', '.hc-title .cc-title'
+];
+document.querySelectorAll(excerptSelectors.join(',')).forEach(el => {
+  const text = el.textContent.trim();
+  if (!text || text.length < 10) return;
+  try {
+    const w = Math.max(el.offsetWidth || 240, 120);
+    const p = prepareWithSegments(text, FONT);
+    const { lines } = layoutWithLines(p, w, LINE_HEIGHT);
+    const badge = document.createElement('span');
+    badge.className = 'ptx-badge';
+    badge.title = 'pretext 精确测量，无 DOM reflow';
+    badge.textContent = lines.length + '行';
+    el.style.position = 'relative';
+    el.appendChild(badge);
+  } catch(e) {}
+});
+</script>
+</body>
+</html>
