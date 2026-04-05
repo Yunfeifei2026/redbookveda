@@ -8,9 +8,10 @@ export default async function middleware(request) {
   const subdomain = hostname.slice(0, hostname.indexOf('.scortt.org'));
   if (subdomain === 'www') return;
 
-  // Rewrite: xy.scortt.org/ → serve /clients/xy/index.html
-  const filePath = `/clients/${subdomain}/index.html`;
-  const fileUrl = new URL(filePath, request.url);
+  // Fetch from the Vercel deployment directly to avoid infinite loop
+  const fileUrl = new URL(request.url);
+  fileUrl.hostname = 'redbookveda.vercel.app';
+  fileUrl.pathname = `/clients/${subdomain}/index.html`;
 
   const response = await fetch(fileUrl.toString());
   return new Response(response.body, {
