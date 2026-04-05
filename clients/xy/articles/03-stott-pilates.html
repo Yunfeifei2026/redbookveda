@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>STOTT Pilates 是什么 · 夜读</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --void: #080810; --deep: #0F0F1E; --card: #141428; --surface: #1A1A30;
+      --amber: #C8902A; --amber-light: #E8B050; --smoke: #9090A8;
+      --text: #D0D0E0; --faint: #4A4A60; --rule: #1E1E38;
+    }
+    body { background: var(--void); color: var(--text); font-family: 'Noto Serif SC', serif; line-height: 1.85; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999; opacity: 0.4;
+    }
+
+    /* GATE */
+    #gate { position: fixed; inset: 0; z-index: 10000; background: var(--void); display: flex; align-items: center; justify-content: center; }
+    #gate.hidden { display: none; }
+    .gate-inner { width: 320px; display: flex; flex-direction: column; align-items: center; gap: 32px; }
+    .gate-logo { font-family: 'Noto Serif SC', serif; font-size: 28px; font-weight: 400; letter-spacing: 0.3em; color: var(--amber); text-align: center; }
+    .gate-logo-sub { font-family: 'Noto Sans SC', sans-serif; font-size: 11px; font-weight: 300; letter-spacing: 0.4em; color: var(--faint); margin-top: 6px; text-align: center; }
+    .gate-label { font-family: 'Noto Sans SC', sans-serif; font-size: 10px; font-weight: 300; letter-spacing: 0.4em; color: var(--faint); }
+    .gate-input-wrap { width: 100%; display: flex; flex-direction: column; gap: 12px; }
+    #gate-password { width: 100%; background: var(--deep); border: 1px solid var(--rule); color: var(--text); padding: 14px 18px; font-family: 'Noto Serif SC', serif; font-size: 16px; letter-spacing: 0.2em; outline: none; text-align: center; transition: border-color 0.3s; }
+    #gate-password:focus { border-color: var(--amber); }
+    #gate-password.error { border-color: #882020; animation: shake 0.3s; }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+    #gate-btn { width: 100%; background: transparent; border: 1px solid var(--amber); color: var(--amber); padding: 12px; font-family: 'Noto Serif SC', serif; font-size: 14px; letter-spacing: 0.2em; cursor: pointer; transition: all 0.3s; }
+    #gate-btn:hover { background: var(--amber); color: var(--void); }
+    .gate-error { font-family: 'Noto Sans SC', sans-serif; font-size: 12px; color: #AA4040; letter-spacing: 0.1em; text-align: center; min-height: 18px; }
+
+    /* NAV */
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 24px 60px; position: sticky; top: 0; z-index: 100; background: linear-gradient(to bottom, var(--void) 60%, transparent); }
+    .logo { font-family: 'Noto Serif SC', serif; font-size: 20px; font-weight: 400; letter-spacing: 0.3em; color: var(--amber); }
+    .logo-sub { font-family: 'Noto Sans SC', sans-serif; font-size: 10px; font-weight: 300; letter-spacing: 0.4em; color: var(--faint); margin-top: 2px; }
+    .back-btn { font-family: 'Noto Sans SC', sans-serif; font-size: 12px; font-weight: 300; letter-spacing: 0.15em; color: var(--smoke); display: flex; align-items: center; gap: 8px; transition: color 0.3s; }
+    .back-btn:hover { color: var(--amber); }
+
+    /* ARTICLE HEADER */
+    .article-header { padding: 60px 60px 40px; max-width: 800px; margin: 0 auto; }
+    .article-cat { font-family: 'Noto Sans SC', sans-serif; font-size: 10px; font-weight: 300; letter-spacing: 0.5em; color: var(--amber); margin-bottom: 20px; }
+    .article-title { font-family: 'Noto Serif SC', serif; font-size: 42px; font-weight: 400; line-height: 1.35; color: #E8E8F0; margin-bottom: 20px; }
+    .article-meta { font-family: 'Noto Sans SC', sans-serif; font-size: 12px; font-weight: 300; color: var(--faint); letter-spacing: 0.1em; padding-bottom: 32px; border-bottom: 1px solid var(--rule); }
+
+    /* ARTICLE BODY */
+    .article-body { max-width: 680px; margin: 0 auto; padding: 48px 60px 80px; }
+    .article-body h2 { font-family: 'Noto Serif SC', serif; font-size: 20px; font-weight: 500; color: var(--amber-light); margin: 48px 0 16px; letter-spacing: 0.05em; }
+    .article-body p { font-size: 16px; font-weight: 300; line-height: 2; color: var(--text); margin-bottom: 24px; }
+    .article-body .lead { font-size: 18px; line-height: 2; color: var(--smoke); border-left: 2px solid var(--amber); padding-left: 20px; margin-bottom: 40px; }
+    .tip-box { background: var(--card); border: 1px solid var(--rule); border-left: 3px solid var(--amber); padding: 24px 28px; margin: 20px 0; }
+    .tip-box .tip-name { font-family: 'Noto Serif SC', serif; font-size: 17px; font-weight: 500; color: var(--amber-light); margin-bottom: 12px; }
+    .tip-box p { margin-bottom: 10px; font-size: 14px; color: var(--smoke); line-height: 1.9; }
+    .tip-box p:last-child { margin-bottom: 0; }
+    .tip-box strong { color: var(--text); font-weight: 400; }
+    .compare-row { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--rule); margin: 24px 0; }
+    .compare-cell { background: var(--card); padding: 20px 24px; }
+    .compare-cell.header { background: var(--deep); font-family: 'Noto Sans SC', sans-serif; font-size: 10px; letter-spacing: 0.3em; color: var(--amber); font-weight: 300; }
+    .compare-cell p { font-size: 14px; font-weight: 300; color: var(--smoke); line-height: 1.85; margin: 0; }
+    .article-end { text-align: center; padding: 40px 0 0; border-top: 1px solid var(--rule); margin-top: 48px; font-family: 'Noto Sans SC', sans-serif; font-size: 12px; letter-spacing: 0.2em; color: var(--faint); }
+
+    /* FOOTER */
+    footer { background: var(--deep); border-top: 1px solid var(--rule); padding: 40px 60px; }
+    .footer-brand { font-family: 'Noto Serif SC', serif; font-size: 20px; font-weight: 400; letter-spacing: 0.3em; color: var(--amber); margin-bottom: 8px; }
+    .footer-tagline { font-size: 13px; font-weight: 300; color: var(--faint); }
+    .footer-bar { background: var(--void); border-top: 1px solid var(--rule); padding: 16px 60px; display: flex; justify-content: space-between; font-family: 'Noto Sans SC', sans-serif; font-size: 11px; font-weight: 300; color: var(--faint); }
+
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      .article-header { padding: 40px 20px 24px; }
+      .article-title { font-size: 26px; }
+      .article-body { padding: 32px 20px 60px; }
+      .article-body h2 { font-size: 17px; }
+      .article-body p { font-size: 15px; }
+      .article-body .lead { font-size: 15px; }
+      .compare-row { grid-template-columns: 1fr; }
+      footer { padding: 32px 20px; }
+      .footer-bar { padding: 14px 20px; flex-direction: column; gap: 4px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="gate-inner">
+    <div>
+      <div class="gate-logo">夜读</div>
+      <div class="gate-logo-sub">许颖的深夜阅读室</div>
+    </div>
+    <div class="gate-label">请输入访问密码</div>
+    <div class="gate-input-wrap">
+      <input type="password" id="gate-password" placeholder="· · · · · · · ·" autocomplete="off">
+      <button id="gate-btn" onclick="checkPassword()">进入</button>
+    </div>
+    <div class="gate-error" id="gate-error"></div>
+  </div>
+</div>
+
+<nav>
+  <div>
+    <div class="logo">夜读</div>
+    <div class="logo-sub">许颖的深夜阅读室</div>
+  </div>
+  <a href="/xy" class="back-btn">← 返回</a>
+</nav>
+
+<div class="article-header">
+  <div class="article-cat">运动</div>
+  <h1 class="article-title">STOTT Pilates 是什么：<br>一个想上课的人需要先知道的事</h1>
+  <div class="article-meta">猪头 · 约3000字 · 约10分钟</div>
+</div>
+
+<div class="article-body">
+
+  <p class="lead">在决定去哪里上课、找哪位教练之前，先搞清楚自己要学的是什么。普拉提不是一种课，是一个大家族——而 STOTT Pilates，是其中目前最系统、最广泛传播的现代流派之一。</p>
+
+  <h2>先从普拉提本身说起</h2>
+  <p>普拉提由德国人 Joseph Pilates 在20世纪初创立，最初叫"Contrology"（控制学），核心理念是通过对身体核心的精确控制，恢复并强化整体功能。他的原始体系，后来被称为"古典普拉提"（Classical Pilates），动作顺序固定，对脊柱的理解基于他那个时代的认知。</p>
+  <p>随着运动科学和物理治疗学的发展，几位深入研究普拉提的专业人士开始对古典体系进行重新审视和修订——STOTT Pilates 就是在这个背景下诞生的。</p>
+
+  <h2>STOTT Pilates 是怎么来的</h2>
+  <p>STOTT Pilates 由加拿大人 Moira Merrithew 和她的丈夫 Lindsay Merrithew 在1988年创立，总部在多伦多。Moira 本人是古典普拉提认证教练，后来与运动科学家和物理治疗师合作，将现代解剖学和运动康复理论融入普拉提体系，形成了一套既保留普拉提精髓、又更符合现代生物力学的方法。</p>
+  <p>公司全称是 Merrithew Health &amp; Fitness，"STOTT PILATES"是其核心品牌。目前在全球超过100个国家有认证培训，是国际上教练认证体系最完整的普拉提流派之一。</p>
+
+  <h2>STOTT 和古典普拉提有什么不同</h2>
+
+  <div class="compare-row">
+    <div class="compare-cell header">古典普拉提</div>
+    <div class="compare-cell header">STOTT Pilates</div>
+    <div class="compare-cell"><p>脊柱"中立"被理解为完全伸直，强调"印压脊柱"（imprinting）</p></div>
+    <div class="compare-cell"><p>强调脊柱自然曲线，区分中立位与印压，根据动作需要灵活切换</p></div>
+    <div class="compare-cell"><p>动作顺序相对固定，遵循 Joseph Pilates 原始编排</p></div>
+    <div class="compare-cell"><p>动作可根据学员身体状况调整，有完整的难度递进系统</p></div>
+    <div class="compare-cell"><p>腹部有时强调"拉平"（hollowing）</p></div>
+    <div class="compare-cell"><p>强调腹部"收紧"（bracing）与"拉平"结合，更接近功能性训练逻辑</p></div>
+    <div class="compare-cell"><p>传统上以垫上和器械课为主，较少涉及康复应用</p></div>
+    <div class="compare-cell"><p>有完整的康复课程体系，广泛用于物理治疗和运动损伤恢复</p></div>
+  </div>
+
+  <p>简单说：古典普拉提更强调"传承"，STOTT 更强调"为什么这样做"。对于初学者和有身体问题的人，STOTT 的调整空间更大，教练的专业工具也更丰富。</p>
+
+  <h2>STOTT 的五大基本原则</h2>
+  <p>理解 STOTT 的核心，只需要记住它的五个基本原则。这五条原则贯穿所有动作：</p>
+
+  <div class="tip-box">
+    <div class="tip-name">① 呼吸（Breathing）</div>
+    <p>STOTT 采用"横向呼吸"（lateral breathing）：吸气时胸腔向两侧和背部扩展，腹部保持稳定；呼气时激活深层核心肌群。呼吸不是装饰，是激活核心的触发器。</p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-name">② 骨盆稳定（Pelvic Placement）</div>
+    <p>根据不同动作，骨盆应保持"中立位"（自然曲线）或"印压位"（轻微后倾）。STOTT 对何时用哪种位置有明确指导，而不是一刀切。骨盆位置直接影响腰椎的安全性。</p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-name">③ 胸腔稳定（Rib Cage Placement）</div>
+    <p>手臂上举时，肋骨容易上翻，导致腰椎过伸。STOTT 强调保持肋骨"沉降"，避免代偿。这是很多初学者最容易忽视的细节。</p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-name">④ 肩胛骨稳定（Scapular Movement &amp; Stabilization）</div>
+    <p>肩胛骨的位置决定整个上肢的发力质量。STOTT 对肩胛骨的控制有详细的指导：何时应该稳定，何时应该随动作移动，如何避免耸肩代偿。</p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-name">⑤ 头颈部位置（Head &amp; Cervical Placement）</div>
+    <p>颈椎是脊柱的延伸，不应该单独"努力"。STOTT 强调头颈与脊柱保持一致的曲线，避免颈部过度紧张——这对长期低头使用手机的现代人尤其重要。</p>
+  </div>
+
+  <h2>STOTT 适合什么样的人</h2>
+  <p>STOTT 的调整体系非常完善，这让它对以下人群特别友好：</p>
+  <p><strong style="color:var(--amber-light)">有身体问题的人</strong>——腰痛、颈椎问题、产后恢复、运动损伤后康复。STOTT 有专门的"康复普拉提"认证，很多物理治疗诊所的教练都有 STOTT 背景。</p>
+  <p><strong style="color:var(--amber-light)">完全没有运动基础的初学者</strong>——STOTT 的难度分级清晰，教练有工具把同一个动作做出十几种调整，不会让你在第一节课就觉得自己什么都做不了。</p>
+  <p><strong style="color:var(--amber-light)">想认真学、不只是"练练"的人</strong>——STOTT 的课不是跟着做动作，而是让你真正理解身体在做什么。如果你愿意动脑，这个体系给你的回报会很丰厚。</p>
+
+  <h2>上课之前，几件值得确认的事</h2>
+  <p>找到一个有 STOTT 认证的工作室或教练之后，建议在第一节课前问清楚：</p>
+  <p>教练的 STOTT 认证级别是什么（基础/进阶/全套器械）？你的身体有没有需要特别注意的地方，教练是否会在开始前做评估？是小班课还是私教——STOTT 的调整优势在小班和私教中体现得更充分，大班里很难照顾到每个人的细节。</p>
+  <p>不要急着买课包。先上一两节体验课，感受一下教练的指导方式和你们之间的沟通是否顺畅。方法论再好，遇到不合适的老师也白搭。</p>
+
+  <div class="article-end">全文完 · 后续还会有其他普拉提体系的对比</div>
+</div>
+
+<footer>
+  <div class="footer-brand">夜读</div>
+  <p class="footer-tagline">许颖的深夜阅读室。每篇文章，都值得你给它一个安静的夜晚。</p>
+</footer>
+<div class="footer-bar">
+  <span>© 2024 夜读 · 许颖的深夜阅读室</span>
+  <span>深夜还在读，是件很美的事。</span>
+</div>
+
+<script>
+  const PASSWORD_HASH = '51c62bdea1a8956ac6b1784494752287924f77f172235e8cfcf04e777c05abc9';
+  async function sha256(str) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+  async function checkPassword() {
+    const input = document.getElementById('gate-password');
+    const errorEl = document.getElementById('gate-error');
+    const hash = await sha256(input.value.trim());
+    if (hash === PASSWORD_HASH) {
+      sessionStorage.setItem('xy_auth', '1');
+      document.getElementById('gate').classList.add('hidden');
+    } else {
+      errorEl.textContent = '密码不正确，请重试';
+      input.classList.add('error');
+      setTimeout(() => input.classList.remove('error'), 400);
+      input.value = ''; input.focus();
+    }
+  }
+  document.getElementById('gate-password').addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkPassword();
+    document.getElementById('gate-error').textContent = '';
+  });
+  if (sessionStorage.getItem('xy_auth') === '1') {
+    document.getElementById('gate').classList.add('hidden');
+  }
+</script>
+</body>
+</html>
