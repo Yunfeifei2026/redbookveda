@@ -482,6 +482,63 @@
       font-weight: 300;
       color: var(--faint);
     }
+
+  /* ── MOBILE RESPONSIVE ── */
+  @media (max-width: 768px) {
+    /* Gate */
+    .gate-inner { width: 85vw; }
+
+    /* Nav */
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+    .subscribe-btn { padding: 6px 14px; font-size: 11px; }
+
+    /* Hero */
+    .hero { padding: 0 20px 48px; min-height: 70vh; }
+    .hero-title { font-size: 28px; }
+    .hero-excerpt { font-size: 14px; max-width: 100%; }
+    .hero-meta { flex-direction: column; align-items: flex-start; gap: 16px; }
+
+    /* Divider */
+    .divider { padding: 0 20px; margin: 40px 0 24px; }
+
+    /* Article grid → single column */
+    .articles-grid {
+      grid-template-columns: 1fr;
+      margin: 0 20px;
+    }
+    .article-card.featured {
+      grid-row: span 1;
+      min-height: 300px;
+      padding: 28px 24px;
+    }
+    .article-card.featured .card-title { font-size: 20px; }
+    .article-card { padding: 24px 20px; }
+
+    /* Spotlight → single column */
+    .spotlight {
+      grid-template-columns: 1fr;
+      margin: 2px 20px 0;
+    }
+
+    /* Quote */
+    .quote-section { padding: 48px 20px; }
+    .quote-mark { font-size: 72px; }
+    .quote-text { font-size: 17px; }
+
+    /* Footer → single column */
+    footer {
+      grid-template-columns: 1fr;
+      gap: 36px;
+      padding: 40px 20px;
+    }
+    .footer-bar { padding: 14px 20px; flex-direction: column; gap: 4px; }
+  }
+
+  @media (max-width: 480px) {
+    .hero-title { font-size: 24px; }
+    .logo { font-size: 17px; }
+  }
   </style>
 </head>
 <body>
