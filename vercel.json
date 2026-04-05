@@ -1,6 +1,6 @@
 {
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/xy", "destination": "/clients/xy/index.html" }
+    { "source": "/xy", "destination": "/clients/xy/" }
   ]
 }
