@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>皮质醇与睡眠 · 夜读</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --void: #080810; --deep: #0F0F1E; --card: #141428; --surface: #1A1A30;
+      --amber: #C8902A; --amber-light: #E8B050; --smoke: #9090A8;
+      --text: #D0D0E0; --faint: #4A4A60; --rule: #1E1E38;
+    }
+    body { background: var(--void); color: var(--text); font-family: 'Noto Serif SC', serif; line-height: 1.85; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999; opacity: 0.4;
+    }
+
+    /* GATE */
+    #gate { position: fixed; inset: 0; z-index: 10000; background: var(--void); display: flex; align-items: center; justify-content: center; }
+    #gate.hidden { display: none; }
+    .gate-inner { width: 320px; display: flex; flex-direction: column; align-items: center; gap: 32px; }
+    .gate-logo { font-family: 'Noto Serif SC', serif; font-size: 28px; font-weight: 400; letter-spacing: 0.3em; color: var(--amber); text-align: center; }
+    .gate-logo-sub { font-family: 'Noto Sans SC', sans-serif; font-size: 11px; font-weight: 300; letter-spacing: 0.4em; color: var(--faint); margin-top: 6px; text-align: center; }
+    .gate-label { font-family: 'Noto Sans SC', sans-serif; font-size: 10px; font-weight: 300; letter-spacing: 0.4em; color: var(--faint); }
+    .gate-input-wrap { width: 100%; display: flex; flex-direction: column; gap: 12px; }
+    #gate-password { width: 100%; background: var(--deep); border: 1px solid var(--rule); color: var(--text); padding: 14px 18px; font-family: 'Noto Serif SC', serif; font-size: 16px; letter-spacing: 0.2em; outline: none; text-align: center; transition: border-color 0.3s; }
+    #gate-password:focus { border-color: var(--amber); }
+    #gate-password.error { border-color: #882020; animation: shake 0.3s; }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+    #gate-btn { width: 100%; background: transparent; border: 1px solid var(--amber); color: var(--amber); padding: 12px; font-family: 'Noto Serif SC', serif; font-size: 14px; letter-spacing: 0.2em; cursor: pointer; transition: all 0.3s; }
+    #gate-btn:hover { background: var(--amber); color: var(--void); }
+    .gate-error { font-family: 'Noto Sans SC', sans-serif; font-size: 12px; color: #AA4040; letter-spacing: 0.1em; text-align: center; min-height: 18px; }
+
+    /* NAV */
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 24px 60px; position: sticky; top: 0; z-index: 100; background: linear-gradient(to bottom, var(--void) 60%, transparent); }
+    .logo { font-family: 'Noto Serif SC', serif; font-size: 20px; font-weight: 400; letter-spacing: 0.3em; color: var(--amber); }
+    .logo-sub { font-family: 'Noto Sans SC', sans-serif; font-size: 10px; font-weight: 300; letter-spacing: 0.4em; color: var(--faint); margin-top: 2px; }
+    .back-btn { font-family: 'Noto Sans SC', sans-serif; font-size: 12px; font-weight: 300; letter-spacing: 0.15em; color: var(--smoke); display: flex; align-items: center; gap: 8px; transition: color 0.3s; }
+    .back-btn:hover { color: var(--amber); }
+
+    /* ARTICLE HEADER */
+    .article-header { padding: 60px 60px 40px; max-width: 800px; margin: 0 auto; }
+    .article-cat { font-family: 'Noto Sans SC', sans-serif; font-size: 10px; font-weight: 300; letter-spacing: 0.5em; color: var(--amber); margin-bottom: 20px; }
+    .article-title { font-family: 'Noto Serif SC', serif; font-size: 42px; font-weight: 400; line-height: 1.35; color: #E8E8F0; margin-bottom: 20px; }
+    .article-meta { font-family: 'Noto Sans SC', sans-serif; font-size: 12px; font-weight: 300; color: var(--faint); letter-spacing: 0.1em; padding-bottom: 32px; border-bottom: 1px solid var(--rule); }
+
+    /* ARTICLE BODY */
+    .article-body { max-width: 680px; margin: 0 auto; padding: 48px 60px 80px; }
+    .article-body h2 { font-family: 'Noto Serif SC', serif; font-size: 20px; font-weight: 500; color: var(--amber-light); margin: 48px 0 16px; letter-spacing: 0.05em; }
+    .article-body p { font-size: 16px; font-weight: 300; line-height: 2; color: var(--text); margin-bottom: 24px; }
+    .article-body .lead { font-size: 18px; line-height: 2; color: var(--smoke); border-left: 2px solid var(--amber); padding-left: 20px; margin-bottom: 40px; }
+    .tip-box { background: var(--card); border: 1px solid var(--rule); border-left: 3px solid var(--amber); padding: 24px 28px; margin: 20px 0; }
+    .tip-box .tip-name { font-family: 'Noto Serif SC', serif; font-size: 17px; font-weight: 500; color: var(--amber-light); margin-bottom: 12px; }
+    .tip-box p { margin-bottom: 10px; font-size: 14px; color: var(--smoke); line-height: 1.9; }
+    .tip-box p:last-child { margin-bottom: 0; }
+    .tip-box strong { color: var(--text); font-weight: 400; }
+    .timeline { display: flex; flex-direction: column; gap: 2px; margin: 24px 0; }
+    .timeline-row { display: grid; grid-template-columns: 100px 1fr; gap: 0; background: var(--rule); }
+    .timeline-time { background: var(--deep); padding: 16px 20px; font-family: 'Noto Sans SC', sans-serif; font-size: 12px; font-weight: 300; color: var(--amber); letter-spacing: 0.1em; display: flex; align-items: center; }
+    .timeline-desc { background: var(--card); padding: 16px 20px; font-size: 14px; font-weight: 300; color: var(--smoke); line-height: 1.85; }
+    .article-end { text-align: center; padding: 40px 0 0; border-top: 1px solid var(--rule); margin-top: 48px; font-family: 'Noto Sans SC', sans-serif; font-size: 12px; letter-spacing: 0.2em; color: var(--faint); }
+
+    /* FOOTER */
+    footer { background: var(--deep); border-top: 1px solid var(--rule); padding: 40px 60px; }
+    .footer-brand { font-family: 'Noto Serif SC', serif; font-size: 20px; font-weight: 400; letter-spacing: 0.3em; color: var(--amber); margin-bottom: 8px; }
+    .footer-tagline { font-size: 13px; font-weight: 300; color: var(--faint); }
+    .footer-bar { background: var(--void); border-top: 1px solid var(--rule); padding: 16px 60px; display: flex; justify-content: space-between; font-family: 'Noto Sans SC', sans-serif; font-size: 11px; font-weight: 300; color: var(--faint); }
+
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      .article-header { padding: 40px 20px 24px; }
+      .article-title { font-size: 26px; }
+      .article-body { padding: 32px 20px 60px; }
+      .article-body h2 { font-size: 17px; }
+      .article-body p { font-size: 15px; }
+      .article-body .lead { font-size: 15px; }
+      .timeline-row { grid-template-columns: 80px 1fr; }
+      footer { padding: 32px 20px; }
+      .footer-bar { padding: 14px 20px; flex-direction: column; gap: 4px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="gate-inner">
+    <div>
+      <div class="gate-logo">夜读</div>
+      <div class="gate-logo-sub">许颖的深夜阅读室</div>
+    </div>
+    <div class="gate-label">请输入访问密码</div>
+    <div class="gate-input-wrap">
+      <input type="password" id="gate-password" placeholder="· · · · · · · ·" autocomplete="off">
+      <button id="gate-btn" onclick="checkPassword()">进入</button>
+    </div>
+    <div class="gate-error" id="gate-error"></div>
+  </div>
+</div>
+
+<nav>
+  <div>
+    <div class="logo">夜读</div>
+    <div class="logo-sub">许颖的深夜阅读室</div>
+  </div>
+  <a href="/xy" class="back-btn">← 返回</a>
+</nav>
+
+<div class="article-header">
+  <div class="article-cat">健康</div>
+  <h1 class="article-title">皮质醇与睡眠：<br>为什么你累了却睡不着</h1>
+  <div class="article-meta">猪头 · 约3200字 · 约11分钟</div>
+</div>
+
+<div class="article-body">
+
+  <p class="lead">躺下来，脑子却停不下来。明明已经精疲力竭，却怎么也睡不着。或者半夜三点醒来，再也无法入睡。这不是意志力的问题，很可能是皮质醇的问题。</p>
+
+  <h2>皮质醇是什么</h2>
+  <p>皮质醇是由肾上腺皮质分泌的一种类固醇激素，通常被称为"压力激素"——但这个名字其实窄化了它的作用。皮质醇是人体最重要的调节激素之一，它管理能量代谢、免疫反应、血压、血糖，也深度参与睡眠-觉醒节律的调控。</p>
+  <p>它本身不是坏东西。问题在于：它应该在正确的时间出现，以正确的量出现。当这个节律被打乱，麻烦就来了。</p>
+
+  <h2>皮质醇的正常节律</h2>
+  <p>健康状态下，皮质醇在一天内遵循一个明确的昼夜节律：</p>
+
+  <div class="timeline">
+    <div class="timeline-row">
+      <div class="timeline-time">清晨 6–8点</div>
+      <div class="timeline-desc">皮质醇在醒来后30–45分钟内迅速攀升，达到全天最高峰。这个"皮质醇觉醒反应"（CAR）是身体的天然闹钟，帮助你从睡眠中切换到清醒状态，激活能量和注意力。</div>
+    </div>
+    <div class="timeline-row">
+      <div class="timeline-time">上午</div>
+      <div class="timeline-desc">皮质醇维持在较高水平，支撑认知功能、专注力和体力。这也是一天中处理复杂任务的最佳时段。</div>
+    </div>
+    <div class="timeline-row">
+      <div class="timeline-time">下午</div>
+      <div class="timeline-desc">皮质醇水平逐渐下降。下午3–4点前后有一个自然低谷，很多人会感到轻微困倦——这是正常的，不是"需要咖啡"的信号。</div>
+    </div>
+    <div class="timeline-row">
+      <div class="timeline-time">傍晚后</div>
+      <div class="timeline-desc">皮质醇持续走低。与此同时，褪黑素开始上升，体温下降，身体进入准备入睡的状态。</div>
+    </div>
+    <div class="timeline-row">
+      <div class="timeline-time">午夜–凌晨</div>
+      <div class="timeline-desc">皮质醇降至全天最低点。深度睡眠阶段，身体修复组织、整合记忆、清除代谢废物。</div>
+    </div>
+  </div>
+
+  <p>这个节律的核心逻辑是：<strong style="color:var(--amber-light)">皮质醇高时清醒，皮质醇低时入睡</strong>。一旦这个节律错位，睡眠就会出问题。</p>
+
+  <h2>什么会打乱皮质醇节律</h2>
+  <p>现代生活几乎是专门为打乱皮质醇节律而设计的。</p>
+
+  <div class="tip-box">
+    <div class="tip-name">慢性心理压力</div>
+    <p>工作、人际关系、财务焦虑——长期的心理压力会让皮质醇持续处于高位，尤其在傍晚和夜间本该下降的时候，它却仍然居高不下。结果是：到了该睡觉的时间，大脑依然处于"警戒模式"。</p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-name">夜间蓝光暴露</div>
+    <p>手机、平板、电脑屏幕发出的蓝光会直接抑制褪黑素分泌，同时对皮质醇节律造成干扰。睡前一小时盯屏幕，相当于告诉大脑"现在是白天"，皮质醇不会按时降低。</p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-name">不规律的作息时间</div>
+    <p>皮质醇节律由生物钟驱动，而生物钟依赖固定的"时间线索"来校准——最重要的是固定的起床时间和光照。经常熬夜、周末睡到中午、跨时区旅行，都会造成生物钟混乱，皮质醇节律随之紊乱。</p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-name">过度或不当的运动</div>
+    <p>运动会急性升高皮质醇。适度运动后皮质醇会恢复正常，但高强度训练放在傍晚或夜间，会让皮质醇在需要下降的时候反而上升，推迟入睡时间。</p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-name">咖啡因</div>
+    <p>咖啡因的半衰期约为5–7小时。下午2点喝的咖啡，到晚上9点仍有一半还在血液中。咖啡因通过阻断腺苷受体来抑制困意，同时也会延缓皮质醇的下降节律。</p>
+  </div>
+
+  <h2>皮质醇失调的典型表现</h2>
+  <p>如果你有以下几种体验，皮质醇节律紊乱的可能性很高：</p>
+  <p><strong style="color:var(--amber-light)">早上起不来，但到了晚上10点之后反而精神了</strong>——这是皮质醇节律"相位后移"的典型特征，清晨的峰值出现得太晚。</p>
+  <p><strong style="color:var(--amber-light)">入睡困难，脑子停不下来</strong>——夜间皮质醇仍然偏高，交感神经系统无法切换到休息状态。</p>
+  <p><strong style="color:var(--amber-light)">凌晨3–4点醒来，再难入睡</strong>——这个时间段皮质醇开始自然回升，如果本底水平过高，回升幅度会提前触发觉醒。</p>
+  <p><strong style="color:var(--amber-light)">长期疲劳但睡再久也不解乏</strong>——皮质醇长期过高或过低都会损害睡眠质量，深度睡眠减少，即使睡够时间也无法真正恢复。</p>
+
+  <h2>怎么重新校准皮质醇节律</h2>
+  <p>好消息是：皮质醇节律是可以调整的，而且不需要药物，生活方式的干预效果非常直接。</p>
+
+  <div class="tip-box">
+    <div class="tip-name">早晨见光——最重要的单一干预</div>
+    <p>起床后30分钟内，去户外或站在窗边接受自然光照至少10–20分钟。光照是重置生物钟、触发皮质醇觉醒反应的最强信号。阴天也有效，室内灯光不够。这一件事的优先级高于其他一切。</p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-name">固定起床时间，七天不变</div>
+    <p>不是固定入睡时间（那更难控制），而是固定起床时间。即使前一天睡得很晚，也在同一时间起床。这是重置生物钟节律最有效的行为干预，通常1–2周可以看到明显改善。</p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-name">傍晚后避免强光和蓝光</div>
+    <p>日落后调低室内灯光亮度，使用暖色调照明。手机和电脑开启夜间模式，或使用防蓝光眼镜。睡前1小时尽量放下屏幕。这不是玄学，是直接降低夜间皮质醇的有效方法。</p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-name">高强度运动安排在上午或早下午</div>
+    <p>运动本身对皮质醇节律有正向调节作用，但时间很重要。上午的高强度训练配合皮质醇自然高峰，效果好且不影响睡眠；傍晚后应以低强度恢复性活动（散步、拉伸、普拉提）为主。</p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-name">咖啡因窗口：起床后90分钟再喝，下午2点后停止</div>
+    <p>起床后90分钟内，皮质醇觉醒反应本身已经提供了充足的唤醒效果，这时候喝咖啡效果反而打折扣，还容易产生耐受。等皮质醇自然峰值过去之后再喝，效果更好。下午2点后尽量不摄入咖啡因。</p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-name">睡前的"皮质醇排空"习惯</div>
+    <p>睡前30–60分钟做一些主动降低皮质醇的事：写下明天的待办事项（把悬在脑子里的事"外包"出去）、缓慢深呼吸（激活副交感神经）、轻度拉伸或冥想。不是为了"放松"，而是主动给神经系统发出"可以关机了"的信号。</p>
+  </div>
+
+  <h2>关于补剂的补充说明</h2>
+  <p>如果生活方式干预已经做了，仍然感觉皮质醇节律偏乱，有几种补剂有一定的辅助作用：</p>
+  <p><strong style="color:var(--amber-light)">磷脂酰丝氨酸（Phosphatidylserine）</strong>——有研究支持它能降低运动后的皮质醇峰值，对压力引起的皮质醇偏高也有轻度调节作用。</p>
+  <p><strong style="color:var(--amber-light)">镁（甘氨酸镁）</strong>——前面补剂那篇文章提到过，镁对神经系统有直接的镇静效果，睡前补充有助于降低夜间皮质醇水平，改善深度睡眠。</p>
+  <p><strong style="color:var(--amber-light)">南非醉茄（Ashwagandha）</strong>——目前证据最充分的"适应原"补剂，多项随机对照试验显示它能显著降低慢性压力人群的皮质醇水平和主观压力感。</p>
+  <p>这些是辅助，不是解决方案。根本的干预仍然是节律——光照、时间、运动、咖啡因管理。</p>
+
+  <div class="article-end">全文完 · 如有疑问请咨询专业医生</div>
+</div>
+
+<footer>
+  <div class="footer-brand">夜读</div>
+  <p class="footer-tagline">许颖的深夜阅读室。每篇文章，都值得你给它一个安静的夜晚。</p>
+</footer>
+<div class="footer-bar">
+  <span>© 2024 夜读 · 许颖的深夜阅读室</span>
+  <span>深夜还在读，是件很美的事。</span>
+</div>
+
+<script>
+  const PASSWORD_HASH = '51c62bdea1a8956ac6b1784494752287924f77f172235e8cfcf04e777c05abc9';
+  async function sha256(str) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+  async function checkPassword() {
+    const input = document.getElementById('gate-password');
+    const errorEl = document.getElementById('gate-error');
+    const hash = await sha256(input.value.trim());
+    if (hash === PASSWORD_HASH) {
+      sessionStorage.setItem('xy_auth', '1');
+      document.getElementById('gate').classList.add('hidden');
+    } else {
+      errorEl.textContent = '密码不正确，请重试';
+      input.classList.add('error');
+      setTimeout(() => input.classList.remove('error'), 400);
+      input.value = ''; input.focus();
+    }
+  }
+  document.getElementById('gate-password').addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkPassword();
+    document.getElementById('gate-error').textContent = '';
+  });
+  if (sessionStorage.getItem('xy_auth') === '1') {
+    document.getElementById('gate').classList.add('hidden');
+  }
+</script>
+</body>
+</html>
