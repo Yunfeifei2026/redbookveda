@@ -8,7 +8,9 @@ export default async function middleware(request) {
   const subdomain = hostname.slice(0, hostname.indexOf('.scortt.org'));
   if (subdomain === 'www') return;
 
-  // Fetch from the Vercel deployment directly to avoid infinite loop
+  // Only rewrite root path — all other paths fall through to vercel.json rewrites
+  if (url.pathname !== '/') return;
+
   const fileUrl = new URL(request.url);
   fileUrl.hostname = 'redbookveda.vercel.app';
   fileUrl.pathname = `/clients/${subdomain}/index.html`;
