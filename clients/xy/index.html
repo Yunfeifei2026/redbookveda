@@ -456,6 +456,67 @@
     .quote-text em { font-style: normal; color: var(--amber-light); }
     .quote-src { font-family: 'Noto Sans SC', sans-serif; font-size: 11px; font-weight: 300; letter-spacing: 0.3em; color: var(--faint); }
 
+    /* ARTICLE BODY */
+    .article-body {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 64px 60px 80px;
+    }
+    .article-body h2 {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--amber-light);
+      margin: 48px 0 16px;
+      letter-spacing: 0.05em;
+    }
+    .article-body p {
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 2;
+      color: var(--text);
+      margin-bottom: 24px;
+    }
+    .article-body .lead {
+      font-size: 18px;
+      line-height: 2;
+      color: var(--smoke);
+      border-left: 2px solid var(--amber);
+      padding-left: 20px;
+      margin-bottom: 40px;
+    }
+    .article-body .tip-box {
+      background: var(--card);
+      border: 1px solid var(--rule);
+      border-left: 3px solid var(--amber);
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .article-body .tip-box p {
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: var(--smoke);
+    }
+    .article-body .tip-box p:last-child { margin-bottom: 0; }
+    .article-body .tip-box strong { color: var(--amber-light); font-weight: 400; }
+    .article-end {
+      text-align: center;
+      padding: 40px 0 0;
+      border-top: 1px solid var(--rule);
+      margin-top: 48px;
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      color: var(--faint);
+    }
+
+    @media (max-width: 768px) {
+      .article-body { padding: 40px 20px 60px; }
+      .article-body h2 { font-size: 17px; margin: 36px 0 12px; }
+      .article-body p { font-size: 15px; }
+      .article-body .lead { font-size: 15px; }
+    }
+
     /* FOOTER */
     footer {
       background: var(--deep);
@@ -566,14 +627,11 @@
     <div class="logo-sub">许颖的深夜阅读室</div>
   </div>
   <ul class="nav-links">
-    <li><a href="#">文学</a></li>
-    <li><a href="#">思想</a></li>
-    <li><a href="#">社会</a></li>
-    <li><a href="#">历史</a></li>
-    <li><a href="#">作者</a></li>
+    <li><a href="#">健康</a></li>
+    <li><a href="#">生活</a></li>
+    <li><a href="#">思考</a></li>
   </ul>
   <div class="nav-right">
-    <button class="subscribe-btn">加入夜读</button>
   </div>
 </nav>
 
@@ -582,87 +640,66 @@
   <div class="hero-bg-light"></div>
   <div class="hero-bg-light2"></div>
   <div class="hero-content">
-    <div class="hero-eyebrow">今夜推荐</div>
+    <div class="hero-eyebrow">健康</div>
     <h1 class="hero-title">
-      在消失之前：<br>
-      <span class="line2">致我们正在失去的城市记忆</span>
+      如何检查<br>
+      <span class="line2">自己的动脉斑块</span>
     </h1>
-    <p class="hero-excerpt">城市在加速更新，那些承载我们童年与青春的街道、建筑、气味，正以难以感知的速度消逝。当我们谈论城市时，我们真正在谈论什么？</p>
+    <p class="hero-excerpt">动脉斑块是心脑血管疾病最常见的元凶，却往往在沉默中生长多年。它不痛、不痒，直到某一天突然发作。了解它，是保护自己最朴素的方式。</p>
     <div class="hero-meta">
-      <span class="hero-author">张晓波 · 6200字 · 约20分钟</span>
-      <button class="hero-btn">开始阅读 <span class="hero-btn-arrow">→</span></button>
+      <span class="hero-author">健康专题 · 约2800字 · 约10分钟</span>
     </div>
   </div>
 </section>
 
-<div class="divider">
-  <div class="divider-line"></div>
-  <div class="divider-text">本夜精选</div>
-  <div class="divider-line"></div>
-</div>
+<div class="article-body">
 
-<div class="articles-grid">
-  <div class="article-card featured">
-    <div class="card-bg"></div>
-    <div class="card-cat">深度报道</div>
-    <div class="card-title">夜班医生的自白：那些我无法带走的离别</div>
-    <div class="card-excerpt">从业十七年，李承志见证了无数生死。他说，医学教人谦卑，因为它不断提醒你：有些东西无法被治愈，有些离别无法被推迟。</div>
-    <div class="card-footer">
-      <span class="card-author">李承志 · 7300字</span>
-      <span class="card-time">约30分钟</span>
-    </div>
-  </div>
-  <div class="article-card">
-    <div class="card-cat">心理</div>
-    <div class="card-title">人类为何需要无聊</div>
-    <div class="card-excerpt">在注意力被无限切割的时代，我们越来越难以忍受无聊。但也许正是这种不适，指向了某种被遗忘的人类能力。</div>
-    <div class="card-footer">
-      <span class="card-author">林诗语</span>
-      <span class="card-time">约20分钟</span>
-    </div>
-  </div>
-  <div class="article-card">
-    <div class="card-cat">社会观察</div>
-    <div class="card-title">独居经济学：一个人的繁荣与孤独</div>
-    <div class="card-excerpt">中国独居人口已超过9000万。这是一种生活方式的选择，还是某种社会结构性失落的表征？</div>
-    <div class="card-footer">
-      <span class="card-author">陈明远</span>
-      <span class="card-time">约34分钟</span>
-    </div>
-  </div>
-  <div class="article-card">
-    <div class="card-cat">人物记录</div>
-    <div class="card-title">最后一批手艺人</div>
-    <div class="card-excerpt">他们用一辈子磨砺出的技艺，在工业量产面前显得脆弱而珍贵。</div>
-    <div class="card-footer">
-      <span class="card-author">王芳宁</span>
-      <span class="card-time">约24分钟</span>
-    </div>
-  </div>
-</div>
+  <p class="lead">在中国，每年有超过300万人死于心脑血管疾病。其中绝大多数，都与动脉斑块直接相关。它不像癌症那样让人谈之色变，却在安静中造成了更大规模的伤亡。</p>
 
-<div class="spotlight">
-  <div class="spotlight-card">
-    <div class="spotlight-num">01</div>
-    <div class="spotlight-title">她们不谈爱情</div>
-    <div class="spotlight-meta">余晓雯 · 5100字</div>
-  </div>
-  <div class="spotlight-card">
-    <div class="spotlight-num">02</div>
-    <div class="spotlight-title">在异乡寻找汉字</div>
-    <div class="spotlight-meta">周建民 · 4400字</div>
-  </div>
-  <div class="spotlight-card">
-    <div class="spotlight-num">03</div>
-    <div class="spotlight-title">流量之后，意义何在</div>
-    <div class="spotlight-meta">赵思远 · 6900字</div>
-  </div>
-</div>
+  <h2>什么是动脉斑块</h2>
+  <p>动脉斑块，医学上称为动脉粥样硬化斑块，是血液中的脂质、钙质、炎性细胞等物质长期沉积在动脉内壁上形成的"垃圾堆"。想象一下：原本光滑的水管内壁，慢慢被水垢和杂质附着，管腔变窄，水流受阻，这就是斑块的本质。</p>
+  <p>斑块分为两类：<strong style="color:var(--amber-light)">稳定斑块</strong>质地较硬，不易破裂，危险性相对低；<strong style="color:var(--amber-light)">不稳定斑块</strong>（又叫软斑块、易损斑块）质地松软，一旦破裂，会迅速形成血栓，堵塞血管，引发心肌梗死或脑卒中。后者才是真正的"定时炸弹"。</p>
 
-<div class="quote-section">
-  <div class="quote-mark">"</div>
-  <p class="quote-text">深夜，是属于<em>思考者</em>的时间。<br>当世界安静下来，文字才真正开口说话。</p>
-  <div class="quote-src">夜读 · 写给深夜读者的话</div>
+  <h2>它通常没有症状</h2>
+  <p>这是斑块最危险的地方：它可以在你的血管里生长二三十年，毫无感觉。很多人的第一个"症状"，就是心梗或脑梗本身——而那时往往已经太晚。</p>
+  <p>但也有一些早期信号值得警惕：颈部出现血管杂音（用听诊器可以听到）、手脚发凉麻木、间歇性跛行（走一段路腿就酸痛，休息后好转）、反复出现的短暂头晕，以及胸闷胸痛。这些不一定意味着有斑块，但都值得去查一查。</p>
+
+  <h2>普通人能做哪些检查</h2>
+  <p>好消息是：检查动脉斑块并不复杂，很多检查在普通三甲医院甚至社区医院都能做。</p>
+
+  <div class="tip-box">
+    <p><strong>颈动脉超声</strong> — 最推荐的初筛手段</p>
+    <p>价格约100-300元，无创无辐射，10分钟出结果。颈动脉位置表浅，是全身动脉粥样硬化的"窗口"。报告中如出现"内中膜增厚"或"斑块形成"字样，需要进一步关注。</p>
+  </div>
+
+  <div class="tip-box">
+    <p><strong>踝肱指数（ABI）</strong> — 筛查下肢动脉</p>
+    <p>测量脚踝和手臂的血压比值，正常值在0.9-1.3之间。低于0.9提示下肢动脉可能有狭窄，是外周动脉疾病的重要指标。很多医院心内科或血管外科门诊可以做。</p>
+  </div>
+
+  <div class="tip-box">
+    <p><strong>冠状动脉CTA</strong> — 看心脏血管最直接</p>
+    <p>价格约800-1500元，有辐射，需要打造影剂。能直接看到冠状动脉有无狭窄和斑块。适合有胸闷胸痛症状、或有多个高危因素的人群。</p>
+  </div>
+
+  <div class="tip-box">
+    <p><strong>血脂四项</strong> — 最基础的风险评估</p>
+    <p>包括总胆固醇、低密度脂蛋白（LDL）、高密度脂蛋白（HDL）、甘油三酯。其中LDL是动脉斑块的主要"原料"，越低越好。年度体检时必查。</p>
+  </div>
+
+  <h2>哪些人需要重点关注</h2>
+  <p>以下人群建议从40岁开始，每1-2年做一次颈动脉超声和血脂检查：长期吸烟者、高血压患者、糖尿病患者、肥胖者（尤其腹型肥胖）、有家族性心脑血管病史、长期高脂肪饮食、缺乏运动的人。</p>
+  <p>如果你同时符合其中三项或以上，建议主动和医生讨论是否需要更早、更频繁地筛查。</p>
+
+  <h2>发现斑块之后怎么办</h2>
+  <p>发现斑块不等于立刻需要手术。医生会根据斑块的大小、性质、位置、以及你的整体心血管风险来决定处理方式。轻度的稳定斑块，通常通过生活方式干预和药物（他汀类）来控制进展；严重的斑块狭窄才需要介入治疗。</p>
+  <p>最重要的是：不要因为怕查出问题就拒绝检查。早发现，意味着早干预，意味着更多的选择和更好的预后。</p>
+
+  <h2>能预防吗</h2>
+  <p>可以，而且效果显著。戒烟是最有力的单一干预措施；控制血压和血糖；把LDL降到目标值以下；每周至少150分钟中等强度有氧运动；减少饱和脂肪摄入，增加蔬菜、全谷物、深海鱼。这些不是套话，每一条背后都有大量临床数据支撑。</p>
+  <p>动脉斑块的形成是一个漫长的过程，逆转它同样需要时间和耐心。但只要开始行动，改变就已经在发生。</p>
+
+  <div class="article-end">全文完 · 如有疑问请咨询专业医生</div>
 </div>
 
 <footer>
@@ -673,20 +710,9 @@
   <div class="footer-col">
     <h4>栏目</h4>
     <ul>
-      <li><a href="#">文学</a></li>
-      <li><a href="#">思想</a></li>
-      <li><a href="#">社会</a></li>
-      <li><a href="#">历史</a></li>
-      <li><a href="#">散文</a></li>
-    </ul>
-  </div>
-  <div class="footer-col">
-    <h4>关于</h4>
-    <ul>
-      <li><a href="#">我们是谁</a></li>
-      <li><a href="#">投稿</a></li>
-      <li><a href="#">订阅</a></li>
-      <li><a href="#">联系</a></li>
+      <li><a href="#">健康</a></li>
+      <li><a href="#">生活</a></li>
+      <li><a href="#">思考</a></li>
     </ul>
   </div>
 </footer>
