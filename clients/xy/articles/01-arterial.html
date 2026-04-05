@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>如何检查自己的动脉斑块 · 夜读</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --void: #080810; --deep: #0F0F1E; --card: #141428; --surface: #1A1A30;
+      --amber: #C8902A; --amber-light: #E8B050; --smoke: #9090A8;
+      --text: #D0D0E0; --faint: #4A4A60; --rule: #1E1E38;
+    }
+    body { background: var(--void); color: var(--text); font-family: 'Noto Serif SC', serif; line-height: 1.85; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999; opacity: 0.4;
+    }
+
+    /* GATE */
+    #gate { position: fixed; inset: 0; z-index: 10000; background: var(--void); display: flex; align-items: center; justify-content: center; }
+    #gate.hidden { display: none; }
+    .gate-inner { width: 320px; display: flex; flex-direction: column; align-items: center; gap: 32px; }
+    .gate-logo { font-family: 'Noto Serif SC', serif; font-size: 28px; font-weight: 400; letter-spacing: 0.3em; color: var(--amber); text-align: center; }
+    .gate-logo-sub { font-family: 'Noto Sans SC', sans-serif; font-size: 11px; font-weight: 300; letter-spacing: 0.4em; color: var(--faint); margin-top: 6px; text-align: center; }
+    .gate-label { font-family: 'Noto Sans SC', sans-serif; font-size: 10px; font-weight: 300; letter-spacing: 0.4em; color: var(--faint); }
+    .gate-input-wrap { width: 100%; display: flex; flex-direction: column; gap: 12px; }
+    #gate-password { width: 100%; background: var(--deep); border: 1px solid var(--rule); color: var(--text); padding: 14px 18px; font-family: 'Noto Serif SC', serif; font-size: 16px; letter-spacing: 0.2em; outline: none; text-align: center; transition: border-color 0.3s; }
+    #gate-password:focus { border-color: var(--amber); }
+    #gate-password.error { border-color: #882020; animation: shake 0.3s; }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+    #gate-btn { width: 100%; background: transparent; border: 1px solid var(--amber); color: var(--amber); padding: 12px; font-family: 'Noto Serif SC', serif; font-size: 14px; letter-spacing: 0.2em; cursor: pointer; transition: all 0.3s; }
+    #gate-btn:hover { background: var(--amber); color: var(--void); }
+    .gate-error { font-family: 'Noto Sans SC', sans-serif; font-size: 12px; color: #AA4040; letter-spacing: 0.1em; text-align: center; min-height: 18px; }
+
+    /* NAV */
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 24px 60px; position: sticky; top: 0; z-index: 100; background: linear-gradient(to bottom, var(--void) 60%, transparent); }
+    .logo { font-family: 'Noto Serif SC', serif; font-size: 20px; font-weight: 400; letter-spacing: 0.3em; color: var(--amber); }
+    .logo-sub { font-family: 'Noto Sans SC', sans-serif; font-size: 10px; font-weight: 300; letter-spacing: 0.4em; color: var(--faint); margin-top: 2px; }
+    .back-btn { font-family: 'Noto Sans SC', sans-serif; font-size: 12px; font-weight: 300; letter-spacing: 0.15em; color: var(--smoke); display: flex; align-items: center; gap: 8px; transition: color 0.3s; }
+    .back-btn:hover { color: var(--amber); }
+
+    /* ARTICLE HEADER */
+    .article-header { padding: 60px 60px 40px; max-width: 800px; margin: 0 auto; }
+    .article-cat { font-family: 'Noto Sans SC', sans-serif; font-size: 10px; font-weight: 300; letter-spacing: 0.5em; color: var(--amber); margin-bottom: 20px; }
+    .article-title { font-family: 'Noto Serif SC', serif; font-size: 42px; font-weight: 400; line-height: 1.35; color: #E8E8F0; margin-bottom: 20px; }
+    .article-meta { font-family: 'Noto Sans SC', sans-serif; font-size: 12px; font-weight: 300; color: var(--faint); letter-spacing: 0.1em; padding-bottom: 32px; border-bottom: 1px solid var(--rule); }
+
+    /* ARTICLE BODY */
+    .article-body { max-width: 680px; margin: 0 auto; padding: 48px 60px 80px; }
+    .article-body h2 { font-family: 'Noto Serif SC', serif; font-size: 20px; font-weight: 500; color: var(--amber-light); margin: 48px 0 16px; letter-spacing: 0.05em; }
+    .article-body p { font-size: 16px; font-weight: 300; line-height: 2; color: var(--text); margin-bottom: 24px; }
+    .article-body .lead { font-size: 18px; line-height: 2; color: var(--smoke); border-left: 2px solid var(--amber); padding-left: 20px; margin-bottom: 40px; }
+    .tip-box { background: var(--card); border: 1px solid var(--rule); border-left: 3px solid var(--amber); padding: 24px 28px; margin: 20px 0; }
+    .tip-box p { margin-bottom: 8px; font-size: 14px; color: var(--smoke); }
+    .tip-box p:last-child { margin-bottom: 0; }
+    .tip-box strong { color: var(--amber-light); font-weight: 400; }
+    .article-end { text-align: center; padding: 40px 0 0; border-top: 1px solid var(--rule); margin-top: 48px; font-family: 'Noto Sans SC', sans-serif; font-size: 12px; letter-spacing: 0.2em; color: var(--faint); }
+
+    /* FOOTER */
+    footer { background: var(--deep); border-top: 1px solid var(--rule); padding: 40px 60px; }
+    .footer-brand { font-family: 'Noto Serif SC', serif; font-size: 20px; font-weight: 400; letter-spacing: 0.3em; color: var(--amber); margin-bottom: 8px; }
+    .footer-tagline { font-size: 13px; font-weight: 300; color: var(--faint); }
+    .footer-bar { background: var(--void); border-top: 1px solid var(--rule); padding: 16px 60px; display: flex; justify-content: space-between; font-family: 'Noto Sans SC', sans-serif; font-size: 11px; font-weight: 300; color: var(--faint); }
+
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      .article-header { padding: 40px 20px 24px; }
+      .article-title { font-size: 26px; }
+      .article-body { padding: 32px 20px 60px; }
+      .article-body h2 { font-size: 17px; }
+      .article-body p { font-size: 15px; }
+      .article-body .lead { font-size: 15px; }
+      footer { padding: 32px 20px; }
+      .footer-bar { padding: 14px 20px; flex-direction: column; gap: 4px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="gate-inner">
+    <div>
+      <div class="gate-logo">夜读</div>
+      <div class="gate-logo-sub">许颖的深夜阅读室</div>
+    </div>
+    <div class="gate-label">请输入访问密码</div>
+    <div class="gate-input-wrap">
+      <input type="password" id="gate-password" placeholder="· · · · · · · ·" autocomplete="off">
+      <button id="gate-btn" onclick="checkPassword()">进入</button>
+    </div>
+    <div class="gate-error" id="gate-error"></div>
+  </div>
+</div>
+
+<nav>
+  <div>
+    <div class="logo">夜读</div>
+    <div class="logo-sub">许颖的深夜阅读室</div>
+  </div>
+  <a href="/xy" class="back-btn">← 返回</a>
+</nav>
+
+<div class="article-header">
+  <div class="article-cat">健康</div>
+  <h1 class="article-title">如何检查自己的动脉斑块</h1>
+  <div class="article-meta">猪头 · 约2800字 · 约10分钟</div>
+</div>
+
+<div class="article-body">
+  <p class="lead">在中国，每年有超过300万人死于心脑血管疾病。其中绝大多数，都与动脉斑块直接相关。它不像癌症那样让人谈之色变，却在安静中造成了更大规模的伤亡。</p>
+
+  <h2>什么是动脉斑块</h2>
+  <p>动脉斑块，医学上称为动脉粥样硬化斑块，是血液中的脂质、钙质、炎性细胞等物质长期沉积在动脉内壁上形成的"垃圾堆"。想象一下：原本光滑的水管内壁，慢慢被水垢和杂质附着，管腔变窄，水流受阻，这就是斑块的本质。</p>
+  <p>斑块分为两类：<strong style="color:var(--amber-light)">稳定斑块</strong>质地较硬，不易破裂，危险性相对低；<strong style="color:var(--amber-light)">不稳定斑块</strong>（又叫软斑块、易损斑块）质地松软，一旦破裂，会迅速形成血栓，堵塞血管，引发心肌梗死或脑卒中。后者才是真正的"定时炸弹"。</p>
+
+  <h2>它通常没有症状</h2>
+  <p>这是斑块最危险的地方：它可以在你的血管里生长二三十年，毫无感觉。很多人的第一个"症状"，就是心梗或脑梗本身——而那时往往已经太晚。</p>
+  <p>但也有一些早期信号值得警惕：颈部出现血管杂音、手脚发凉麻木、间歇性跛行（走一段路腿就酸痛，休息后好转）、反复出现的短暂头晕，以及胸闷胸痛。这些不一定意味着有斑块，但都值得去查一查。</p>
+
+  <h2>普通人能做哪些检查</h2>
+  <p>好消息是：检查动脉斑块并不复杂，很多检查在普通三甲医院甚至社区医院都能做。</p>
+
+  <div class="tip-box">
+    <p><strong>颈动脉超声</strong> — 最推荐的初筛手段</p>
+    <p>价格约100-300元，无创无辐射，10分钟出结果。颈动脉位置表浅，是全身动脉粥样硬化的"窗口"。报告中如出现"内中膜增厚"或"斑块形成"字样，需要进一步关注。</p>
+  </div>
+
+  <div class="tip-box">
+    <p><strong>踝肱指数（ABI）</strong> — 筛查下肢动脉</p>
+    <p>测量脚踝和手臂的血压比值，正常值在0.9-1.3之间。低于0.9提示下肢动脉可能有狭窄，是外周动脉疾病的重要指标。</p>
+  </div>
+
+  <div class="tip-box">
+    <p><strong>冠状动脉CTA</strong> — 看心脏血管最直接</p>
+    <p>价格约800-1500元，有辐射，需要打造影剂。能直接看到冠状动脉有无狭窄和斑块。适合有胸闷胸痛症状、或有多个高危因素的人群。</p>
+  </div>
+
+  <div class="tip-box">
+    <p><strong>血脂四项</strong> — 最基础的风险评估</p>
+    <p>包括总胆固醇、低密度脂蛋白（LDL）、高密度脂蛋白（HDL）、甘油三酯。其中LDL是动脉斑块的主要"原料"，越低越好。年度体检时必查。</p>
+  </div>
+
+  <h2>哪些人需要重点关注</h2>
+  <p>以下人群建议从40岁开始，每1-2年做一次颈动脉超声和血脂检查：长期吸烟者、高血压患者、糖尿病患者、肥胖者（尤其腹型肥胖）、有家族性心脑血管病史、长期高脂肪饮食、缺乏运动的人。</p>
+  <p>如果你同时符合其中三项或以上，建议主动和医生讨论是否需要更早、更频繁地筛查。</p>
+
+  <h2>发现斑块之后怎么办</h2>
+  <p>发现斑块不等于立刻需要手术。医生会根据斑块的大小、性质、位置、以及你的整体心血管风险来决定处理方式。轻度的稳定斑块，通常通过生活方式干预和药物（他汀类）来控制进展；严重的斑块狭窄才需要介入治疗。</p>
+  <p>最重要的是：不要因为怕查出问题就拒绝检查。早发现，意味着早干预，意味着更多的选择和更好的预后。</p>
+
+  <h2>能预防吗</h2>
+  <p>可以，而且效果显著。戒烟是最有力的单一干预措施；控制血压和血糖；把LDL降到目标值以下；每周至少150分钟中等强度有氧运动；减少饱和脂肪摄入，增加蔬菜、全谷物、深海鱼。</p>
+  <p>动脉斑块的形成是一个漫长的过程，逆转它同样需要时间和耐心。但只要开始行动，改变就已经在发生。</p>
+
+  <div class="article-end">全文完 · 如有疑问请咨询专业医生</div>
+</div>
+
+<footer>
+  <div class="footer-brand">夜读</div>
+  <p class="footer-tagline">许颖的深夜阅读室。每篇文章，都值得你给它一个安静的夜晚。</p>
+</footer>
+<div class="footer-bar">
+  <span>© 2024 夜读 · 许颖的深夜阅读室</span>
+  <span>深夜还在读，是件很美的事。</span>
+</div>
+
+<script>
+  const PASSWORD_HASH = '51c62bdea1a8956ac6b1784494752287924f77f172235e8cfcf04e777c05abc9';
+  async function sha256(str) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+  async function checkPassword() {
+    const input = document.getElementById('gate-password');
+    const errorEl = document.getElementById('gate-error');
+    const hash = await sha256(input.value.trim());
+    if (hash === PASSWORD_HASH) {
+      sessionStorage.setItem('xy_auth', '1');
+      document.getElementById('gate').classList.add('hidden');
+    } else {
+      errorEl.textContent = '密码不正确，请重试';
+      input.classList.add('error');
+      setTimeout(() => input.classList.remove('error'), 400);
+      input.value = '';
+      input.focus();
+    }
+  }
+  document.getElementById('gate-password').addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkPassword();
+    document.getElementById('gate-error').textContent = '';
+  });
+  if (sessionStorage.getItem('xy_auth') === '1') {
+    document.getElementById('gate').classList.add('hidden');
+  }
+</script>
+</body>
+</html>

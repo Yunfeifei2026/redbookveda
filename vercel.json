@@ -1,6 +1,7 @@
 {
   "cleanUrls": true,
   "rewrites": [
+    { "source": "/xy/articles/:slug", "destination": "/clients/xy/articles/:slug.html" },
     { "source": "/xy", "destination": "/clients/xy/" }
   ]
 }

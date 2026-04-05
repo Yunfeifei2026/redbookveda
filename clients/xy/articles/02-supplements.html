@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>日常补剂指南 · 夜读</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --void: #080810; --deep: #0F0F1E; --card: #141428; --surface: #1A1A30;
+      --amber: #C8902A; --amber-light: #E8B050; --smoke: #9090A8;
+      --text: #D0D0E0; --faint: #4A4A60; --rule: #1E1E38;
+    }
+    body { background: var(--void); color: var(--text); font-family: 'Noto Serif SC', serif; line-height: 1.85; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999; opacity: 0.4;
+    }
+
+    /* GATE */
+    #gate { position: fixed; inset: 0; z-index: 10000; background: var(--void); display: flex; align-items: center; justify-content: center; }
+    #gate.hidden { display: none; }
+    .gate-inner { width: 320px; display: flex; flex-direction: column; align-items: center; gap: 32px; }
+    .gate-logo { font-family: 'Noto Serif SC', serif; font-size: 28px; font-weight: 400; letter-spacing: 0.3em; color: var(--amber); text-align: center; }
+    .gate-logo-sub { font-family: 'Noto Sans SC', sans-serif; font-size: 11px; font-weight: 300; letter-spacing: 0.4em; color: var(--faint); margin-top: 6px; text-align: center; }
+    .gate-label { font-family: 'Noto Sans SC', sans-serif; font-size: 10px; font-weight: 300; letter-spacing: 0.4em; color: var(--faint); }
+    .gate-input-wrap { width: 100%; display: flex; flex-direction: column; gap: 12px; }
+    #gate-password { width: 100%; background: var(--deep); border: 1px solid var(--rule); color: var(--text); padding: 14px 18px; font-family: 'Noto Serif SC', serif; font-size: 16px; letter-spacing: 0.2em; outline: none; text-align: center; transition: border-color 0.3s; }
+    #gate-password:focus { border-color: var(--amber); }
+    #gate-password.error { border-color: #882020; animation: shake 0.3s; }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+    #gate-btn { width: 100%; background: transparent; border: 1px solid var(--amber); color: var(--amber); padding: 12px; font-family: 'Noto Serif SC', serif; font-size: 14px; letter-spacing: 0.2em; cursor: pointer; transition: all 0.3s; }
+    #gate-btn:hover { background: var(--amber); color: var(--void); }
+    .gate-error { font-family: 'Noto Sans SC', sans-serif; font-size: 12px; color: #AA4040; letter-spacing: 0.1em; text-align: center; min-height: 18px; }
+
+    /* NAV */
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 24px 60px; position: sticky; top: 0; z-index: 100; background: linear-gradient(to bottom, var(--void) 60%, transparent); }
+    .logo { font-family: 'Noto Serif SC', serif; font-size: 20px; font-weight: 400; letter-spacing: 0.3em; color: var(--amber); }
+    .logo-sub { font-family: 'Noto Sans SC', sans-serif; font-size: 10px; font-weight: 300; letter-spacing: 0.4em; color: var(--faint); margin-top: 2px; }
+    .back-btn { font-family: 'Noto Sans SC', sans-serif; font-size: 12px; font-weight: 300; letter-spacing: 0.15em; color: var(--smoke); display: flex; align-items: center; gap: 8px; transition: color 0.3s; }
+    .back-btn:hover { color: var(--amber); }
+
+    /* ARTICLE HEADER */
+    .article-header { padding: 60px 60px 40px; max-width: 800px; margin: 0 auto; }
+    .article-cat { font-family: 'Noto Sans SC', sans-serif; font-size: 10px; font-weight: 300; letter-spacing: 0.5em; color: var(--amber); margin-bottom: 20px; }
+    .article-title { font-family: 'Noto Serif SC', serif; font-size: 42px; font-weight: 400; line-height: 1.35; color: #E8E8F0; margin-bottom: 20px; }
+    .article-meta { font-family: 'Noto Sans SC', sans-serif; font-size: 12px; font-weight: 300; color: var(--faint); letter-spacing: 0.1em; padding-bottom: 32px; border-bottom: 1px solid var(--rule); }
+
+    /* ARTICLE BODY */
+    .article-body { max-width: 680px; margin: 0 auto; padding: 48px 60px 80px; }
+    .article-body h2 { font-family: 'Noto Serif SC', serif; font-size: 20px; font-weight: 500; color: var(--amber-light); margin: 48px 0 16px; letter-spacing: 0.05em; }
+    .article-body p { font-size: 16px; font-weight: 300; line-height: 2; color: var(--text); margin-bottom: 24px; }
+    .article-body .lead { font-size: 18px; line-height: 2; color: var(--smoke); border-left: 2px solid var(--amber); padding-left: 20px; margin-bottom: 40px; }
+    .tip-box { background: var(--card); border: 1px solid var(--rule); border-left: 3px solid var(--amber); padding: 24px 28px; margin: 20px 0; }
+    .tip-box .tip-name { font-family: 'Noto Serif SC', serif; font-size: 17px; font-weight: 500; color: var(--amber-light); margin-bottom: 12px; }
+    .tip-box p { margin-bottom: 8px; font-size: 14px; color: var(--smoke); line-height: 1.9; }
+    .tip-box p:last-child { margin-bottom: 0; }
+    .tip-box strong { color: var(--text); font-weight: 400; }
+    .tip-box .dosage { display: inline-block; margin-top: 10px; font-family: 'Noto Sans SC', sans-serif; font-size: 12px; letter-spacing: 0.1em; color: var(--amber); border: 1px solid rgba(200,144,42,0.3); padding: 4px 10px; }
+    .warning { background: rgba(100,20,20,0.2); border: 1px solid rgba(150,50,50,0.3); border-left: 3px solid #884040; padding: 16px 20px; margin: 32px 0; font-size: 13px; color: var(--smoke); line-height: 1.9; }
+    .article-end { text-align: center; padding: 40px 0 0; border-top: 1px solid var(--rule); margin-top: 48px; font-family: 'Noto Sans SC', sans-serif; font-size: 12px; letter-spacing: 0.2em; color: var(--faint); }
+
+    /* FOOTER */
+    footer { background: var(--deep); border-top: 1px solid var(--rule); padding: 40px 60px; }
+    .footer-brand { font-family: 'Noto Serif SC', serif; font-size: 20px; font-weight: 400; letter-spacing: 0.3em; color: var(--amber); margin-bottom: 8px; }
+    .footer-tagline { font-size: 13px; font-weight: 300; color: var(--faint); }
+    .footer-bar { background: var(--void); border-top: 1px solid var(--rule); padding: 16px 60px; display: flex; justify-content: space-between; font-family: 'Noto Sans SC', sans-serif; font-size: 11px; font-weight: 300; color: var(--faint); }
+
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      .article-header { padding: 40px 20px 24px; }
+      .article-title { font-size: 26px; }
+      .article-body { padding: 32px 20px 60px; }
+      .article-body h2 { font-size: 17px; }
+      .article-body p { font-size: 15px; }
+      .article-body .lead { font-size: 15px; }
+      footer { padding: 32px 20px; }
+      .footer-bar { padding: 14px 20px; flex-direction: column; gap: 4px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="gate-inner">
+    <div>
+      <div class="gate-logo">夜读</div>
+      <div class="gate-logo-sub">许颖的深夜阅读室</div>
+    </div>
+    <div class="gate-label">请输入访问密码</div>
+    <div class="gate-input-wrap">
+      <input type="password" id="gate-password" placeholder="· · · · · · · ·" autocomplete="off">
+      <button id="gate-btn" onclick="checkPassword()">进入</button>
+    </div>
+    <div class="gate-error" id="gate-error"></div>
+  </div>
+</div>
+
+<nav>
+  <div>
+    <div class="logo">夜读</div>
+    <div class="logo-sub">许颖的深夜阅读室</div>
+  </div>
+  <a href="/xy" class="back-btn">← 返回</a>
+</nav>
+
+<div class="article-header">
+  <div class="article-cat">健康</div>
+  <h1 class="article-title">日常补剂的作用：<br>你真的需要吃这些吗</h1>
+  <div class="article-meta">猪头 · 约3500字 · 约12分钟</div>
+</div>
+
+<div class="article-body">
+
+  <p class="lead">补剂市场每年以两位数的速度增长，货架上的产品越来越多，说法越来越夸张。但大多数人对"为什么吃""吃多少""什么时候吃"其实并不清楚。这篇文章只讲证据，不讲概念。</p>
+
+  <div class="warning">
+    本文内容仅供参考，不构成医疗建议。补剂的适用剂量因人而异，建议在医生或营养师的指导下使用，尤其是有基础疾病或正在服药的人群。
+  </div>
+
+  <h2>镁（Magnesium）</h2>
+
+  <div class="tip-box">
+    <div class="tip-name">镁</div>
+    <p>镁是人体超过300种酶促反应的辅助因子，参与能量代谢、蛋白质合成、肌肉收缩和神经传导。现代饮食（精加工食品为主）普遍缺镁，研究估计约有45%的成年人摄入不足。</p>
+    <p><strong>主要作用：</strong>改善睡眠质量、缓解肌肉痉挛、降低焦虑感、辅助控制血压和血糖。镁与维生素D的吸收也密切相关——缺镁时，补D3的效果会大打折扣。</p>
+    <p><strong>剂型选择：</strong>甘氨酸镁（Magnesium Glycinate）吸收率最高、肠胃耐受性好，是首选。氧化镁价格低但吸收差，且容易导致腹泻。</p>
+    <span class="dosage">常见剂量：睡前 200–400mg 甘氨酸镁</span>
+  </div>
+
+  <h2>维生素 D3</h2>
+
+  <div class="tip-box">
+    <div class="tip-name">维生素 D3</div>
+    <p>维生素D本质上是一种激素前体，几乎每个器官系统都有其受体。长期室内工作、防晒意识强的人群普遍缺乏。中国城市居民的维生素D缺乏率超过70%。</p>
+    <p><strong>主要作用：</strong>调节钙磷代谢、维持骨骼健康、增强免疫功能、改善情绪（与抑郁症风险相关）、降低多种慢性病风险。</p>
+    <p><strong>注意事项：</strong>D3需要与K2（MK-7型）配合服用，K2负责把钙引导到骨骼，防止钙沉积在血管壁。同时需要有足够的镁来激活D3。补充D3是脂溶性的，随餐（含脂肪的食物）吸收更好。</p>
+    <p><strong>建议先查血：</strong>25-羟基维生素D检测，目标值在50–80 ng/mL之间。</p>
+    <span class="dosage">常见剂量：1000–2000 IU/天（缺乏者可在医生指导下用更高剂量）</span>
+  </div>
+
+  <h2>鱼油（Omega-3）</h2>
+
+  <div class="tip-box">
+    <div class="tip-name">鱼油</div>
+    <p>鱼油中的核心成分是EPA和DHA两种Omega-3脂肪酸。现代饮食中Omega-6（植物油）摄入过多，Omega-3严重不足，导致全身慢性炎症状态加重。</p>
+    <p><strong>主要作用：</strong>降低甘油三酯（效果明显）、抗炎、保护心血管、改善认知功能和情绪、对干眼症也有一定帮助。EPA偏向心血管和抗炎，DHA偏向大脑和视网膜。</p>
+    <p><strong>如何选择：</strong>看EPA+DHA的总量，不要只看鱼油总量。每粒1000mg的鱼油，可能实际EPA+DHA只有300mg。建议选每日摄入EPA+DHA合计达到1–2g的产品。rTG型（重酯化甘油三酯型）吸收率最高。</p>
+    <p><strong>注意：</strong>服用抗凝药物（如华法林）的人需在医生指导下使用，鱼油有轻微抗凝效果。</p>
+    <span class="dosage">常见剂量：EPA+DHA 合计 1–2g/天，随餐服用</span>
+  </div>
+
+  <h2>辅酶 Q10（CoQ10）</h2>
+
+  <div class="tip-box">
+    <div class="tip-name">辅酶 Q10</div>
+    <p>CoQ10是细胞线粒体产生能量（ATP）的关键辅因子，同时也是强效抗氧化剂。人体自身可以合成，但合成能力随年龄增长显著下降，40岁后尤为明显。服用他汀类降脂药会大幅消耗体内CoQ10，这也是他汀类药物导致肌肉无力/疼痛的重要原因之一。</p>
+    <p><strong>主要作用：</strong>改善细胞能量代谢、保护心肌、抗氧化、缓解他汀类药物引起的肌肉症状、对偏头痛也有一定预防效果。</p>
+    <p><strong>剂型选择：</strong>泛醇（Ubiquinol）是CoQ10的还原型，生物利用度比普通氧化型（Ubiquinone）高3–5倍，尤其适合中老年人和他汀使用者。</p>
+    <span class="dosage">常见剂量：100–200mg/天泛醇，随含脂肪的餐食服用</span>
+  </div>
+
+  <h2>水飞蓟（Milk Thistle / 水飞蓟素）</h2>
+
+  <div class="tip-box">
+    <div class="tip-name">水飞蓟</div>
+    <p>水飞蓟的活性成分是水飞蓟素（Silymarin），是目前研究最广泛的天然护肝物质之一。它通过抗氧化、抗炎机制保护肝细胞，并能促进肝细胞再生。</p>
+    <p><strong>主要作用：</strong>辅助改善脂肪肝、保护肝脏免受酒精和毒素损伤、辅助降低转氨酶（ALT/AST）。对于长期服药、偶尔饮酒、或体检发现轻度脂肪肝的人有参考价值。</p>
+    <p><strong>注意：</strong>水飞蓟是辅助手段，不能替代生活方式的改变。脂肪肝最有效的干预仍然是减重、控糖、减少精制碳水。</p>
+    <span class="dosage">常见剂量：水飞蓟素（标准化提取物）140–420mg/天</span>
+  </div>
+
+  <h2>胶原蛋白</h2>
+
+  <div class="tip-box">
+    <div class="tip-name">胶原蛋白</div>
+    <p>胶原蛋白是人体含量最多的蛋白质，构成皮肤、关节软骨、骨骼、血管壁的主要成分。口服胶原蛋白是否有效长期存在争议——关键问题是它会被消化成氨基酸，真的能"定向"去皮肤或关节吗？</p>
+    <p><strong>现有证据：</strong>水解胶原蛋白肽（Collagen Peptides）确实能刺激成纤维细胞产生更多胶原，对皮肤弹性、关节疼痛（尤其是膝关节）有统计学意义的改善。效果不夸张，但真实存在。</p>
+    <p><strong>吸收的关键：</strong>胶原蛋白的合成需要维生素C作为辅因子。单补胶原蛋白而缺乏维生素C，效果会大打折扣。</p>
+    <p><strong>剂型：</strong>水解胶原蛋白肽（分子量较小）比整蛋白吸收更好。I型胶原偏向皮肤，II型偏向关节软骨。</p>
+    <span class="dosage">常见剂量：2.5–10g/天水解胶原蛋白肽，配合维生素C服用</span>
+  </div>
+
+  <h2>怎么组合最合理</h2>
+  <p>这六种补剂并不是人人都需要全部服用。一个相对实用的优先顺序：先补镁和D3（缺乏最普遍，效果最基础），其次是鱼油（现代饮食几乎人人不足），再根据自身情况选择CoQ10（40岁以上或服他汀者）、水飞蓟（有肝脏问题者）、胶原蛋白（关节或皮肤有需求者）。</p>
+  <p>补剂不是越多越好。过度叠加会增加肝肾负担，部分补剂之间也存在相互作用。从一两种开始，观察身体反应，逐步调整，是更稳妥的方式。</p>
+
+  <div class="article-end">全文完 · 如有疑问请咨询专业医生或营养师</div>
+</div>
+
+<footer>
+  <div class="footer-brand">夜读</div>
+  <p class="footer-tagline">许颖的深夜阅读室。每篇文章，都值得你给它一个安静的夜晚。</p>
+</footer>
+<div class="footer-bar">
+  <span>© 2024 夜读 · 许颖的深夜阅读室</span>
+  <span>深夜还在读，是件很美的事。</span>
+</div>
+
+<script>
+  const PASSWORD_HASH = '51c62bdea1a8956ac6b1784494752287924f77f172235e8cfcf04e777c05abc9';
+  async function sha256(str) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+  async function checkPassword() {
+    const input = document.getElementById('gate-password');
+    const errorEl = document.getElementById('gate-error');
+    const hash = await sha256(input.value.trim());
+    if (hash === PASSWORD_HASH) {
+      sessionStorage.setItem('xy_auth', '1');
+      document.getElementById('gate').classList.add('hidden');
+    } else {
+      errorEl.textContent = '密码不正确，请重试';
+      input.classList.add('error');
+      setTimeout(() => input.classList.remove('error'), 400);
+      input.value = '';
+      input.focus();
+    }
+  }
+  document.getElementById('gate-password').addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkPassword();
+    document.getElementById('gate-error').textContent = '';
+  });
+  if (sessionStorage.getItem('xy_auth') === '1') {
+    document.getElementById('gate').classList.add('hidden');
+  }
+</script>
+</body>
+</html>
