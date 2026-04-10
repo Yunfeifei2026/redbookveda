@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>大运河徒步 22km · 夜读</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --void: #080810; --deep: #0F0F1E; --card: #141428; --surface: #1A1A30;
+      --amber: #C8902A; --amber-light: #E8B050; --smoke: #9090A8;
+      --text: #D0D0E0; --faint: #4A4A60; --rule: #1E1E38;
+      --danger: #C84040; --danger-light: #E86060;
+    }
+    body { background: var(--void); color: var(--text); font-family: 'Noto Serif SC', serif; line-height: 1.85; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999; opacity: 0.4;
+    }
+
+    /* GATE */
+    #gate { position: fixed; inset: 0; z-index: 10000; background: var(--void); display: flex; align-items: center; justify-content: center; }
+    #gate.hidden { display: none; }
+    .gate-inner { width: 320px; display: flex; flex-direction: column; align-items: center; gap: 32px; }
+    .gate-logo { font-family: 'Noto Serif SC', serif; font-size: 28px; font-weight: 400; letter-spacing: 0.3em; color: var(--amber); text-align: center; }
+    .gate-logo-sub { font-family: 'Noto Sans SC', sans-serif; font-size: 11px; font-weight: 300; letter-spacing: 0.4em; color: var(--faint); margin-top: 6px; text-align: center; }
+    .gate-label { font-family: 'Noto Sans SC', sans-serif; font-size: 10px; font-weight: 300; letter-spacing: 0.4em; color: var(--faint); }
+    .gate-input-wrap { width: 100%; display: flex; flex-direction: column; gap: 12px; }
+    #gate-password { width: 100%; background: var(--deep); border: 1px solid var(--rule); color: var(--text); padding: 14px 18px; font-family: 'Noto Serif SC', serif; font-size: 16px; letter-spacing: 0.2em; outline: none; text-align: center; transition: border-color 0.3s; }
+    #gate-password:focus { border-color: var(--amber); }
+    #gate-password.error { border-color: #882020; animation: shake 0.3s; }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+    #gate-btn { width: 100%; background: transparent; border: 1px solid var(--amber); color: var(--amber); padding: 12px; font-family: 'Noto Serif SC', serif; font-size: 14px; letter-spacing: 0.2em; cursor: pointer; transition: all 0.3s; }
+    #gate-btn:hover { background: var(--amber); color: var(--void); }
+    .gate-error { font-family: 'Noto Sans SC', sans-serif; font-size: 12px; color: #AA4040; letter-spacing: 0.1em; text-align: center; min-height: 18px; }
+
+    /* NAV */
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 24px 60px; position: sticky; top: 0; z-index: 100; background: linear-gradient(to bottom, var(--void) 60%, transparent); }
+    .logo { font-family: 'Noto Serif SC', serif; font-size: 20px; font-weight: 400; letter-spacing: 0.3em; color: var(--amber); }
+    .logo-sub { font-family: 'Noto Sans SC', sans-serif; font-size: 10px; font-weight: 300; letter-spacing: 0.4em; color: var(--faint); margin-top: 2px; }
+    .back-btn { font-family: 'Noto Sans SC', sans-serif; font-size: 12px; font-weight: 300; letter-spacing: 0.15em; color: var(--smoke); display: flex; align-items: center; gap: 8px; transition: color 0.3s; }
+    .back-btn:hover { color: var(--amber); }
+
+    /* ARTICLE HEADER */
+    .article-header { padding: 48px 60px 32px; max-width: 800px; margin: 0 auto; }
+    .article-cat { font-family: 'Noto Sans SC', sans-serif; font-size: 10px; font-weight: 300; letter-spacing: 0.5em; color: var(--amber); margin-bottom: 16px; }
+    .article-title { font-family: 'Noto Serif SC', serif; font-size: 38px; font-weight: 400; line-height: 1.35; color: #E8E8F0; margin-bottom: 16px; }
+    .article-meta { font-family: 'Noto Sans SC', sans-serif; font-size: 12px; font-weight: 300; color: var(--faint); letter-spacing: 0.1em; padding-bottom: 28px; border-bottom: 1px solid var(--rule); }
+
+    /* STATS BAR */
+    .stats-bar {
+      display: flex; gap: 0; margin: 0 60px 32px;
+      background: var(--rule);
+    }
+    .stat {
+      flex: 1; background: var(--card); padding: 20px 24px; text-align: center;
+    }
+    .stat-value { font-family: 'Noto Serif SC', serif; font-size: 28px; font-weight: 400; color: var(--amber); line-height: 1; margin-bottom: 6px; }
+    .stat-label { font-family: 'Noto Sans SC', sans-serif; font-size: 10px; font-weight: 300; letter-spacing: 0.2em; color: var(--faint); }
+
+    /* MAP CONTAINER */
+    .map-wrap {
+      position: relative;
+      margin: 0 60px 8px;
+      overflow: hidden;
+      background: var(--deep);
+    }
+    .map-wrap::after {
+      content: '';
+      display: block;
+      padding-bottom: calc(1696 / 1952 * 100%);
+    }
+    .map-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0.88;
+    }
+    .map-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* LEGEND */
+    .map-legend {
+      margin: 0 60px 32px;
+      background: var(--card);
+      border: 1px solid var(--rule);
+      padding: 14px 20px;
+      display: flex;
+      gap: 28px;
+      align-items: center;
+    }
+    .legend-item { display: flex; align-items: center; gap: 8px; font-family: 'Noto Sans SC', sans-serif; font-size: 12px; font-weight: 300; color: var(--smoke); }
+    .legend-line { width: 28px; height: 3px; border-radius: 2px; }
+    .legend-line.canal { background: var(--amber); }
+    .legend-line.road { background: var(--danger); }
+    .legend-line.road { background: repeating-linear-gradient(90deg, var(--danger) 0, var(--danger) 6px, transparent 6px, transparent 10px); }
+
+    /* STAGE BUTTONS */
+    .stages {
+      margin: 0 60px 32px;
+      display: flex;
+      gap: 2px;
+      background: var(--rule);
+    }
+    .stage-btn {
+      flex: 1; background: var(--card); border: none; padding: 14px 8px;
+      font-family: 'Noto Sans SC', sans-serif; font-size: 11px; font-weight: 300;
+      color: var(--smoke); cursor: pointer; transition: all 0.3s;
+      letter-spacing: 0.05em; text-align: center; line-height: 1.5;
+    }
+    .stage-btn:hover { background: var(--surface); color: var(--text); }
+    .stage-btn.active { background: var(--surface); color: var(--amber); }
+    .stage-btn.danger { }
+    .stage-btn.danger.active { color: var(--danger-light); }
+    .stage-dot { display: block; width: 8px; height: 8px; border-radius: 50%; margin: 0 auto 6px; background: var(--faint); transition: background 0.3s; }
+    .stage-btn.active .stage-dot { background: var(--amber); }
+    .stage-btn.danger.active .stage-dot { background: var(--danger); }
+
+    /* STAGE INFO */
+    .stage-info {
+      margin: 0 60px 48px;
+      background: var(--card);
+      border: 1px solid var(--rule);
+      border-left: 3px solid var(--amber);
+      padding: 28px 32px;
+      min-height: 100px;
+      transition: border-color 0.3s;
+    }
+    .stage-info.danger-mode { border-left-color: var(--danger); }
+    .stage-info-title { font-family: 'Noto Serif SC', serif; font-size: 18px; font-weight: 400; color: #E0E0EE; margin-bottom: 10px; }
+    .stage-info-body { font-size: 14px; font-weight: 300; color: var(--smoke); line-height: 1.9; }
+    .stage-info-tag { display: inline-block; font-family: 'Noto Sans SC', sans-serif; font-size: 10px; letter-spacing: 0.2em; color: var(--amber); border: 1px solid rgba(200,144,42,0.4); padding: 3px 10px; margin-bottom: 12px; }
+    .stage-info-tag.road-tag { color: var(--danger-light); border-color: rgba(200,64,64,0.4); }
+
+    /* FOOTER */
+    footer { background: var(--deep); border-top: 1px solid var(--rule); padding: 40px 60px; }
+    .footer-brand { font-family: 'Noto Serif SC', serif; font-size: 20px; font-weight: 400; letter-spacing: 0.3em; color: var(--amber); margin-bottom: 8px; }
+    .footer-tagline { font-size: 13px; font-weight: 300; color: var(--faint); }
+    .footer-bar { background: var(--void); border-top: 1px solid var(--rule); padding: 16px 60px; display: flex; justify-content: space-between; font-family: 'Noto Sans SC', sans-serif; font-size: 11px; font-weight: 300; color: var(--faint); }
+
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      .article-header { padding: 32px 20px 20px; }
+      .article-title { font-size: 24px; }
+      .stats-bar { margin: 0 20px 24px; }
+      .stat-value { font-size: 22px; }
+      .map-wrap { margin: 0 0 8px; }
+      .map-legend { margin: 0 0 20px; padding: 12px 16px; gap: 16px; flex-wrap: wrap; }
+      .stages { margin: 0 0 20px; }
+      .stage-btn { font-size: 10px; padding: 12px 4px; }
+      .stage-info { margin: 0 0 40px; }
+      footer { padding: 32px 20px; }
+      .footer-bar { padding: 14px 20px; flex-direction: column; gap: 4px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="gate-inner">
+    <div>
+      <div class="gate-logo">夜读</div>
+      <div class="gate-logo-sub">许颖的深夜阅读室</div>
+    </div>
+    <div class="gate-label">请输入访问密码</div>
+    <div class="gate-input-wrap">
+      <input type="password" id="gate-password" placeholder="· · · · · · · ·" autocomplete="off">
+      <button id="gate-btn" onclick="checkPassword()">进入</button>
+    </div>
+    <div class="gate-error" id="gate-error"></div>
+  </div>
+</div>
+
+<nav>
+  <div>
+    <div class="logo">夜读</div>
+    <div class="logo-sub">许颖的深夜阅读室</div>
+  </div>
+  <a href="/xy" class="back-btn">← 返回</a>
+</nav>
+
+<div class="article-header">
+  <div class="article-cat">徒步</div>
+  <h1 class="article-title">大运河徒步全程路线：<br>从拱墅到塘栖 22 公里</h1>
+  <div class="article-meta">路线说明 · 点击各段查看详情</div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat">
+    <div class="stat-value">22</div>
+    <div class="stat-label">公里</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value">2</div>
+    <div class="stat-label">借道公路</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value">南→北</div>
+    <div class="stat-label">方向</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value">全平</div>
+    <div class="stat-label">地形</div>
+  </div>
+</div>
+
+<!-- MAP -->
+<div class="map-wrap" id="mapWrap">
+  <img class="map-img" src="/clients/xy/hike-maps/map-full.png" alt="大运河徒步路线图">
+  <svg class="map-svg" viewBox="0 0 1952 1696" xmlns="http://www.w3.org/2000/svg" id="routeSvg">
+    <defs>
+      <!-- Glow filter for active segments -->
+      <filter id="glow">
+        <feGaussianBlur stdDeviation="4" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <!-- Moving dot animation -->
+      <marker id="dot-amber" markerWidth="8" markerHeight="8" refX="4" refY="4">
+        <circle cx="4" cy="4" r="3" fill="#C8902A"/>
+      </marker>
+    </defs>
+
+    <!-- SEGMENT 1: 起点 → 宝积禅寺（沿运河） -->
+    <polyline id="seg1"
+      points="1300,1580 1180,1470 1050,1360 940,1250 850,1160 780,1080 720,1010"
+      fill="none" stroke="#C8902A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"
+      opacity="0.3"/>
+
+    <!-- DETOUR 1: 下塘路（宝积禅寺→水岸崇园） -->
+    <polyline id="det1"
+      points="720,1010 680,950 645,895 610,850"
+      fill="none" stroke="#C84040" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"
+      stroke-dasharray="10,6" opacity="0.3"/>
+
+    <!-- SEGMENT 2: 水岸崇园 → 汽车园（沿运河） -->
+    <polyline id="seg2"
+      points="610,850 570,800 535,750 505,700 480,655"
+      fill="none" stroke="#C8902A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"
+      opacity="0.3"/>
+
+    <!-- DETOUR 2: 拱康路（汽车园→下一段） -->
+    <polyline id="det2"
+      points="480,655 450,605 422,562"
+      fill="none" stroke="#C84040" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"
+      stroke-dasharray="10,6" opacity="0.3"/>
+
+    <!-- SEGMENT 3: → 塘栖（沿运河） -->
+    <polyline id="seg3"
+      points="422,562 395,510 368,455 345,400 325,345 305,290 288,235 272,178 258,120"
+      fill="none" stroke="#C8902A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"
+      opacity="0.3"/>
+
+    <!-- WAYPOINT MARKERS -->
+    <!-- 起点 -->
+    <circle cx="1300" cy="1580" r="10" fill="#C8902A" opacity="0.9"/>
+    <circle cx="1300" cy="1580" r="16" fill="none" stroke="#C8902A" stroke-width="2" opacity="0.5"/>
+    <text x="1320" y="1570" font-family="Noto Sans SC, sans-serif" font-size="28" fill="#E8B050" font-weight="300">起点</text>
+    <text x="1320" y="1610" font-family="Noto Sans SC, sans-serif" font-size="22" fill="#9090A8" font-weight="300">小河历史文化街区</text>
+
+    <!-- 断点1 -->
+    <circle id="wp1" cx="720" cy="1010" r="10" fill="#C84040" opacity="0.9"/>
+    <circle cx="720" cy="1010" r="16" fill="none" stroke="#C84040" stroke-width="2" opacity="0.5"/>
+    <text x="740" y="1000" font-family="Noto Sans SC, sans-serif" font-size="24" fill="#E86060" font-weight="300">⚠ 借道下塘路</text>
+
+    <!-- 断点2 -->
+    <circle id="wp2" cx="480" cy="655" r="10" fill="#C84040" opacity="0.9"/>
+    <circle cx="480" cy="655" r="16" fill="none" stroke="#C84040" stroke-width="2" opacity="0.5"/>
+    <text x="500" y="645" font-family="Noto Sans SC, sans-serif" font-size="24" fill="#E86060" font-weight="300">⚠ 借道拱康路</text>
+
+    <!-- 终点 -->
+    <circle cx="258" cy="120" r="10" fill="#C8902A" opacity="0.9"/>
+    <circle cx="258" cy="120" r="16" fill="none" stroke="#C8902A" stroke-width="2" opacity="0.5"/>
+    <text x="278" y="110" font-family="Noto Sans SC, sans-serif" font-size="28" fill="#E8B050" font-weight="300">终点</text>
+    <text x="278" y="148" font-family="Noto Sans SC, sans-serif" font-size="22" fill="#9090A8" font-weight="300">塘栖镇</text>
+  </svg>
+</div>
+
+<!-- LEGEND -->
+<div class="map-legend">
+  <div class="legend-item">
+    <div class="legend-line canal"></div>
+    沿运河步道
+  </div>
+  <div class="legend-item">
+    <div class="legend-line road"></div>
+    借道公路段
+  </div>
+</div>
+
+<!-- STAGE BUTTONS -->
+<div class="stages" id="stages">
+  <button class="stage-btn active" data-stage="0" onclick="setStage(0)">
+    <span class="stage-dot"></span>全程概览
+  </button>
+  <button class="stage-btn" data-stage="1" onclick="setStage(1)">
+    <span class="stage-dot"></span>起点出发
+  </button>
+  <button class="stage-btn danger" data-stage="2" onclick="setStage(2)">
+    <span class="stage-dot"></span>⚠ 借道①
+  </button>
+  <button class="stage-btn" data-stage="3" onclick="setStage(3)">
+    <span class="stage-dot"></span>重回运河
+  </button>
+  <button class="stage-btn danger" data-stage="4" onclick="setStage(4)">
+    <span class="stage-dot"></span>⚠ 借道②
+  </button>
+  <button class="stage-btn" data-stage="5" onclick="setStage(5)">
+    <span class="stage-dot"></span>直抵塘栖
+  </button>
+</div>
+
+<!-- STAGE INFO -->
+<div class="stage-info" id="stageInfo">
+  <div class="stage-info-tag" id="stageTag">全程</div>
+  <div class="stage-info-title" id="stageTitle">大运河徒步 · 22公里全程概览</div>
+  <div class="stage-info-body" id="stageBody">从杭州拱墅区小河历史文化街区出发，沿大运河一路向北，终点为塘栖镇。全程地势平坦，以运河步道为主。途中有两处断流地段需借道公路通行，其余路段均可沿河边走。</div>
+</div>
+
+<footer>
+  <div class="footer-brand">夜读</div>
+  <p class="footer-tagline">许颖的深夜阅读室。每篇文章，都值得你给它一个安静的夜晚。</p>
+</footer>
+<div class="footer-bar">
+  <span>© 2024 夜读 · 许颖的深夜阅读室</span>
+  <span>深夜还在读，是件很美的事。</span>
+</div>
+
+<script>
+  // Password gate
+  const PASSWORD_HASH = '51c62bdea1a8956ac6b1784494752287924f77f172235e8cfcf04e777c05abc9';
+  async function sha256(str) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+  async function checkPassword() {
+    const input = document.getElementById('gate-password');
+    const errorEl = document.getElementById('gate-error');
+    const hash = await sha256(input.value.trim());
+    if (hash === PASSWORD_HASH) {
+      sessionStorage.setItem('xy_auth', '1');
+      document.getElementById('gate').classList.add('hidden');
+    } else {
+      errorEl.textContent = '密码不正确，请重试';
+      input.classList.add('error');
+      setTimeout(() => input.classList.remove('error'), 400);
+      input.value = ''; input.focus();
+    }
+  }
+  document.getElementById('gate-password').addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkPassword();
+    document.getElementById('gate-error').textContent = '';
+  });
+  if (sessionStorage.getItem('xy_auth') === '1') {
+    document.getElementById('gate').classList.add('hidden');
+  }
+
+  // Stage content
+  const stages = [
+    {
+      tag: '全程',
+      title: '大运河徒步 · 22公里全程概览',
+      body: '从杭州拱墅区小河历史文化街区出发，沿大运河一路向北，终点为塘栖镇。全程地势平坦，以运河步道为主。途中有两处断流地段需借道公路通行，其余路段均可沿河边走。',
+      isDanger: false,
+      highlight: ['seg1','det1','seg2','det2','seg3'],
+      opacity: { seg1:0.7, det1:0.7, seg2:0.7, det2:0.7, seg3:0.7 }
+    },
+    {
+      tag: '第一段 · 运河步道',
+      title: '起点出发：小河历史文化街区 → 宝积禅寺',
+      body: '从小河历史文化街区沿运河北行，这一段步道完整，风景好，可以一路沿河岸走。运河两岸树木遮阴，节奏轻松。',
+      isDanger: false,
+      highlight: ['seg1'],
+      opacity: { seg1:1, det1:0.15, seg2:0.15, det2:0.15, seg3:0.15 }
+    },
+    {
+      tag: '断点① · 借道公路',
+      title: '⚠ 宝积禅寺附近：需走下塘路',
+      body: '这里运河步道中断，需要离开河边，借道下塘路通行一段。注意行人安全，与机动车共用路面。过了这段后重新回到运河步道。',
+      isDanger: true,
+      highlight: ['det1'],
+      opacity: { seg1:0.15, det1:1, seg2:0.15, det2:0.15, seg3:0.15 }
+    },
+    {
+      tag: '第二段 · 运河步道',
+      title: '水岸崇园 → 汽车园：重回运河',
+      body: '借道结束后重新回到运河步道，继续北行。这一段经过水岸崇园，运河景色开阔，步道条件好。',
+      isDanger: false,
+      highlight: ['seg2'],
+      opacity: { seg1:0.15, det1:0.15, seg2:1, det2:0.15, seg3:0.15 }
+    },
+    {
+      tag: '断点② · 借道公路',
+      title: '⚠ 汽车园附近：需走拱康路',
+      body: '第二处断流地段，需要借道拱康路通行一段。与机动车共用路面，注意安全。通过后重新回到运河步道，之后一直到塘栖都不再有断流。',
+      isDanger: true,
+      highlight: ['det2'],
+      opacity: { seg1:0.15, det1:0.15, seg2:0.15, det2:1, seg3:0.15 }
+    },
+    {
+      tag: '第三段 · 运河步道',
+      title: '直抵塘栖：最后一段，一路运河到底',
+      body: '过了拱康路之后，再无断流，可以一路沿运河步道走到终点塘栖镇。这一段路程较长，是整个徒步最舒展的部分。塘栖是著名的运河古镇，到达后可以在镇上休息。',
+      isDanger: false,
+      highlight: ['seg3'],
+      opacity: { seg1:0.15, det1:0.15, seg2:0.15, det2:0.15, seg3:1 }
+    }
+  ];
+
+  function setStage(idx) {
+    const s = stages[idx];
+
+    // Update buttons
+    document.querySelectorAll('.stage-btn').forEach((btn, i) => {
+      btn.classList.toggle('active', i === idx);
+    });
+
+    // Update info box
+    const info = document.getElementById('stageInfo');
+    const tag = document.getElementById('stageTag');
+    const title = document.getElementById('stageTitle');
+    const body = document.getElementById('stageBody');
+
+    info.classList.toggle('danger-mode', s.isDanger);
+    tag.className = 'stage-info-tag' + (s.isDanger ? ' road-tag' : '');
+    tag.textContent = s.tag;
+    title.textContent = s.title;
+    body.textContent = s.body;
+
+    // Update route opacities with animation
+    const segs = ['seg1','det1','seg2','det2','seg3'];
+    segs.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.style.transition = 'opacity 0.5s';
+        el.style.opacity = s.opacity[id];
+        // Add glow filter to highlighted segments
+        el.style.filter = s.opacity[id] === 1 ? 'url(#glow)' : 'none';
+        el.setAttribute('stroke-width', s.opacity[id] === 1 ? '7' : '5');
+      }
+    });
+  }
+
+  // Auto-animate on load: draw the full route
+  window.addEventListener('load', () => {
+    const segs = ['seg1','det1','seg2','det2','seg3'];
+    segs.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const len = el.getTotalLength ? el.getTotalLength() : 300;
+      el.style.strokeDasharray = len;
+      el.style.strokeDashoffset = len;
+      el.style.transition = `stroke-dashoffset ${0.8 + i * 0.3}s ease ${i * 0.3}s, opacity 0.5s`;
+      setTimeout(() => {
+        el.style.strokeDashoffset = 0;
+        el.style.opacity = 0.7;
+      }, 100);
+    });
+  });
+</script>
+</body>
+</html>
